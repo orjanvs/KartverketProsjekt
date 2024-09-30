@@ -20,3 +20,26 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.center-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px; /* Adjust as needed */
+    margin: 0 auto;
+    background: url('/images/naturbakgrunn-forside.jpg') no-repeat center center;
+    background-size: cover;
+    height: 600px; /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-button {
+    background-color: #156630;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
