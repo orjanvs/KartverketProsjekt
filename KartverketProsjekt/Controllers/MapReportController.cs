@@ -12,21 +12,25 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddForm(MapReportModel mapReport)
+        public IActionResult AddForm(string geoJson, string description)
         {
             var newMapReport = new MapReportModel
             {
                 MapReportId = _mapReports.Count + 1,
-                Description = mapReport.Description,
-                Category = mapReport.Category,
-                GeoJson = mapReport.GeoJson,
-                Attachment = mapReport.Attachment,
-                CaseStatus = "Open",
+                Description = description,
+                GeoJson = geoJson,
+                CaseStatus = "Ikke behandlet",
                 SubmissionDate = DateOnly.FromDateTime(DateTime.Now)
             };
 
             _mapReports.Add(newMapReport);
-            return RedirectToAction("AddForm");
+            return RedirectToAction("ListForm");
+        }
+
+        [HttpGet]
+        public IActionResult ListForm()
+        {
+            return View(_mapReports);
         }
     }
 }

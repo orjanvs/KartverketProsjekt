@@ -3,28 +3,66 @@
 <div id="map"></div>
 
 <div class="container py-5">
-    <form method="post">
+    <form asp-action="AddForm" method="post">
+        <input type="hidden" id="geoJsonInput" name="geoJson" asp-for="GeoJson" />
+
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
-            <input type="text" class="form-control" id="description" asp-for="Description"/>
+            <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
-
-
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
-
     </form>
+
+
 
 </div>
 
 @section Scripts {
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        var map = L.map('map').setView([60.145, 10.25], 15);
+
+        L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', {
+            maxZoom: 15,
+            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
         }).addTo(map);
+
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            draw: {
+                marker: true,
+                polyline: true,
+                polygon: true,
+                circle: true,
+                circlemarker: false,
+                rectangle: true,
+            },
+            edit: false,
+        });
+        map.addControl(drawControl);
+        
+        map.on('draw:created', (e) => {
+            var type = e.layerType,
+                layer = e.layer;
+
+            drawnItems.addLayer(layer);
+
+            var geoJsonString = JSON.stringify(layer.toGeoJSON());
+
+
+            document.getElementById('geoJsonInput').value = geoJsonString;
+        });
     </script>
 }
 
