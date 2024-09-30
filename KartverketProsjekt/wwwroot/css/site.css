@@ -43,3 +43,6 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
+#map {
+    height: 75vh;
+}
