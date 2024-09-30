@@ -24,14 +24,15 @@ body {
 .center-container {
     position: relative;
     width: 100%;
-    max-width: 1000px; /* Adjust as needed */
+    max-width: 1000px; 
     margin: 0 auto;
     background: url('/images/naturbakgrunn-forside.jpg') no-repeat center center;
     background-size: cover;
-    height: 600px; /* Adjust as needed */
+    height: 600px; 
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 10px; 
 }
 
 .center-button {
@@ -39,7 +40,7 @@ body {
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
 }
