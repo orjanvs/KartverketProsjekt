@@ -4,7 +4,7 @@ namespace KartverketProsjekt.Controllers
 {
     public class MapReportController : Controller
     {
-        public IActionResult Index()
+        public IActionResult AddForm()
         {
             return View();
         }
