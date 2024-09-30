@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KartverketProsjekt", "KartverketProsjekt\KartverketProsjekt.csproj", "{193320B1-6A0C-43ED-95A0-DC74EDD7C9BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{193320B1-6A0C-43ED-95A0-DC74EDD7C9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{193320B1-6A0C-43ED-95A0-DC74EDD7C9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{193320B1-6A0C-43ED-95A0-DC74EDD7C9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{193320B1-6A0C-43ED-95A0-DC74EDD7C9BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {077BC901-E496-457B-BF8B-FF20FBE58B8C}
+	EndGlobalSection
+EndGlobal
