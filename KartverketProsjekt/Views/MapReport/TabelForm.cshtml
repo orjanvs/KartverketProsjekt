@@ -1,0 +1,31 @@
+﻿@model List<KartverketProsjekt.Models.MapReportModel>
+@{
+}
+
+<h2>
+	Oversikt av registrert endringer
+</h2>
+<table class="table">
+	<thread>
+		<tr>
+			<th>MapReportId</th>
+			<th>SubmissionDate</th>
+			<th>GeoJson</th>
+			<th>Description</th>
+		</tr>
+	</thread>
+
+	<tbody>
+		@foreach(var endringer in Model)
+		{
+
+		<tr>
+			<td>@endringer.MapReportId</td>
+			<td>@endringer.SubmissionDate</td>
+			<td>@endringer.GeoJson</td>
+			<td>@endringer.Description</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div id="map" style="height: 400px;"></div>
