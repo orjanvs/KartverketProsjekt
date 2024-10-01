@@ -32,6 +32,7 @@ namespace KartverketProsjekt.Controllers
         }
 
         [HttpGet]
+        // Presents a list of all map reports
         public IActionResult ListForm()
         {
             return View(_mapReports);
