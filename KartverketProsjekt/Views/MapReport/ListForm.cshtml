@@ -1,10 +1,6 @@
 ﻿@model List<KartverketProsjekt.Models.MapReportModel>
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
@@ -28,6 +24,14 @@
                         <td>@mapReport.Description</td>
                         <td>@mapReport.GeoJson</td>
                         <td>@mapReport.CaseStatus</td>
+                        <td>
+                            <a asp-area=""
+                            asp-controller="MapReport"
+                            asp-action="ViewForm"
+                               asp-route-id="@mapReport.MapReportId">
+                               <img src="~/images/green-arrow.svg" alt="Gå til" style="height: 40px;" />
+                           </a>
+                        </td>
                     </tr>
 
                 }
