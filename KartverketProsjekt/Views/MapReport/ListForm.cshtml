@@ -1,0 +1,45 @@
+﻿@model List<KartverketProsjekt.Models.MapReportModel>
+
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Dato</th>
+                    <th>Beskrivelse</th>
+                    <th>GeoJson</th>
+                    <th>Status</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mapReport in Model)
+                {
+                    <tr>
+                        <td>@mapReport.MapReportId</td>
+                        <td>@mapReport.SubmissionDate</td>
+                        <td>@mapReport.Description</td>
+                        <td>@mapReport.GeoJson</td>
+                        <td>@mapReport.CaseStatus</td>
+                        <td>
+                            <a asp-area=""
+                            asp-controller="MapReport"
+                            asp-action="ViewForm"
+                               asp-route-id="@mapReport.MapReportId">
+                               <img src="~/images/green-arrow.svg" alt="Gå til" style="height: 40px;" />
+                           </a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Ingen innmeldinger funnet!</p>
+    }
+</div>

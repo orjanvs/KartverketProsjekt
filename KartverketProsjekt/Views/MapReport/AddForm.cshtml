@@ -3,28 +3,81 @@
 <div id="map"></div>
 
 <div class="container py-5">
-    <form method="post">
+    <form asp-action="AddForm" method="post">
+        <input type="hidden" id="geoJsonInput" name="geoJson" asp-for="GeoJson" />
+
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
-            <input type="text" class="form-control" id="description" asp-for="Description"/>
+            <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
-
-
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
-
     </form>
-
 </div>
 
 @section Scripts {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        // Code from GeoJSON lab exercise with some modifications
+
+        // Wait for the page to load before initializing the map
+        document.addEventListener("DOMContentLoaded", function() {
+
+           // Using browser geolocation to get the user's position
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                // Initialising map with geolocation variables as position
+                var map = L.map('map').setView([latitude, longitude], 15);
+
+                // Adding the default topo map layer from Kartverket
+                L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', {
+                    maxZoom: 15,
+                    attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+                }).addTo(map);
+
+                // Initializes the feature that will hold the drawn shapes and adds it to the map layer
+                var drawnItems = new L.FeatureGroup();
+                map.addLayer(drawnItems);
+
+                // Creates draw toolbar on left hand side
+                var drawControl = new L.Control.Draw({
+                    draw: {
+                        marker: true,
+                        polyline: true,
+                        polygon: true,
+                        circle: true,
+                        circlemarker: false,
+                        rectangle: true,
+                    },
+                    edit: {
+                        featureGroup: drawnItems, 
+                        remove: true // Enable the remove functionality
+                    }
+                });
+                map.addControl(drawControl);
+
+                // Event listener for when a shape is drawn
+                map.on('draw:created', (e) => {
+                    var type = e.layerType,
+                        layer = e.layer;
+
+                    drawnItems.addLayer(layer);
+
+                    // Convert the drawn shape to GeoJSON and set the value of the input field
+                    var geoJsonString = JSON.stringify(layer.toGeoJSON());
+
+                    // Set the value of the input field to the GeoJSON string
+                    document.getElementById('geoJsonInput').value = geoJsonString;
+                });
+            });
+        });
     </script>
 }
-
