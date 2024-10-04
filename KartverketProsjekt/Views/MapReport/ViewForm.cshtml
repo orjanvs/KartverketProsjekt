@@ -1,6 +1,7 @@
 ﻿@model KartverketProsjekt.Models.MapReportModel
 
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <div class="container py-5">
 
@@ -37,59 +38,12 @@
         <p>Ingen innmelding funnet!</p>
     }
 
-
 <div id="map"></div>
 
-
-@section Scripts {
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <script>
-        var map = L.map('map').setView([60.145, 10.25], 15);
-
-        L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { 
-            maxZoom: 15, 
-            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' 
-        }).addTo(map);
-
-            // Handle the GeoJSON data if it exists
-            @if (Model != null && !string.IsNullOrEmpty(Model.GeoJson))
-            {   
-                // Wrapping in <text> tag to avoid Razor syntax errors 
-                <text>
-
-                try {
-                    // Initializing a variable with the GeoJson property value. 
-                    // Html.Raw() is used to avoid encoding the JSON string
-                    var geoJsonData = @Html.Raw(Model.GeoJson);
-
-                    // Creates new featuregroup instance to store layers from GeoJSON data
-                    var drawnItems = new L.FeatureGroup();
-
-                    // Adds the GeoJSON data to the map
-                    L.geoJSON(geoJsonData, {
-                        onEachFeature: function(feature, layer) {
-                            // Bind the popup to the layer
-                            layer.bindPopup('@Html.Raw(Json.Serialize(Model.Description))');
-                            drawnItems.addLayer(layer);
-                        }
-                    });
-
-                    map.addLayer(drawnItems);
-
-                    // Fit the map to the GeoJSON bounds
-                    var bounds = drawnItems.getBounds();
-                    if (bounds.isValid()) {
-                        map.fitBounds(bounds);
-                    }
-                } catch (error) {
-                    console.error("Error processing GeoJSON:", error);
-                }
-                </text>
-            }
- 
+<script> var modelIntoJson = @Html.Raw(Json.Serialize(Model)); //formaterer modelen til Json
+//variabelen kan nå sendes til eksternal js.
+    console.log(modelIntoJson); //for å debugge innholde
     </script>
 
-}
+<script src="~/js/Viewform.js"></script>
+    
