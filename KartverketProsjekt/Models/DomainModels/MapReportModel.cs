@@ -1,4 +1,4 @@
-﻿namespace KartverketProsjekt.Models.ViewModels
+﻿namespace KartverketProsjekt.Models.DomainModels
 {
     public class MapReportModel
     {
