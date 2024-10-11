@@ -4,15 +4,15 @@ namespace KartverketProsjekt.Repositories
 {
     public interface IMapReportRepository
     {
-        IEnumerable<MapReportModel> GetAllMapReports();
+        Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync();
 
-        MapReportModel GetMapReportById(int id);
+        Task<MapReportModel> GetMapReportByIdAsync(int id);
 
-        MapReportModel AddMapReport(MapReportModel mapReport);
+        Task<MapReportModel> AddMapReportAsync(MapReportModel mapReport);
 
-        MapReportModel? UpdateMapReport(MapReportModel mapReport);
+        Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport);
 
-        MapReportModel? DeleteMapReport(int id);
+        Task<MapReportModel?> DeleteMapReportAsync(int id);
 
 
     }
