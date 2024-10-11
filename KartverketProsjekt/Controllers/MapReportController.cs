@@ -1,4 +1,4 @@
-﻿using KartverketProsjekt.Models;
+﻿using KartverketProsjekt.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
