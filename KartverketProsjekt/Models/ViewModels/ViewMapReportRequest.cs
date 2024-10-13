@@ -1,8 +1,8 @@
-﻿namespace KartverketProsjekt.Models.DomainModels
+﻿namespace KartverketProsjekt.Models.ViewModels
 {
-    public class MapReportModel
+    public class ViewMapReportRequest
     {
-        public int MapReportId { get; set; } // Primary key
+        public int MapReportId { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
         public string GeoJson { get; set; }

@@ -1,6 +1,7 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 
 namespace KartverketProsjekt.Repositories
 {
@@ -21,17 +22,26 @@ namespace KartverketProsjekt.Repositories
 
         public async Task<MapReportModel?> DeleteMapReportAsync(int id)
         {
-            throw new NotImplementedException();
+            var existingReport = await _kartverketDbContext.MapReports.FindAsync(id);
+            if (existingReport != null)
+            {
+                _kartverketDbContext.MapReports.Remove(existingReport);
+                await _kartverketDbContext.SaveChangesAsync();
+                return existingReport;
+            }
+            return null;
         }
+            
 
         public async Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync()
         {
-            return await _kartverketDbContext.MapReports.ToListAsync();
+            return await _kartverketDbContext.MapReports.Take(50).ToListAsync();
         }
 
-        public async Task<MapReportModel> GetMapReportByIdAsync(int id)
+        public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _kartverketDbContext.MapReports.FirstOrDefaultAsync(m => m.MapReportId == id);
+
         }
 
         public async Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport)

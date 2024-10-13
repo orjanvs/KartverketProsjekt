@@ -1,4 +1,5 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
+using KartverketProsjekt.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
@@ -6,7 +7,14 @@ namespace KartverketProsjekt.Controllers
 {
     public class MapReportController : Controller
     {
-        private static List<MapReportModel> _mapReports = new List<MapReportModel>();
+        // private static List<MapReportModel> _mapReports = new List<MapReportModel>();
+        private readonly IMapReportRepository _mapReportRepository;
+
+        public MapReportController(IMapReportRepository mapReportRepository)
+        {
+            _mapReportRepository = mapReportRepository;
+        }
+
         public IActionResult AddForm()
         {
             return View();
@@ -15,35 +23,39 @@ namespace KartverketProsjekt.Controllers
 
         [HttpPost]
         // Adds a new map report to the list of map reports
-        public IActionResult AddForm(string geoJson, string description)
+        public async Task<IActionResult> AddForm(string geoJson, string description)
         {
             var newMapReport = new MapReportModel
             {
-                MapReportId = _mapReports.Count + 1,
                 Description = description,
                 GeoJson = geoJson,
-                CaseStatus = "Ikke behandlet",
-                SubmissionDate = DateOnly.FromDateTime(DateTime.Now)
+                CaseStatus = "Ikke behandlet", // Placeholder for case status 
+                SubmissionDate = DateOnly.FromDateTime(DateTime.Now),
+                Attachment = "filepath.jpeg", // Placeholder for attachment
+                Category = "Turkart" // Placeholder for category
             };
 
-            _mapReports.Add(newMapReport);
+            await _mapReportRepository.AddMapReportAsync(newMapReport);
+
             // Redirect to view form with the id of the new map report
             return RedirectToAction("ViewForm", new { id = newMapReport.MapReportId });
         }
 
         [HttpGet]
         // Presents a list of all map reports
-        public IActionResult ListForm()
+        public async Task<IActionResult> ListForm()
         {
-            return View(_mapReports);
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
+            return View(mapReports);
         }
 
         [HttpGet]
         // Presents view based on the id of the map report 
-        public IActionResult ViewForm(int id)
+        public async Task<IActionResult> ViewForm(int id)
         {
             // Find map report based on id
-            var mapReport = _mapReports.FirstOrDefault(m => m.MapReportId == id);
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+
             if (mapReport != null)
             {
                 var viewModel = new MapReportModel
