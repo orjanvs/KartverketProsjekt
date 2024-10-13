@@ -1,7 +1,20 @@
+using KartverketProsjekt.Data;
+using KartverketProsjekt.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connectionString = 
+    builder.Configuration.GetConnectionString("MariaDbConnection");
+
+builder.Services.AddDbContext<KartverketDbContext>(options =>
+   options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 5, 9))));
+
+
+builder.Services.AddScoped<IMapReportRepository, MapReportRepository>();
 
 var app = builder.Build();
 
