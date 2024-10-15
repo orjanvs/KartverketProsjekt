@@ -38,7 +38,7 @@ namespace KartverketProsjekt.Controllers
             await _mapReportRepository.AddMapReportAsync(newMapReport);
 
             // Redirect to view form with the id of the new map report
-            return RedirectToAction("ViewForm", new { id = newMapReport.MapReportId });
+            return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
         }
 
         [HttpGet]
@@ -68,6 +68,31 @@ namespace KartverketProsjekt.Controllers
                     SubmissionDate = mapReport.SubmissionDate
                 };
                 
+                return View(viewModel);
+            }
+
+            return View(null); // Return empty view if no map report found
+        }
+
+        [HttpGet]
+        // Presents view based on the id of the map report 
+        public async Task<IActionResult> ViewReport(int id)
+        {
+            // Find map report based on id
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+
+            if (mapReport != null)
+            {
+                var viewModel = new MapReportModel
+                {
+                    MapReportId = mapReport.MapReportId,
+                    Description = mapReport.Description,
+                    GeoJson = mapReport.GeoJson,
+                    Attachment = mapReport.Attachment,
+                    CaseStatus = mapReport.CaseStatus,
+                    SubmissionDate = mapReport.SubmissionDate
+                };
+
                 return View(viewModel);
             }
 
