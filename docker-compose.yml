@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  kartverketprosjekt:
+    image: ${DOCKER_REGISTRY-}kartverketprosjekt
+    build:
+      context: .
+      dockerfile: KartverketProsjekt/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mariadb;Database=KartverketDb;User=root;Password=kartverket
+
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: kartverket
+      MYSQL_DATABASE: KartverketDb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

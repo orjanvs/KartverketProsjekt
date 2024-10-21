@@ -1,4 +1,5 @@
 ﻿@using KartverketProsjekt.Models.DomainModels
+
 @model List<MapReportModel>
 
 
@@ -28,7 +29,7 @@
                         <td>
                             <a asp-area=""
                             asp-controller="MapReport"
-                            asp-action="ViewForm"
+                            asp-action="ViewReport"
                                asp-route-id="@mapReport.MapReportId">
                                <img src="~/images/green-arrow.svg" alt="Gå til" style="height: 40px;" />
                            </a>
