@@ -1,0 +1,46 @@
+﻿@model List<KartverketProsjekt.Models.IdeaSchemeModels.UsersIdeaScheme>
+
+	<h2> Skjerma ditt er motatt </h2>
+	<div class="UserSchemeClass">
+		@foreach(var scheme in Model)
+	{
+		if(scheme != null)
+		{
+			<p><strong>Rapport Id</strong>@scheme.UserSchemeId </p>
+			<p><strong>Beskrivelsen</strong>@scheme.Description </p>
+			if(scheme.Profession != null)
+			{
+				<p><strong>Profession</strong>@scheme.Profession </p>
+			}
+			<p><strong>Email</strong>@scheme.Email</p>
+			if(scheme.HighPriority != null)
+			{
+				<p><strong>Prioritet</strong>@scheme.HighPriority </p>
+			}
+
+			else if(scheme.MediumPriority != null)
+			{
+				<p><strong>Prioritet</strong>@scheme.MediumPriority </p>
+			}
+			else if(scheme.LowPriority != null)
+			{
+				<p><strong>Prioritet</strong>@scheme.LowPriority </p>
+			}
+
+			<p><strong>Dato</strong>@scheme.Date</p>
+		}
+
+		else
+		{
+			<p> Ingenting å vise</p>
+		}
+
+
+	}
+
+
+
+
+	</div>
+
+	<p> Ditt forslag er nå sendt inn og vil bli behandlet så fort som mulig</p>

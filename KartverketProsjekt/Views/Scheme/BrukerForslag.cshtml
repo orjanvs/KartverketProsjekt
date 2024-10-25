@@ -1,0 +1,31 @@
+﻿@model KartverketProsjekt.Models.IdeaSchemeModels.UsersIdeaScheme
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<form asp-controller="Scheme" asp-action="BrukerForslag" method="post">
+    <label for="tips">Tips</label>
+    <textarea class="descriptionClass" id="tips" placeholder="Beskrivelse" asp-for="Description" required></textarea>
+
+    <label for="profession">Profesjon</label>
+    <input type="text" id="profession" placeholder="(valgfritt)" asp-for="Profession">
+
+    <label for="priority">Prioritet</label>
+    <div>
+        <input type="radio" id="high" asp-for="HighPriority" value="høy" >
+        <label for="high">Høy</label>
+
+        <input type="radio" id="medium" asp-for="MediumPriority" value="moderat" >
+        <label for="medium">Moderat</label>
+
+        <input type="radio" id="low" asp-for="LowPriority" value="lav" >
+        <label for="low">Lav</label>
+    </div>
+
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="" asp-for="Email" required>
+
+    <button type="submit" class="buttonClass" id="buttonId">Send</button>
+</form>

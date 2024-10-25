@@ -47,3 +47,107 @@ body {
 #map {
     height: 75vh;
 }
+
+.headerClass{
+    float:right;
+}
+
+.filter-options {
+    display: none; 
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-options.active {
+        display: block; 
+
+}
+
+.filter-option {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+    .filter-option:hover {
+        background-color: #ddd;
+    }
+
+.filterButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.list-container {
+    margin-top: 20px;
+}
+
+.list-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+
+.descriptionClass {
+    width: 100%;
+    height: 150px;
+    padding: 8px 10px; /* Reduced top/bottom padding to 8px */
+    font-size: 16px;
+    line-height: 1.4; /* Adjusted line height for better text alignment */
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    resize: vertical;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+    .descriptionClass:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+.buttonClass {
+    background-color: #007BFF; 
+    color: white; 
+    padding: 10px 24px; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.2s; 
+    width:200 px;
+}
+
+.buttonClass:hover {
+        background-color: #0056b3; 
+        transform: translateY(-2px); 
+
+}
+
+.buttonClass:active {
+        transform: translateY(0); 
+
+}
+
+.user-tips {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    background-color: #f9f9f9; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+    .user-tips p {
+        margin: 8px 0; 
+    }
+
+strong {
+    color: #333; 
+}

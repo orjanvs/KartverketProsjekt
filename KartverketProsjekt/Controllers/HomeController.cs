@@ -1,3 +1,4 @@
+using KartverketProsjekt.Models.IdeaSchemeModels;
 using KartverketProsjekt.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ namespace KartverketProsjekt.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+     
 
         public HomeController(ILogger<HomeController> logger)
         {

@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025020135_initialTesting2")]
+    partial class initialTesting2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace KartverketProsjekt.Migrations
                     b.Property<Guid>("UserSchemeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()

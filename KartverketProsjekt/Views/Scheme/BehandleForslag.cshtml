@@ -1,0 +1,48 @@
+﻿@model List<KartverketProsjekt.Models.IdeaSchemeModels.UsersIdeaScheme>
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<!-- Filter Button -->
+<button onclick="FilterOptions()" class="filterButton" id="filterActive">
+    <img src="~/images/filterIcon.svg" alt="filterIcon" height="25" width="25" />
+</button>
+
+<!-- Filter Options -->
+<div class="filter-options" id="filterOptions">
+    <div class="filter-option" onclick="applyFilter('option1')">Dato</div>
+    <div class="filter-option" onclick="applyFilter('option2')">Sted</div>
+    <div class="filter-option" onclick="applyFilter('option3')">Tittel A-Z</div>
+    <div class="filter-option" onclick="applyFilter('option4')">Profesjonell/privat</div>
+    <div class="filter-option" onclick="applyFilter('option5')">Prioritet</div>
+</div>
+
+<!-- User Tips List -->
+<div>
+    @if (Model != null)
+    {
+        @foreach (var elements in Model)
+        {
+            <div class="user-tips list-item"
+                 data-dato="@elements.Date"
+                 data-profession="@elements.Profession"
+                 data-prioritet="@elements.HighPriority">
+                <p><strong>BrukerId: </strong>@elements.UserSchemeId</p>
+                <p><strong>Profession: </strong>@elements.Profession</p>
+                <p><strong>Email: </strong>@elements.Email</p>
+                <p><strong>1. Prioritet: </strong>@elements.HighPriority</p>
+                <p><strong>2. Prioritet: </strong>@elements.MediumPriority</p>
+                <p><strong>3. Prioritet: </strong>@elements.LowPriority</p>
+                <p><strong>Beskrivelse: </strong>@elements.Description</p>
+                <p><strong>Dato: </strong>@elements.Date</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Ingenting å vise</p>
+    }
+</div>
+
+<script src="~/js/site.js"></script>

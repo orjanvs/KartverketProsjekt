@@ -45,6 +45,12 @@
                                        asp-action="ListForm">
                                         Oversikt
                                     </a>
+                                     <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="Scheme"
+                                       asp-action="BehandleForslag">
+                                        Forslag
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -62,7 +68,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - KartverketProsjekt - <a asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
+            &copy; 2024 - KartverketProsjekt - Hjelp oss bli <a asp-area="" asp-controller="Scheme" asp-action="BrukerForslag">bedre</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

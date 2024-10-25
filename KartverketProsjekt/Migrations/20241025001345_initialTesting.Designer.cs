@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025001345_initialTesting")]
+    partial class initialTesting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace KartverketProsjekt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -76,15 +76,22 @@ namespace KartverketProsjekt.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("HighPriority")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LowPriority")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("MediumPriority")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Profession")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("UserSchemeId");
