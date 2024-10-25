@@ -28,6 +28,38 @@
     table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
 } 
 
+
+
+function applyFilter(priority) {
+    const table = document.querySelector("table.table-sortable tbody");
+    const rows = Array.from(table.querySelectorAll("tr"));
+
+    rows.forEach(row => {
+        const priorityCell = row.querySelector("td:nth-child(4)"); //Adjust column index
+        const priorityText = priorityCell ? priorityCell.textContent.trim() : "";
+        console.log(priorityCell, priorityText);
+
+        if (
+            (priority === 'option1' && priorityText === "Høy prioritet") ||
+            (priority === 'option2' && priorityText === "Middels prioritet") ||
+            (priority === 'option3' && priorityText === "Lav prioritet") ||
+            priority === 'all'
+        ) {
+            row.style.display = ""; //showing row here
+        }
+        else {
+            row.style.display = "none"; //hiding row here
+        }
+
+    });
+
+}
+
+function toggleFilterOptions() {
+    const filterOptions = document.getElementById("filterOptions"); //getting element by id from html to manipulate its visibility
+    filterOptions.classList.toggle("active");
+}
+
 sortTableByColumn(document.querySelector("table"), 1, true);
 
 document.querySelectorAll(".table-sortable th").forEach(headerCell => {
@@ -39,3 +71,6 @@ document.querySelectorAll(".table-sortable th").forEach(headerCell => {
         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
     });
 });
+
+document.getElementById("filterActive").addEventListener("click", toggleFilterOptions);
+

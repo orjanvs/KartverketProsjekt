@@ -16,6 +16,21 @@
 
 
 
+
+<button class="filterButton" id="filterActive">
+    <img src="~/images/filterIcon.svg" alt="filterIcon" height="25" width="25" />
+</button>
+
+<!-- Filter Options -->
+<div class="filter-options" id="filterOptions">
+    <div class="filter-option" onclick="applyFilter('option1')">Høy prioritet</div>
+    <div class="filter-option" onclick="applyFilter('option2')">Moderat prioritet</div>
+    <div class="filter-option" onclick="applyFilter('option3')">Lav prioritet</div>
+    <div class="filter-option" onclick="applyFilter('all')">Vis alle</div>
+</div>
+
+
+
 <body>
     <table class="table table-sortable">
         <thead>
@@ -60,7 +75,6 @@
         </tbody>
     </table>
 
-    
 </body>
 <script src="~/js/tablesort.js"></script>
 <script src="~/js/site.js"></script>

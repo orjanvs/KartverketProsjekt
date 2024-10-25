@@ -11,8 +11,16 @@ builder.Services.AddControllersWithViews();
 var connectionString = 
     builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Add database context to the services with delay to ensure that the database is
+// ready before the application starts with Docker Compose. 
 builder.Services.AddDbContext<KartverketDbContext>(options =>
-   options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 5, 9))));
+   options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 5, 9)),
+   mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+
+       maxRetryCount: 5,  // Number of retry attempts
+       maxRetryDelay: TimeSpan.FromSeconds(10), // Delay between retries
+       errorNumbersToAdd: null // Additional error codes to retry on
+       )));
 
 
 builder.Services.AddScoped<IMapReportRepository, MapReportRepository>();
