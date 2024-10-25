@@ -2,47 +2,66 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/5eea027e19.js" crossorigin="anonymous"></script>
 </head>
 
-<!-- Filter Button -->
-<button onclick="FilterOptions()" class="filterButton" id="filterActive">
-    <img src="~/images/filterIcon.svg" alt="filterIcon" height="25" width="25" />
-</button>
 
-<!-- Filter Options -->
-<div class="filter-options" id="filterOptions">
-    <div class="filter-option" onclick="applyFilter('option1')">Dato</div>
-    <div class="filter-option" onclick="applyFilter('option2')">Sted</div>
-    <div class="filter-option" onclick="applyFilter('option3')">Tittel A-Z</div>
-    <div class="filter-option" onclick="applyFilter('option4')">Profesjonell/privat</div>
-    <div class="filter-option" onclick="applyFilter('option5')">Prioritet</div>
-</div>
 
-<!-- User Tips List -->
-<div>
-    @if (Model != null)
-    {
-        @foreach (var elements in Model)
-        {
-            <div class="user-tips list-item"
-                 data-dato="@elements.Date"
-                 data-profession="@elements.Profession"
-                 data-prioritet="@elements.HighPriority">
-                <p><strong>BrukerId: </strong>@elements.UserSchemeId</p>
-                <p><strong>Profession: </strong>@elements.Profession</p>
-                <p><strong>Email: </strong>@elements.Email</p>
-                <p><strong>1. Prioritet: </strong>@elements.HighPriority</p>
-                <p><strong>2. Prioritet: </strong>@elements.MediumPriority</p>
-                <p><strong>3. Prioritet: </strong>@elements.LowPriority</p>
-                <p><strong>Beskrivelse: </strong>@elements.Description</p>
-                <p><strong>Dato: </strong>@elements.Date</p>
-            </div>
-        }
-    }
-    else
-    {
-        <p>Ingenting å vise</p>
-    }
-</div>
+ <div class="box">
+        <input type="text" placeholder="Søk..."/>
+        <a href="#">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
+ </div>
 
+
+
+<body>
+    <table class="table table-sortable">
+        <thead>
+            <tr>
+                <th>Dato</th>
+                <th>Id</th>
+                <th>Profesjonell/privat</th>
+                <th>Prioritet</th>
+                <th>Beskrivelse</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var tableItems in Model){
+            <tr>
+                <td>@tableItems.Date</td>
+                <td>@tableItems.UserSchemeId</td>
+                <td>@tableItems.Profession</td>
+                @if(tableItems.HighPriority != null)
+                {
+                   <td>@tableItems.HighPriority</td>
+                }
+
+                else if (tableItems.MediumPriority != null)
+                 {
+                        <td>@tableItems.MediumPriority</td>
+                 }
+
+                else if (tableItems.LowPriority != null)
+                 {
+                        <td>@tableItems.LowPriority</td>
+                 }
+
+                 else
+                  {
+                     <td>Ingen prioritering valgt</td>
+                  }
+
+                <td>@tableItems.Description</td>
+            </tr>
+        
+            }
+        </tbody>
+    </table>
+
+    
+</body>
+<script src="~/js/tablesort.js"></script>
 <script src="~/js/site.js"></script>
+

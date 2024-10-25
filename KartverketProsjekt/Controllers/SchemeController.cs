@@ -18,10 +18,12 @@ namespace KartverketProsjekt.Controllers
 
         public async Task<ActionResult> BehandleForslag()
         {
-			var listAllScheme = await _context.UserTips.ToListAsync(); //retrived everything from the database
-            //since we cant convert to regular list, make the list in html and display the values there
+			//var listAllScheme = await _context.UserTips.ToListAsync(); //retrived everything from the database
+            // when active, since we cant convert the value from database to regular list, make the list in html and display the values there
+
+            // wait until others have setup the database properly? Use list for now
             
-			return View(listAllScheme);
+			return View(_UsersIdeaScheme);
 		}
 
         [HttpGet]
@@ -37,8 +39,8 @@ namespace KartverketProsjekt.Controllers
             if(ModelState.IsValid)
             {
                 _UsersIdeaScheme.Add(usersIdeaScheme);
-                _context.Add(usersIdeaScheme);
-                _context.SaveChangesAsync();
+                //_context.Add(usersIdeaScheme); not adding to the database right now, but the variable add to the database
+               //await _context.SaveChangesAsync(); saves to the database
                 return RedirectToAction("ForslagMotatt", usersIdeaScheme);
             }
 
