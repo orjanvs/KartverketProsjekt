@@ -11,21 +11,41 @@ builder.Services.AddControllersWithViews();
 var connectionString = 
     builder.Configuration.GetConnectionString("DefaultConnection");
 
+
+// Add database context to the services with delay to ensure that the database is
+// ready before the application starts with Docker Compose. 
 builder.Services.AddDbContext<KartverketDbContext>(options =>
-   options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 5, 9))));
+   options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 5, 9)),
+       mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+           maxRetryCount: 5, // Number of retry attempts
+           maxRetryDelay: TimeSpan.FromSeconds(10), // Delay between retries
+           errorNumbersToAdd: null // Additional error codes to retry on
+       )));
 
 
 builder.Services.AddScoped<IMapReportRepository, MapReportRepository>();
 
 var app = builder.Build();
 
-// Apply migrations and create the database if it doesn't exist
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<KartverketDbContext>();
-    context.Database.Migrate();
+    try
+    {
+        var context = services.GetRequiredService<KartverketDbContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        // Log the error (you can use a logging framework here)
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+        // Optionally, rethrow or handle the exception as needed
+    }
 }
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

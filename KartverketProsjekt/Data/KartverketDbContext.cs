@@ -10,10 +10,13 @@ namespace KartverketProsjekt.Data
             
         }
 
+        // Table for MapReportModel
         public DbSet<MapReportModel> MapReports { get; set; }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Primary key for MapReportModel
             modelBuilder.Entity<MapReportModel>()
                 .HasKey(m => m.MapReportId);
         }
