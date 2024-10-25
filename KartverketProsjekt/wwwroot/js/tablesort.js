@@ -37,16 +37,30 @@ function applyFilter(priority) {
     rows.forEach(row => {
         const priorityCell = row.querySelector("td:nth-child(4)"); //Adjust column index
         const priorityText = priorityCell ? priorityCell.textContent.trim() : "";
-        console.log(priorityCell, priorityText);
 
         if (
-            (priority === 'option1' && priorityText === "Høy prioritet") ||
-            (priority === 'option2' && priorityText === "Middels prioritet") ||
-            (priority === 'option3' && priorityText === "Lav prioritet") ||
+            (priority === 'option1' && priorityText === "høy") ||
+            (priority === 'option2' && priorityText === "moderat") ||
+            (priority === 'option3' && priorityText === "lav") ||
             priority === 'all'
         ) {
             row.style.display = ""; //showing row here
         }
+
+        else if (priority === 'option4') {
+            const dateCells = row.querySelector("td:nth-child(1)"); //Adjust column index
+            const dateText = dateCells ? dateCells.textContent.trim() : "";
+            if (dateText.toLowerCase() === "dato" || priority === 'all') {
+                row.style.display = ""; //showing row here
+            }
+
+            else {
+                row.style.display = "none"; //hiding row
+            }
+
+        }
+
+
         else {
             row.style.display = "none"; //hiding row here
         }
