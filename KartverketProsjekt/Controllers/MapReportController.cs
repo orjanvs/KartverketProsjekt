@@ -28,11 +28,13 @@ namespace KartverketProsjekt.Controllers
             var newMapReport = new MapReportModel
             {
                 Description = description,
-                GeoJson = geoJson,
-                CaseStatus = "Ikke behandlet", // Placeholder for case status 
-                SubmissionDate = DateOnly.FromDateTime(DateTime.Now),
-                Attachment = "filepath.jpeg", // Placeholder for attachment
-                Category = "Turkart" // Placeholder for category
+                GeoJsonString = geoJson,
+                MapReportStatusId = 1, // Placeholder for case status 
+                MapLayerId = 1,    // Placeholder for map layer id
+                SubmissionDate = DateTime.Now,
+                SubmitterId = 2, // Placeholder value for test
+                CaseHandlerId = 3 // Placeholder value for test
+
             };
 
             await _mapReportRepository.AddMapReportAsync(newMapReport);
@@ -63,10 +65,10 @@ namespace KartverketProsjekt.Controllers
                 {
                     MapReportId = mapReport.MapReportId,
                     Description = mapReport.Description,
-                    GeoJson = mapReport.GeoJson,
-                    Attachment = mapReport.Attachment,
-                    CaseStatus = mapReport.CaseStatus,
+                    GeoJsonString = mapReport.GeoJsonString,
                     SubmissionDate = mapReport.SubmissionDate
+
+
                 };
 
                 return View(viewModel);

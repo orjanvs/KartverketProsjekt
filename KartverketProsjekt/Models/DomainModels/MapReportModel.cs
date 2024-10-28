@@ -3,11 +3,19 @@
     public class MapReportModel
     {
         public int MapReportId { get; set; } // Primary key
+        public int SubmitterId { get; set; } // FK (ref. User(UserId))     
+        public int CaseHandlerId { get; set; } // FK (ref. User(UserId))  
+        public int MapLayerId { get; set; } // FK (ref. MapLayer(MapLayerId))
+        public int MapReportStatusId { get; set; } // FK (ref. MapReportStatus(MapReportStatusId))
         public string Description { get; set; }
-        public string Category { get; set; }
-        public string GeoJson { get; set; }
-        public string Attachment { get; set; }
-        public string CaseStatus { get; set; }
-        public DateOnly SubmissionDate { get; set; }
+        public string GeoJsonString { get; set; }
+        public DateTime SubmissionDate { get; set; }
+
+        // Navigation properties
+        public UserModel Submitter { get; set; } // Navigation to Submitter (User)
+        public UserModel CaseHandler { get; set; } // Navigation to CaseHandler (User)
+        public MapLayerModel MapLayer { get; set; } // Navigation to MapLayer
+        public MapReportStatusModel MapReportStatus { get; set; } // Navigation to MapReportStatus
+        public ICollection<AttachmentModel> Attachments { get; set; } // Collection for Attachments
     }
 }

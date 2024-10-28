@@ -24,10 +24,10 @@
                 <input type="text" id="description" class="form-control" asp-for="Description" readonly/>
             </div>
 
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label class="form-label">Status</label>
                 <input type="text" id="status" class="form-control" asp-for="CaseStatus" readonly />
-            </div>
+            </div> *@
 
 
         </form>
@@ -56,7 +56,7 @@
         }).addTo(map);
 
             // Handle the GeoJSON data if it exists
-            @if (Model != null && !string.IsNullOrEmpty(Model.GeoJson))
+            @if (Model != null && !string.IsNullOrEmpty(Model.GeoJsonString))
             {   
                 // Wrapping in <text> tag to avoid Razor syntax errors 
                 <text>
@@ -64,7 +64,7 @@
                 try {
                     // Initializing a variable with the GeoJson property value. 
                     // Html.Raw() is used to avoid encoding the JSON string
-                    var geoJsonData = @Html.Raw(Model.GeoJson);
+                    var geoJsonData = @Html.Raw(Model.GeoJsonString);
 
                     // Creates new featuregroup instance to store layers from GeoJSON data
                     var drawnItems = new L.FeatureGroup();
