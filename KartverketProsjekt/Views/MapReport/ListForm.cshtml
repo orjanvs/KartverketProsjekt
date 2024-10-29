@@ -13,7 +13,7 @@
                     <th>Dato</th>
                     <th>Beskrivelse</th>
                     <th>GeoJson</th>
-                    <th>Status</th>
+                    @* <th>Status</th> *@
                     
                 </tr>
             </thead>
@@ -24,8 +24,8 @@
                         <td>@mapReport.MapReportId</td>
                         <td>@mapReport.SubmissionDate</td>
                         <td>@mapReport.Description</td>
-                        <td>@mapReport.GeoJson</td>
-                        <td>@mapReport.CaseStatus</td>
+                        <td>@mapReport.GeoJsonString</td>
+                        @* <td>@mapReport.CaseStatus</td> *@
                         <td>
                             <a asp-area=""
                             asp-controller="MapReport"

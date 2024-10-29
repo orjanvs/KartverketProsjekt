@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241028181018_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,35 +236,6 @@ namespace KartverketProsjekt.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "default@example.com",
-                            FirstName = "Default",
-                            LastName = "User",
-                            PhoneNumber = "0000000000",
-                            UserRoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Email = "submitter@example.com",
-                            FirstName = "Test",
-                            LastName = "Submitter",
-                            PhoneNumber = "1100000000",
-                            UserRoleId = 3
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Email = "casehandler@example.com",
-                            FirstName = "Test",
-                            LastName = "CaseHandler",
-                            PhoneNumber = "1200000000",
-                            UserRoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("KartverketProsjekt.Models.DomainModels.UserRoleModel", b =>
