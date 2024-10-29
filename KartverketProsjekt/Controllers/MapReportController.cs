@@ -1,4 +1,5 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
+using KartverketProsjekt.Models.ViewModels;
 using KartverketProsjekt.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -61,7 +62,7 @@ namespace KartverketProsjekt.Controllers
 
             if (mapReport != null)
             {
-                var viewModel = new MapReportModel
+                var viewModel = new ViewMapReportRequest
                 {
                     MapReportId = mapReport.MapReportId,
                     Description = mapReport.Description,

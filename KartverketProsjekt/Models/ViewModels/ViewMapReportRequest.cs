@@ -4,9 +4,9 @@
     {
         public int MapReportId { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
-        public string GeoJson { get; set; }
+        public int MapLayerId { get; set; }
+        public string GeoJsonString { get; set; }
 
-        public DateOnly SubmissionDate { get; set; }
+        public DateTime SubmissionDate { get; set; }
     }
 }
