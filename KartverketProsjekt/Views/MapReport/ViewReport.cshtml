@@ -21,6 +21,17 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <input type="text" id="status" class="form-control"
+                               value="@Model.MapReportStatus?.StatusDescription" readonly />
+                    </div>
+
+                   @*  <div class="mb-3">
+                        <label class="form-label">Dato</label>
+                        <input type="text" id="date" class="form-control" asp-for="SubmissionDate" readonly />
+                    </div> *@
+
+                    <div class="mb-3">
                         <div class="mb-3">
                             <label class="form-label">Beskrivelse</label>
                             <textarea id="description" class="form-control" asp-for="Description" readonly style="resize: vertical;"></textarea>

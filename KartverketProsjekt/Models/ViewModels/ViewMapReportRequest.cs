@@ -1,4 +1,6 @@
-﻿namespace KartverketProsjekt.Models.ViewModels
+﻿using KartverketProsjekt.Models.DomainModels;
+
+namespace KartverketProsjekt.Models.ViewModels
 {
     public class ViewMapReportRequest
     {
@@ -7,6 +9,11 @@
         public int MapLayerId { get; set; }
         public string GeoJsonString { get; set; }
 
+        public int MapReportStatusId { get; set; }
+
         public DateTime SubmissionDate { get; set; }
+
+
+        public MapReportStatusModel MapReportStatus { get; set; } // Navigation property for status
     }
 }

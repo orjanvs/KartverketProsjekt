@@ -67,7 +67,9 @@ namespace KartverketProsjekt.Controllers
                     MapReportId = mapReport.MapReportId,
                     Description = mapReport.Description,
                     GeoJsonString = mapReport.GeoJsonString,
-                    SubmissionDate = mapReport.SubmissionDate
+                    SubmissionDate = mapReport.SubmissionDate,
+                    MapReportStatusId = mapReport.MapReportStatusId,
+                    MapReportStatus = mapReport.MapReportStatus
 
 
                 };
