@@ -28,10 +28,10 @@
         // Code from GeoJSON lab exercise with some modifications
 
         // Wait for the page to load before initializing the map
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
-           // Using browser geolocation to get the user's position
-            navigator.geolocation.getCurrentPosition(function(position) {
+            // Using browser geolocation to get the user's position
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
 
@@ -59,7 +59,7 @@
                         rectangle: true,
                     },
                     edit: {
-                        featureGroup: drawnItems, 
+                        featureGroup: drawnItems,
                         remove: true // Enable the remove functionality
                     }
                 });
@@ -78,6 +78,15 @@
                     // Set the value of the input field to the GeoJSON string
                     document.getElementById('geoJsonInput').value = geoJsonString;
                 });
+
+                // Add button to toggle map layers
+                var baseMaps = {
+                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+                };
+                L.control.layers(baseMaps).addTo(map);
             });
         });
     </script>
