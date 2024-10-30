@@ -13,7 +13,6 @@ namespace KartverketProsjekt.Models.ViewModels
         public string Description { get; set; }
 
         [Required]
-        [FromForm]
         public int MapLayerId{ get; set; }
 
     }
