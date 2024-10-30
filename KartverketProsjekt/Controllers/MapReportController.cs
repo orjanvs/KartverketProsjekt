@@ -24,14 +24,15 @@ namespace KartverketProsjekt.Controllers
 
         [HttpPost]
         // Adds a new map report to the list of map reports
-        public async Task<IActionResult> AddForm(string geoJson, string description)
+        public async Task<IActionResult> AddForm(AddMapReportRequest request)            // string geoJson, string description, int mapLayerId
         {
+
             var newMapReport = new MapReportModel
             {
-                Description = description,
-                GeoJsonString = geoJson,
+                Description = request.Description,
+                GeoJsonString = request.GeoJson,
                 MapReportStatusId = 1, // Placeholder for case status 
-                MapLayerId = 1,    // Placeholder for map layer id
+                MapLayerId = request.MapLayerId,
                 SubmissionDate = DateTime.Now,
                 SubmitterId = 2, // Placeholder value for test
                 CaseHandlerId = 3 // Placeholder value for test
@@ -41,7 +42,8 @@ namespace KartverketProsjekt.Controllers
             await _mapReportRepository.AddMapReportAsync(newMapReport);
 
             // Redirect to view form with the id of the new map report
-            return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
+            //return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
+            return RedirectToAction("ListForm");
         }
 
         [HttpGet]

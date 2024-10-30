@@ -114,8 +114,8 @@ namespace KartverketProsjekt.Data
             modelBuilder.Entity<MapLayerModel>().HasData(
                 new MapLayerModel { MapLayerId = 1, MapLayerType = "Fargekart" },
                 new MapLayerModel { MapLayerId = 2, MapLayerType = "Gråtonekart" },
-                new MapLayerModel { MapLayerId = 3, MapLayerType = "Turkart" }
-                new MapLayerModel { MapLayerId = 3, MapLayerType = "Sjøkart" }
+                new MapLayerModel { MapLayerId = 3, MapLayerType = "Turkart" },
+                new MapLayerModel { MapLayerId = 4, MapLayerType = "Sjøkart" }
             );
 
             // Seed data for MapReportStatusModel
