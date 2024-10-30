@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KartverketProsjekt.Models.DomainModels;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace KartverketProsjekt.Models.ViewModels
 {
@@ -10,6 +12,8 @@ namespace KartverketProsjekt.Models.ViewModels
         [Required]
         public string Description { get; set; }
 
+        [Required]
+        public int MapLayerId{ get; set; }
 
     }
 }

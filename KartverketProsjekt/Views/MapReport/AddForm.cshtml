@@ -5,12 +5,14 @@
 
 <div class="container py-5">
     <form asp-action="AddForm" method="post">
-        <input type="hidden" id="geoJsonInput" name="geoJson" asp-for="GeoJson" />
-
+        <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" /> 
+        
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
             <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
+
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
@@ -35,14 +37,27 @@
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
 
-                // Initialising map with geolocation variables as position
-                var map = L.map('map').setView([latitude, longitude], 15);
+                // Add map layers
+                var baseMaps = {
+                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+                };
 
-                // Adding the default topo map layer from Kartverket
-                L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', {
-                    maxZoom: 15,
-                    attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
-                }).addTo(map);
+                // Initialising map with geolocation variables as position and default map layer 
+                var map = L.map('map', {
+                    center: [latitude, longitude],
+                    zoom: 15,
+                    layers: [baseMaps["Fargekart"]] // Set default layer
+                });
+
+                // Set default MapLayerId to 1
+                document.getElementById('mapLayerIdInput').value = 1;
+
+
+                // Add button to toggle map layers
+                L.control.layers(baseMaps).addTo(map);
 
                 // Initializes the feature that will hold the drawn shapes and adds it to the map layer
                 var drawnItems = new L.FeatureGroup();
@@ -76,17 +91,39 @@
                     var geoJsonString = JSON.stringify(layer.toGeoJSON());
 
                     // Set the value of the input field to the GeoJSON string
-                    document.getElementById('geoJsonInput').value = geoJsonString;
+                    document.getElementById('geoJsonInput').value = geoJsonString
                 });
 
-                // Add button to toggle map layers
-                var baseMaps = {
-                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
-                };
-                L.control.layers(baseMaps).addTo(map);
+                // Event listener for when the base layer is changed
+                map.on('baselayerchange', function (e) {
+                    var mapLayerId = determineMapLayerIdFromName(e.name);
+                    document.getElementById('mapLayerIdInput').value = mapLayerId;
+                    console.log(mapLayerId);
+                    console.log(e);
+                    console.log('MapLayerIdInput')
+                });
+
+                function determineMapLayerIdFromName(name) {
+                    // Implement logic to determine MapLayerId based on the layer name
+                    switch (name) {
+                        case "Fargekart":
+                            return 1;
+                        case "Gråtonekart":
+                            return 2;
+                        case "Turkart":
+                            return 3;
+                        case "Sjøkart":
+                            return 4;
+                        default:
+                            return 0;
+                        
+                    }
+                        console.log(name);
+                }
+
+
+                
+
             });
         });
     </script>
