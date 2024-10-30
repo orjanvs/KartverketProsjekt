@@ -42,8 +42,8 @@ namespace KartverketProsjekt.Controllers
             await _mapReportRepository.AddMapReportAsync(newMapReport);
 
             // Redirect to view form with the id of the new map report
-            //return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
-            return RedirectToAction("ListForm");
+            return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
+            //return RedirectToAction("ListForm");
         }
 
         [HttpGet]
@@ -71,7 +71,8 @@ namespace KartverketProsjekt.Controllers
                     GeoJsonString = mapReport.GeoJsonString,
                     SubmissionDate = mapReport.SubmissionDate,
                     MapReportStatusId = mapReport.MapReportStatusId,
-                    MapReportStatus = mapReport.MapReportStatus
+                    MapReportStatus = mapReport.MapReportStatus,
+                    MapLayerId = mapReport.MapLayerId
 
 
                 };
