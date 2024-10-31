@@ -13,7 +13,7 @@ namespace KartverketProsjekt.Models.ViewModels
         public string Description { get; set; }
 
         [Required]
-        public int MapLayerId{ get; set; }
+        public int MapLayerId { get; set; }
 
     }
 }

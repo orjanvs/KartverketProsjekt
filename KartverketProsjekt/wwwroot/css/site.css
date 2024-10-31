@@ -67,16 +67,15 @@ body {
 }
 
 .box:hover input {
-        width: 400px;
+        width: 1000px;
 }
 
 .box input {
+        padding-left: 20px;
         border: none;
-        background: transparent;
         outline: none;
         font-weight: 500;
-        width: 0;
-        transition: 0.8s;
+        transition: none;
 }
 
 .box a .fa-solid {
