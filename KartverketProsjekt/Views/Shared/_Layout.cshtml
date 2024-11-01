@@ -48,7 +48,34 @@
                                 </li>
                             </ul>
                         </li>
-              
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="ProfileManagement"
+                                       asp-action="CreateAccount">
+                                        Lag bruker
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="ProfileManagement"
+                                       asp-action="Login">
+                                        Logg inn
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="ProfileManagement"
+                                       asp-action="LogOut">
+                                        Logg ut
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +89,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - KartverketProsjekt - <a asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
+            &copy; 2024 - KartverketProsjekt - <a asp-controller="ProfileManagement" asp-action="CreateAccount">Registrer deg</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
