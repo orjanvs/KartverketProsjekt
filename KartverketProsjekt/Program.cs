@@ -7,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add services to the container.
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
+
 // connection string = "MariaDbConnection"
 var connectionString = 
     builder.Configuration.GetConnectionString("DefaultConnection");
@@ -43,9 +50,6 @@ using (var scope = app.Services.CreateScope())
         // Optionally, rethrow or handle the exception as needed
     }
 }
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

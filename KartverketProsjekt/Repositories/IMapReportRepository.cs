@@ -13,7 +13,6 @@ namespace KartverketProsjekt.Repositories
         Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport);
 
         Task<MapReportModel?> DeleteMapReportAsync(int id);
-
-
+        
     }
 }

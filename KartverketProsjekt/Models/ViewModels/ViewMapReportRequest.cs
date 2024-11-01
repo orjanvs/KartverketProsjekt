@@ -15,5 +15,7 @@ namespace KartverketProsjekt.Models.ViewModels
 
 
         public MapReportStatusModel MapReportStatus { get; set; } // Navigation property for status
+
+        public ICollection<AttachmentModel> Attachments { get; set; } // Navigation property for attachments
     }
 }

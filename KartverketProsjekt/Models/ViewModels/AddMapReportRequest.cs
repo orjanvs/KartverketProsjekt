@@ -1,6 +1,7 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace KartverketProsjekt.Models.ViewModels
 {
@@ -14,6 +15,8 @@ namespace KartverketProsjekt.Models.ViewModels
 
         [Required]
         public int MapLayerId { get; set; }
+
+        public List<IFormFile> Attachments { get; set; } // Legg til dette feltet for vedleggsopplasting
 
     }
 }
