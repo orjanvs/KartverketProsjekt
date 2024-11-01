@@ -14,6 +14,5 @@ namespace KartverketProsjekt.Repositories
 
         Task<MapReportModel?> DeleteMapReportAsync(int id);
 
-
     }
 }
