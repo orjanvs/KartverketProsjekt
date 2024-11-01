@@ -43,6 +43,7 @@ namespace KartverketProsjekt.Repositories
                 .Include(m => m.CaseHandler)
                 .Include(m => m.MapLayer)
                 .Include(m => m.MapReportStatus)
+                .Include(m => m.Attachments) // Inkluder vedleggene
                 .Take(50)
                 .ToListAsync();
         }
@@ -55,6 +56,7 @@ namespace KartverketProsjekt.Repositories
                 .Include(m => m.CaseHandler)
                 .Include(m => m.MapLayer)
                 .Include(m => m.MapReportStatus)
+                .Include(m => m.Attachments) // Legg til denne linjen for å inkludere vedleggene
                 .FirstOrDefaultAsync(m => m.MapReportId == id);
 
         }

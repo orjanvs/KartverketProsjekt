@@ -25,6 +25,8 @@
                         <th>Beskrivelse</th>
                         <th>GeoJson</th>
                         <th>Kartlag</th>
+                        <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
+                        <th>Detaljer</th> <!-- Kolonne for detaljlenke -->
                     </tr>
                 </thead>
                 <tbody id="myTable">
@@ -36,6 +38,18 @@
                             <td>@mapReport.Description</td>
                             <td>@mapReport.GeoJsonString</td>
                             <td>@mapReport.MapLayer.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
+                            
+                            <td>
+                            
+                                    @if (mapReport.Attachments != null && mapReport.Attachments.Any())
+                                    {
+                                    <span class="badge bg-success">Vedlegg tilgjengelig</span> <!-- Indikator for vedlegg -->
+                                    }
+                                    else
+                                    {
+                                    <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
+                                    }
+                            </td>
                             <td>
                                 <a asp-area=""
                                    asp-controller="MapReport"

@@ -4,7 +4,7 @@
 <div id="map"></div>
 
 <div class="container py-5">
-    <form asp-action="AddForm" method="post">
+    <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
         <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" /> 
         
@@ -13,11 +13,21 @@
             <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
 
+       
+        <!-- Nytt felt for vedlegg -->
+        <div id="attachments-container" class="mb-3">
+            <label for="attachment" class="form-label">Last opp vedlegg</label>
+            <input type="file" id="attachment" name="Attachments" class="form-control" />
+        </div>
+        <button type="button" id="add-attachment" class="btn btn-secondary">Legg til vedlegg</button>
+
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
+
     </form>
 </div>
+
 
 @section Scripts {
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -25,6 +35,20 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+    <script>
+        document.getElementById('add-attachment').addEventListener('click', function () {
+            // Create a new input element for file upload
+            var newAttachmentInput = document.createElement('input');
+            newAttachmentInput.type = 'file';
+            newAttachmentInput.name = 'Attachments';
+            newAttachmentInput.classList.add('form-control');
+            newAttachmentInput.classList.add('mt-2'); // Add some margin for spacing
+
+            // Add the new input to the attachments container
+            document.getElementById('attachments-container').appendChild(newAttachmentInput);
+        });
+    </script>
 
     <script>
         // Code from GeoJSON lab exercise with some modifications

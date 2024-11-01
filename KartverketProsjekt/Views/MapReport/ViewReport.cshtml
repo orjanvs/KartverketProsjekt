@@ -44,6 +44,25 @@
                 <input type="text" id="status" class="form-control" asp-for="CaseStatus" readonly />
                 </div> *@
 
+                    <div class="mb-3">
+                        <label class="form-label">Vedlegg</label>
+                        @if (Model.Attachments != null && Model.Attachments.Any())
+                        {
+                            <ul>
+                                @foreach (var attachment in Model.Attachments)
+                                {
+                                    <li>@attachment.FilePath</li> <!-- Viser filnavnet som tekst -->
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>Ingen vedlegg tilgjengelig.</p>
+                        }
+                    </div>
+
+
+
                 </form>
             }
             else

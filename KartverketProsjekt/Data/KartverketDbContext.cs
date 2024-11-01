@@ -72,6 +72,14 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Relasjon mellom MapReportModel og AttachmentModel
+            modelBuilder.Entity<MapReportModel>()
+                .HasMany(m => m.Attachments) // MapReport har mange vedlegg
+                .WithOne(a => a.MapReport)    // Vedlegg har én MapReport
+                .HasForeignKey(a => a.MapReportId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
             // UserModel relationship with UserRoleModel
             modelBuilder.Entity<UserModel>()
                 .HasOne(u => u.UserRole)
@@ -103,12 +111,12 @@ namespace KartverketProsjekt.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // AttachmentModel relationship with MapReportModel
-            modelBuilder.Entity<AttachmentModel>()
-                .HasOne(a => a.MapReport)
-                .WithMany()
-                .HasForeignKey(a => a.MapReportId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<AttachmentModel>()
+            //    .HasOne(a => a.MapReport)
+            //    .WithMany()
+            //    .HasForeignKey(a => a.MapReportId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             // Seed data for MapLayerModel
             modelBuilder.Entity<MapLayerModel>().HasData(
