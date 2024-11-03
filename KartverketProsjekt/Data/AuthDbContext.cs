@@ -33,14 +33,14 @@ namespace KartverketProsjekt.Data
                 },
                 new IdentityRole
                 {
-                    Name = "Saksbehandler",
+                    Name = "Case Handler",
                     NormalizedName = "CASEHANDLER",
                     Id = caseHandlerRoleId,
                     ConcurrencyStamp = caseHandlerRoleId
                 },
                 new IdentityRole
                 {
-                    Name = "Innmelder",
+                    Name = "Submitter",
                     NormalizedName = "SUBMITTER",
                     Id = submitterRoleId,
                     ConcurrencyStamp = submitterRoleId
