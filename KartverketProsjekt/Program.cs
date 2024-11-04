@@ -73,6 +73,9 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<KartverketDbContext>();
         context.Database.Migrate();
+
+        var authContext = services.GetRequiredService<AuthDbContext>();
+        authContext.Database.Migrate();
     }
     catch (Exception ex)
     {

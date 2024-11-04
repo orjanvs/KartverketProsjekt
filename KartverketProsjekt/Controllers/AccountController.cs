@@ -8,10 +8,13 @@ namespace KartverketProsjekt.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -26,9 +29,11 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
-        public IActionResult LogOut()
+        [HttpGet]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -69,9 +74,19 @@ namespace KartverketProsjekt.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Authenticate()
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-            return null;
+           var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Email, 
+               loginViewModel.Password, false, false);
+
+            if (signInResult != null && signInResult.Succeeded)
+            {
+                return RedirectToAction("ListForm", "MapReport");
+            }
+
+            return View();
         }
+
+       
     }
 }

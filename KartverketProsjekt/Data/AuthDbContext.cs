@@ -93,9 +93,7 @@ namespace KartverketProsjekt.Data
 
             builder.Entity<IdentityUserRole<string>>().HasData(sysAdminRoles);
 
-            // Seed CASEHANDLER
-
-            // Seed SUBMITTER
+            
         }
     }
 }

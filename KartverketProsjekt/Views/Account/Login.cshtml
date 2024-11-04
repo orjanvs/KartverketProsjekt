@@ -1,28 +1,30 @@
-﻿<head>
+﻿@model KartverketProsjekt.Models.ViewModels.LoginViewModel
+
+<head>
     <link href="~/css/loginSheet.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <div class="wrapper">
-    <form asp-controller="ProfileManagement" asp-action="Authenticate" method="post">
+    <form asp-controller="Account" asp-action="Login" method="post">
         <h1>Innlogging </h1>
             <div class="input-box">
-                <input type="email" placeholder="E-post" required>
+                <input type="email" placeholder="E-post" asp-for = "Email" required>
                 <i class='bx bxs-user'></i>
             </div>
         <div class="input-box">
-            <input type="password" placeholder="Passord" required>
+            <input type="password" placeholder="Passord" asp-for = "Password" required>
             <i class='bx bxs-lock-alt'></i>
         </div>
         <div class="remember-forgot">
             <label> <input type="checkbox"> Husk meg 
                 </label>
-                <a asp-controller="ProfileManagement" asp-action="ForgotPassword" >Glemt passord?</a>
+                <a asp-controller="Account" asp-action="ForgotPassword" >Glemt passord?</a>
         </div>
 
         <button type="submit" class="btn"> Logg inn</button>
         <div class="register-link">
-            <p> Har du ikke en konto? <a asp-controller="ProfileManagement" asp-action="CreateAccount">
+            <p> Har du ikke en konto? <a asp-controller="Account" asp-action="Register">
                 Registrer deg</a>
             </p>
 
