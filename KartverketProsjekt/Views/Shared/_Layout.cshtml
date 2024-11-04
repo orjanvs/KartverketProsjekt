@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using KartverketProsjekt.Models.DomainModels
+@inject SignInManager<ApplicationUser> signInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -48,32 +52,40 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item dropdown ms-auto">
+                            <a class="me-3 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @if (signInManager.IsSignedIn(User))
+                                {
+                                    <li class="dropdown-item-text text-black-50">
+                                        @User?.Identity?.Name 
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
+                                            Logg ut
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    
                                 <li>
                                     <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
-                                       asp-action="CreateAccount">
-                                        Lag bruker
+                                       asp-controller="Account"
+                                       asp-action="Register">
+                                        Registrer
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
+                                       asp-controller="Account"
                                        asp-action="Login">
                                         Logg inn
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
-                                       asp-action="LogOut">
-                                        Logg ut
-                                    </a>
-                                </li>
+                                }
                             </ul>
                         </li>
                     </ul>

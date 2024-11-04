@@ -11,6 +11,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=mariadb;Database=KartverketDb;User=root;Password=kartverket
+      - ConnectionStrings__KartverketAuthConnection=Server=mariadb;Database=kartverketAuth;User=root;Password=kartverket
 
   mariadb:
     image: mariadb:latest

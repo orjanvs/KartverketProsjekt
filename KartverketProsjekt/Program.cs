@@ -1,11 +1,11 @@
 using KartverketProsjekt.Data;
 using KartverketProsjekt.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using KartverketProsjekt.Models.DomainModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -18,6 +18,9 @@ builder.Services.AddControllersWithViews()
 var connectionString = 
     builder.Configuration.GetConnectionString("DefaultConnection");
 
+var authConnectionString =
+    builder.Configuration.GetConnectionString("KartverketAuthConnection");
+
 
 // Add database context to the services with delay to ensure that the database is
 // ready before the application starts with Docker Compose. 
@@ -29,6 +32,35 @@ builder.Services.AddDbContext<KartverketDbContext>(options =>
            errorNumbersToAdd: null // Additional error codes to retry on
        )));
 
+builder.Services.AddDbContext<AuthDbContext>(options =>
+   options.UseMySql(authConnectionString, new MySqlServerVersion(new Version(10, 5, 9)),
+       mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+           maxRetryCount: 5, // Number of retry attempts
+           maxRetryDelay: TimeSpan.FromSeconds(10), // Delay between retries
+           errorNumbersToAdd: null // Additional error codes to retry on
+       )));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>(); 
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+    options.Lockout.MaxFailedAccessAttempts = 10;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+});
 
 builder.Services.AddScoped<IMapReportRepository, MapReportRepository>();
 
@@ -41,6 +73,9 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<KartverketDbContext>();
         context.Database.Migrate();
+
+        var authContext = services.GetRequiredService<AuthDbContext>();
+        authContext.Database.Migrate();
     }
     catch (Exception ex)
     {
@@ -64,6 +99,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllerRoute(
