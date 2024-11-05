@@ -35,6 +35,7 @@ namespace KartverketProsjekt.Controllers
             var newMapReport = new MapReportModel
             {
                 Description = request.Description,
+                Title = request.Title,
                 GeoJsonString = request.GeoJson,
                 MapReportStatusId = 1, // Placeholder for case status 
                 MapLayerId = request.MapLayerId,
