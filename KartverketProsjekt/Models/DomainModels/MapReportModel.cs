@@ -7,6 +7,7 @@
         public string? CaseHandlerId { get; set; } // FK (ref. User(UserId))  
         public int MapLayerId { get; set; } // FK (ref. MapLayer(MapLayerId))
         public int MapReportStatusId { get; set; } // FK (ref. MapReportStatus(MapReportStatusId))
+        public string Title { get; set; }
         public string Description { get; set; }
         public string GeoJsonString { get; set; }
         public DateTime SubmissionDate { get; set; }

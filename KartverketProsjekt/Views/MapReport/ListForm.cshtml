@@ -27,7 +27,7 @@
                         <th>Kartlag</th>
                         <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
                         <th>Prioritet</th>
-                        <th>Satus</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="myTable">
@@ -35,7 +35,7 @@
                     {
                         <tr>
                             <td>@mapReport.SubmissionDate</td>
-                            <td>@mapReport.SubmissionDate</td>
+                            <td>@mapReport.Title</td>
                             <td>@mapReport.Description</td>
                             <td>@mapReport.GeoJsonString</td>
                             <td>@mapReport.MapLayer.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
