@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241105102300_SeedTestUsers")]
+    partial class SeedTestUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,7 +101,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c881107-7d78-4902-bc51-1fdeb8835983",
+                            ConcurrencyStamp = "f7bc41ab-6ce4-4621-90be-b79b8fe4b0a0",
                             Email = "sysadmin@test.com",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -106,9 +109,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SYSADMIN@TEST.COM",
                             NormalizedUserName = "SYSADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJjjWEqsGYeMElUU3sTTlkvC8JWPK6M6jIYr+0erD+aUjqgzL02MCWkBqY1HQGOAUw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIAzXshUDrSkhlv2n5yMGHp64pwJ9aWeuP2jmrQ/8RUIA50a1PHNHcVoHPu146WZvA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "051975a7-6269-4db2-803e-da16a083b078",
+                            SecurityStamp = "f8c8efd2-b21c-48a0-9b24-7e872b621114",
                             TwoFactorEnabled = false,
                             UserName = "sysadmin@test.com"
                         },
@@ -116,7 +119,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7dee1719-c42a-4e4b-80db-fda3fa2960c5",
+                            ConcurrencyStamp = "f69c989f-5494-4e6c-8110-9b512d3e7315",
                             Email = "casehandler@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -124,9 +127,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CASEHANDLER@TEST.COM",
                             NormalizedUserName = "CASEHANDLER@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDWXs6H+nCkbViEeBXMLjo0qJwzZcaj5SJpbl3plhcQU9tx8FTdrE6tesmLfBiPhGw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHpt7vaOnxRgFvUDAZhMpsEAOL3LZDILpz5BSpvwDzvirav1A/RJmGbQGsCPDy5WUg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4926446b-49d6-48c6-af6f-a0fa53257fa4",
+                            SecurityStamp = "371be20a-7d27-4a0e-b058-d195029af198",
                             TwoFactorEnabled = false,
                             UserName = "casehandler@test.com"
                         },
@@ -134,7 +137,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77b87f8c-fa23-45b0-b889-78db3c5ac7a8",
+                            ConcurrencyStamp = "5ef76018-28b7-4a5b-aba0-4d310c989d08",
                             Email = "submitter@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -142,9 +145,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SUBMITTER@TEST.COM",
                             NormalizedUserName = "SUBMITTER@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG4VCqaJy28FKa3O2IJqb6wSTZYh+XCdNXoTXCjCspsJlcAQHI/kAADC0VgwRtOzZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ7hPVLTxBPWRE9e1I6jrUBdUEamUT9cO0DryZXWh0Zu4NBJvkchradaqA/wIMevig==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bb3d682a-5913-45a1-87d4-6ae404135851",
+                            SecurityStamp = "13e38be9-6b27-4785-9ae3-7fa01f5f5299",
                             TwoFactorEnabled = false,
                             UserName = "submitter@test.com"
                         });
@@ -256,6 +259,7 @@ namespace KartverketProsjekt.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("MapReportId"));
 
                     b.Property<string>("CaseHandlerId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Description")
@@ -659,7 +663,8 @@ namespace KartverketProsjekt.Migrations
                     b.HasOne("KartverketProsjekt.Models.DomainModels.ApplicationUser", "CaseHandler")
                         .WithMany()
                         .HasForeignKey("CaseHandlerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("KartverketProsjekt.Models.DomainModels.MapLayerModel", "MapLayer")
                         .WithMany()

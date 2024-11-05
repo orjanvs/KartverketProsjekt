@@ -1,9 +1,11 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KartverketProsjekt.Data
 {
-    public class KartverketDbContext : DbContext
+    public class KartverketDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public KartverketDbContext(DbContextOptions<KartverketDbContext> options) : base(options)
         {
@@ -24,6 +26,138 @@ namespace KartverketProsjekt.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            // Section for Identity tables
+
+            base.OnModelCreating(modelBuilder);
+
+            var sysAdminRoleId = "1";
+            var caseHandlerRoleId = "2";
+            var submitterRoleId = "3";
+
+            // Seed roles
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Name = "System Administrator",
+                    NormalizedName = "SYSADMIN",
+                    Id = sysAdminRoleId,
+                    ConcurrencyStamp = sysAdminRoleId
+                },
+                new IdentityRole
+                {
+                    Name = "Case Handler",
+                    NormalizedName = "CASEHANDLER",
+                    Id = caseHandlerRoleId,
+                    ConcurrencyStamp = caseHandlerRoleId
+                },
+                new IdentityRole
+                {
+                    Name = "Submitter",
+                    NormalizedName = "SUBMITTER",
+                    Id = submitterRoleId,
+                    ConcurrencyStamp = submitterRoleId
+                }
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+
+            // Seed SYSADMIN
+
+            var sysAdminId = "1";
+            var sysAdminUser = new ApplicationUser
+            {
+                Id = sysAdminId,
+                UserName = "sysadmin@test.com",
+                NormalizedUserName = "sysadmin@test.com".ToUpper(),
+                Email = "sysadmin@test.com",
+                NormalizedEmail = "sysadmin@test.com".ToUpper(),
+                FirstName = "System",
+                LastName = "Administrator"
+            };
+
+            sysAdminUser.PasswordHash = new PasswordHasher<ApplicationUser>()
+                .HashPassword(sysAdminUser, "Test@123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(sysAdminUser);
+
+            // Add all roles to SYSADMIN
+            var sysAdminRoles = new List<IdentityUserRole<string>>
+            {
+                new IdentityUserRole<string>
+                {
+                    RoleId = sysAdminRoleId,
+                    UserId = sysAdminId
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = submitterRoleId,
+                    UserId = sysAdminId
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = caseHandlerRoleId,
+                    UserId = sysAdminId
+                }
+            };
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(sysAdminRoles);
+
+            // Seed Case Handler
+            var caseHandlerId = "3";
+            var caseHandlerUser = new ApplicationUser
+            {
+                Id = caseHandlerId,
+                UserName = "casehandler@test.com",
+                NormalizedUserName = "CASEHANDLER@TEST.COM",
+                Email = "casehandler@test.com",
+                NormalizedEmail = "CASEHANDLER@TEST.COM",
+                FirstName = "Test",
+                LastName = "CaseHandler"
+            };
+
+            caseHandlerUser.PasswordHash = new PasswordHasher<ApplicationUser>()
+                .HashPassword(caseHandlerUser, "CaseHandler@123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(caseHandlerUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = caseHandlerRoleId,
+                    UserId = caseHandlerId
+                }
+            );
+
+            // Seed Submitter
+            var submitterId = "2";
+            var submitterUser = new ApplicationUser
+            {
+                Id = submitterId,
+                UserName = "submitter@test.com",
+                NormalizedUserName = "SUBMITTER@TEST.COM",
+                Email = "submitter@test.com",
+                NormalizedEmail = "SUBMITTER@TEST.COM",
+                FirstName = "Test",
+                LastName = "Submitter"
+            };
+
+            submitterUser.PasswordHash = new PasswordHasher<ApplicationUser>()
+                .HashPassword(submitterUser, "Submitter@123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(submitterUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = submitterRoleId,
+                    UserId = submitterId
+                }
+            );
+
+
             // Primary keys
 
             modelBuilder.Entity<MapReportModel>()
@@ -48,14 +182,12 @@ namespace KartverketProsjekt.Data
                 .HasOne(m => m.Submitter)
                 .WithMany()
                 .HasForeignKey(m => m.SubmitterId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<MapReportModel>()
                 .HasOne(m => m.CaseHandler)
                 .WithMany()
                 .HasForeignKey(m => m.CaseHandlerId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<MapReportModel>()
@@ -110,13 +242,7 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // AttachmentModel relationship with MapReportModel
-            //modelBuilder.Entity<AttachmentModel>()
-            //    .HasOne(a => a.MapReport)
-            //    .WithMany()
-            //    .HasForeignKey(a => a.MapReportId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
+         
 
             // Seed data for MapLayerModel
             modelBuilder.Entity<MapLayerModel>().HasData(
@@ -173,6 +299,7 @@ namespace KartverketProsjekt.Data
                 }
             );
 
+            
 
 
         }
