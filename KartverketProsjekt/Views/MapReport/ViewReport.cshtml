@@ -26,11 +26,6 @@
                                value="@Model.MapReportStatus?.StatusDescription" readonly />
                     </div>
 
-                   @*  <div class="mb-3">
-                        <label class="form-label">Dato</label>
-                        <input type="text" id="date" class="form-control" asp-for="SubmissionDate" readonly />
-                    </div> *@
-
                     <div class="mb-3">
                         <div class="mb-3">
                             <label class="form-label">Beskrivelse</label>
@@ -39,10 +34,17 @@
 
                     </div>
 
-                    @* <div class="mb-3">
-                <label class="form-label">Status</label>
-                <input type="text" id="status" class="form-control" asp-for="CaseStatus" readonly />
-                </div> *@
+                    <div class="mb-3">
+                        <label class="form-label">Innsender</label>
+                        <input type="text" id="submitter" class="form-control" value="@Model.Submitter?.FirstName @Model.Submitter?.LastName" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Saksbehandler</label>
+                        <input type="text" id="caseHandler" class="form-control" value="@Model.CaseHandler?.FirstName @Model.CaseHandler?.LastName" readonly />
+                    </div>
+
+
 
                     <div class="mb-3">
                         <label class="form-label">Vedlegg</label>
@@ -61,15 +63,26 @@
                         }
                     </div>
 
-
-
                 </form>
             }
             else
             {
                 <p>Ingen innmelding funnet!</p>
             }
+
+            <form method="post">
+                @if (Model.MapReportStatusId == 1)
+                {
+                    <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-primary">Start behandling</button>
+                }
+                else if (Model.MapReportStatusId == 2)
+                {
+                    <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-success">Fullfør behandling</button>
+                }
+            </form>
         </div>
+
+
         <div class="col-md-8">
             <div id="map"></div>
         </div>
@@ -82,7 +95,7 @@
 
     <script>
 
-         // Define the map layers
+        // Define the map layers
         var baseMaps = {
             "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
             "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
@@ -108,7 +121,7 @@
                     return baseMaps["Fargekart"];
             }
 
-        }  
+        }
 
         // Initialize the map with the correct layer
         var map = L.map('map').setView([60.145, 10.25], 15);
@@ -128,9 +141,9 @@
             <text>
 
                     try {
-                            // Initializing a variable with the GeoJson property value.
-                            // Html.Raw() is used to avoid encoding the JSON string
-                            var geoJsonData = @Html.Raw(Model.GeoJsonString);
+                                        // Initializing a variable with the GeoJson property value.
+                                        // Html.Raw() is used to avoid encoding the JSON string
+                                        var geoJsonData = @Html.Raw(Model.GeoJsonString);
 
                     // Creates new featuregroup instance to store layers from GeoJSON data
                     var drawnItems = new L.FeatureGroup();
@@ -141,8 +154,8 @@
                         // Bind the popup to the layer
                         layer.bindPopup('@Html.Raw(Json.Serialize(Model.Description))');
                     drawnItems.addLayer(layer);
-                                }
-                            });
+                                            }
+                                        });
 
                     map.addLayer(drawnItems);
 
@@ -150,10 +163,10 @@
                     var bounds = drawnItems.getBounds();
                     if (bounds.isValid()) {
                         map.fitBounds(bounds);
-                            }
-                        } catch (error) {
+                                        }
+                                    } catch (error) {
                         console.error("Error processing GeoJSON:", error);
-                        }
+                                    }
             </text>
         }
     </script>

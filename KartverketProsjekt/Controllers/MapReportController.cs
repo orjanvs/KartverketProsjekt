@@ -1,6 +1,7 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using KartverketProsjekt.Models.ViewModels;
 using KartverketProsjekt.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
@@ -10,9 +11,12 @@ namespace KartverketProsjekt.Controllers
     {
         // private static List<MapReportModel> _mapReports = new List<MapReportModel>();
         private readonly IMapReportRepository _mapReportRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MapReportController(IMapReportRepository mapReportRepository)
+        public MapReportController(IMapReportRepository mapReportRepository,
+            UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _mapReportRepository = mapReportRepository;
         }
 
@@ -25,6 +29,8 @@ namespace KartverketProsjekt.Controllers
         // Adds a new map report to the list of map reports
         public async Task<IActionResult> AddForm(AddMapReportRequest request)            // string geoJson, string description, int mapLayerId
         {
+            var currentSubmitter = await _userManager.GetUserAsync(User);
+
             var newMapReport = new MapReportModel
             {
                 Description = request.Description,
@@ -32,8 +38,7 @@ namespace KartverketProsjekt.Controllers
                 MapReportStatusId = 1, // Placeholder for case status 
                 MapLayerId = request.MapLayerId,
                 SubmissionDate = DateTime.Now,
-                SubmitterId = 2, // Placeholder value for test
-                CaseHandlerId = 3, // Placeholder value for test
+                SubmitterId = currentSubmitter.Id, // Placeholder value for test
                 Attachments = new List<AttachmentModel>()
             };
 
@@ -46,7 +51,39 @@ namespace KartverketProsjekt.Controllers
             //return RedirectToAction("ListForm");
         }
 
-        private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
+        [HttpPost]
+        public async Task<IActionResult> StartHandlingMapReport(int id)
+        {
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+
+            if (mapReport != null)
+            {
+                mapReport.MapReportStatusId = 2; // Placeholder value for status "Under behandling"
+                mapReport.CaseHandlerId = currentCaseHandler.Id;
+                mapReport.CaseHandler = currentCaseHandler;
+                await _mapReportRepository.UpdateMapReportAsync(mapReport);
+            }
+
+            return RedirectToAction("ViewReport", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinishHandlingMapReport(int id)
+        {
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+            if (mapReport != null)
+            {
+                mapReport.MapReportStatusId = 3; //Completed
+                await _mapReportRepository.UpdateMapReportAsync(mapReport);
+            }
+            return RedirectToAction("ViewReport", new { id });
+        }
+
+
+
+            private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
         {
             if (request.Attachments != null && request.Attachments.Count > 0)
             {
@@ -101,7 +138,9 @@ namespace KartverketProsjekt.Controllers
                     MapReportStatusId = mapReport.MapReportStatusId,
                     MapReportStatus = mapReport.MapReportStatus,
                     MapLayerId = mapReport.MapLayerId,
-                    Attachments = mapReport.Attachments
+                    Attachments = mapReport.Attachments,
+                    Submitter = mapReport.Submitter,
+                    CaseHandler = mapReport.CaseHandler
                 };
 
                 return View(viewModel);
