@@ -1,6 +1,7 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using KartverketProsjekt.Models.ViewModels;
 using KartverketProsjekt.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -51,6 +52,7 @@ namespace KartverketProsjekt.Controllers
             //return RedirectToAction("ListForm");
         }
 
+        [Authorize = "CaseHandler"]
         [HttpPost]
         public async Task<IActionResult> StartHandlingMapReport(int id)
         {
@@ -68,6 +70,7 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id });
         }
 
+        [Authorize = "CaseHandler"]
         [HttpPost]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
