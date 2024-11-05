@@ -16,7 +16,7 @@ builder.Services.AddControllersWithViews()
 
 // connection string = "MariaDbConnection"
 var connectionString = 
-    builder.Configuration.GetConnectionString("MariaDbConnection");
+    builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add database context to the services with delay to ensure that the database is
 // ready before the application starts with Docker Compose. 
