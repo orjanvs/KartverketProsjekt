@@ -6,14 +6,21 @@
 <div class="container py-5">
     <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
-        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" /> 
-        
+        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
+
+        <div class="mb-3">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Tittel</label>
+                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+            </div>
+        </div>
+
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
             <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
 
-       
+
         <!-- Nytt felt for vedlegg -->
         <div id="attachments-container" class="mb-3">
             <label for="attachment" class="form-label">Last opp vedlegg</label>
@@ -69,7 +76,7 @@
                     "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
                 };
 
-                // Initialising map with geolocation variables as position and default map layer 
+                // Initialising map with geolocation variables as position and default map layer
                 var map = L.map('map', {
                     center: [latitude, longitude],
                     zoom: 15,
@@ -140,13 +147,13 @@
                             return 4;
                         default:
                             return 0;
-                        
+
                     }
-                        console.log(name);
+                    console.log(name);
                 }
 
 
-                
+
 
             });
         });

@@ -3,7 +3,7 @@
 @model List<MapReportModel>
 
 <head>
-    <link   href="~/css/sortTableStyle.css"   rel="stylesheet" >
+    <link href="~/css/sortTableStyle.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5eea027e19.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -20,36 +20,39 @@
             <table class="table table-sortable" id="firstTableId">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Dato</th>
-                        <th>Beskrivelse</th>
-                        <th>GeoJson</th>
+                        <th>Tittel</th>
+                        <th>Fylke</th>
+                        <th>Kommune</th>
                         <th>Kartlag</th>
                         <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
-                        <th>Detaljer</th> <!-- Kolonne for detaljlenke -->
+                        <th>Prioritet</th>
+                        <th>Satus</th>
                     </tr>
                 </thead>
                 <tbody id="myTable">
                     @foreach (var mapReport in Model)
                     {
                         <tr>
-                            <td>@mapReport.MapReportId</td>
+                            <td>@mapReport.SubmissionDate</td>
                             <td>@mapReport.SubmissionDate</td>
                             <td>@mapReport.Description</td>
                             <td>@mapReport.GeoJsonString</td>
                             <td>@mapReport.MapLayer.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
-                            
                             <td>
-                            
-                                    @if (mapReport.Attachments != null && mapReport.Attachments.Any())
-                                    {
+
+                                @if (mapReport.Attachments != null && mapReport.Attachments.Any())
+                                {
                                     <span class="badge bg-success">Vedlegg tilgjengelig</span> <!-- Indikator for vedlegg -->
-                                    }
-                                    else
-                                    {
+                                }
+                                else
+                                {
                                     <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
-                                    }
+                                }
                             </td>
+                            <td>@mapReport.Description</td>
+                            <td>@mapReport.MapReportStatus?.StatusDescription</td>
+
                             <td>
                                 <a asp-area=""
                                    asp-controller="MapReport"
@@ -72,6 +75,6 @@
     </div>
 </div>
 
-<script>var modelData = @Html.Raw(Json.Serialize(Model)); </script>
+<script>var modelData = @Html.Raw(Json.Serialize(Model));</script>
 
 <script src="~/js/site.js"></script>
