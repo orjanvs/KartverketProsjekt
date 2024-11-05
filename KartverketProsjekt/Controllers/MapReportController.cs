@@ -52,7 +52,7 @@ namespace KartverketProsjekt.Controllers
             //return RedirectToAction("ListForm");
         }
 
-        [Authorize (Roles = "CaseHandler")]
+        [Authorize (Roles = "Case Handler")]
         [HttpPost]
         public async Task<IActionResult> StartHandlingMapReport(int id)
         {
@@ -70,11 +70,11 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id });
         }
 
-        [Authorize(Roles = "CaseHandler")]
+        [Authorize(Roles = "Case Handler")]
         [HttpPost]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
-            var currentCaseHandler = await _userManager.GetUserAsync(User);
+            
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
             if (mapReport != null)
             {

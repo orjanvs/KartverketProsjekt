@@ -71,13 +71,16 @@
             }
 
             <form method="post">
-                @if (Model.MapReportStatusId == 1)
+                @if (User.IsInRole("Case Handler"))
                 {
-                    <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-primary">Start behandling</button>
-                }
-                else if (Model.MapReportStatusId == 2)
-                {
-                    <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-success">Fullfør behandling</button>
+                    @if (Model.MapReportStatusId == 1)
+                    {
+                        <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-primary">Start behandling</button>
+                    }
+                    else if (Model.MapReportStatusId == 2)
+                    {
+                        <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })" class="btn btn-success">Fullfør behandling</button>
+                    }
                 }
             </form>
         </div>
