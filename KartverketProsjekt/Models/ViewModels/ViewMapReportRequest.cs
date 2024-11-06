@@ -7,6 +7,7 @@ namespace KartverketProsjekt.Models.ViewModels
         public int MapReportId { get; set; }
         public string Description { get; set; }
         public int MapLayerId { get; set; }
+        public string MapLayerType { get; set; } // Legg til dette feltet for å vise kartlaget
         public string GeoJsonString { get; set; }
         public int MapReportStatusId { get; set; }
         public DateTime SubmissionDate { get; set; }

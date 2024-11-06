@@ -153,6 +153,7 @@ public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
                     MapReportStatus = mapReport.MapReportStatus,
                     MapLayerId = mapReport.MapLayerId,
                     Attachments = mapReport.Attachments,
+                    MapLayerType = mapReport.MapLayer.MapLayerType, // Legg til kartlagstype her
                     Submitter = mapReport.Submitter,
                     CaseHandler = mapReport.CaseHandler
                 };
