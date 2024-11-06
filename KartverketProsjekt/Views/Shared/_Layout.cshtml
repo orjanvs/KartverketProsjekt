@@ -31,26 +31,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="ListForm">Innmeldingsoversikt</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="ListForm">Innmeldingsoversikt</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Saksbehandler
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="MapReport"
-                                       asp-action="ListForm">
-                                        Oversikt
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item dropdown ms-auto">
                             <a class="me-3 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

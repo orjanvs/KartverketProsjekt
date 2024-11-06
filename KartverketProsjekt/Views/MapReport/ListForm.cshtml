@@ -1,6 +1,7 @@
-﻿@using KartverketProsjekt.Models.DomainModels
+﻿@using KartverketProsjekt.Models.ViewModels
+@using Newtonsoft.Json
 
-@model List<MapReportModel>
+@model List<ListReportsViewModel>
 
 <head>
     <link href="~/css/sortTableStyle.css" rel="stylesheet">
@@ -38,10 +39,10 @@
                             <td>@mapReport.Title</td>
                             <td>@mapReport.Description</td>
                             <td>@mapReport.GeoJsonString</td>
-                            <td>@mapReport.MapLayer.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
+                            <td>@mapReport.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
                             <td>
 
-                                @if (mapReport.Attachments != null && mapReport.Attachments.Any())
+                                @if (mapReport.HasAttachments)
                                 {
                                     <span class="badge bg-success">Vedlegg tilgjengelig</span> <!-- Indikator for vedlegg -->
                                 }
@@ -51,7 +52,7 @@
                                 }
                             </td>
                             <td>@mapReport.Description</td>
-                            <td>@mapReport.MapReportStatus?.StatusDescription</td>
+                            <td>@mapReport.StatusDescription</td>
 
                             <td>
                                 <a asp-area=""
@@ -73,6 +74,17 @@
 
 
     </div>
+</div>
+
+<div>
+    @if (ViewBag.PageNumber > 1)
+    {
+        <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Forrige side</a>
+    }
+    @if (Model.Count == ViewBag.PageSize)
+    {
+        <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Neste side</a>
+    }
 </div>
 
 <script>var modelData = @Html.Raw(Json.Serialize(Model));</script>

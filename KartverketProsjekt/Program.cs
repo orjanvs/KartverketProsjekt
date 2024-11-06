@@ -64,6 +64,8 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<KartverketDbContext>();
         context.Database.Migrate();
 
+        
+
     }
     catch (Exception ex)
     {
