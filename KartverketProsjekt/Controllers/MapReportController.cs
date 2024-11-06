@@ -26,6 +26,7 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         // Adds a new map report to the list of map reports
         public async Task<IActionResult> AddForm(AddMapReportRequest request)            // string geoJson, string description, int mapLayerId
@@ -116,14 +117,23 @@ namespace KartverketProsjekt.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
-        // Presents a list of all map reports
-        public async Task<IActionResult> ListForm()
-        {
-            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
-            return View(mapReports);
-        }
+        // Lists all map reports
+public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var userId = user.Id;
+        var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
 
+        var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole, pageNumber, pageSize);
+
+        ViewBag.PageNumber = pageNumber;
+        ViewBag.PageSize = pageSize;
+
+        return View(reports);
+    }
+        [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
         public async Task<IActionResult> ViewReport(int id)

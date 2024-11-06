@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Policy;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using KartverketProsjekt.Models.ViewModels;
+
 
 namespace KartverketProsjekt.Repositories
 {
@@ -33,18 +35,42 @@ namespace KartverketProsjekt.Repositories
             }
             return null;
         }
-            
 
-        public async Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync()
+
+        public async Task<IEnumerable<ListReportsViewModel>> GetAllMapReportsAsync(string userId, string userRole, int pageNumber, int pageSize)
         {
-            // Eager loading related data for display purposes
-            return await _kartverketDbContext.MapReport
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            var query = _kartverketDbContext.MapReport
                 .Include(m => m.Submitter)
                 .Include(m => m.CaseHandler)
                 .Include(m => m.MapLayer)
                 .Include(m => m.MapReportStatus)
-                .Include(m => m.Attachments) // Inkluder vedleggene
-                .Take(50)
+                .Include(m => m.Attachments)
+                .AsQueryable();
+
+            if (userRole == "Submitter")
+            {
+                query = query.Where(m => m.SubmitterId == userId);
+            }
+
+            return await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(m => new ListReportsViewModel
+                {
+                    MapReportId = m.MapReportId,
+                    SubmissionDate = m.SubmissionDate,
+                    Title = m.Title,
+                    Description = m.Description,
+                    GeoJsonString = m.GeoJsonString,
+                    MapLayerType = m.MapLayer.MapLayerType,
+                    HasAttachments = m.Attachments != null && m.Attachments.Any(),
+                    StatusDescription = m.MapReportStatus.StatusDescription
+                })
                 .ToListAsync();
         }
 
@@ -65,7 +91,7 @@ namespace KartverketProsjekt.Repositories
         {
             var existingMapReport = await _kartverketDbContext.MapReport.FindAsync(mapReport.MapReportId);
 
-            if (existingMapReport != null) 
+            if (existingMapReport != null)
             {
                 existingMapReport.Description = mapReport.Description;
                 existingMapReport.GeoJsonString = mapReport.GeoJsonString;
