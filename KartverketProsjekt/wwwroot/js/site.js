@@ -1,3 +1,6 @@
+console.log("Script is starting...");
+
+
 const tableData = () => {
     const searchData = [];
     const tableEl = document.getElementById('firstTableId');
@@ -120,3 +123,51 @@ document.querySelectorAll(".table-sortable th").forEach((header, index) => { // 
         sortTableByColumn(currentSortColumn, currentSortAscending);
     });
 });
+
+// Event listener for dropdown change
+document.getElementById('filterStatusDropdown').addEventListener('change', function () {
+    filterTableByStatus(this.value);
+});
+
+function filterTableByStatus(selectedStatus) {
+    const table = document.getElementById('firstTableId');
+    const rows = table.querySelectorAll('tbody tr');
+    const statusColumnIndex = 7;
+
+    rows.forEach(row => {
+        const statusCell = row.children[statusColumnIndex];
+        const cellStatusValue = statusCell ? statusCell.textContent.trim() : '';
+
+        if (selectedStatus === 'All' || cellStatusValue === selectedStatus) {
+
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+
+    });
+}
+
+// Event listener for dropdown change
+document.getElementById('filterKartlagDropdown').addEventListener('change', function () {
+    filterTableByKartlag(this.value);
+});
+
+function filterTableByKartlag(selectedKartlag) {
+    const table = document.getElementById('firstTableId');
+    const rows = table.querySelectorAll('tbody tr');
+    const kartlagColumnIndex = 4; // Index for "Kartlag" column
+
+    rows.forEach(row => {
+        const kartlagCell = row.children[kartlagColumnIndex];
+        const cellKartlagValue = kartlagCell ? kartlagCell.textContent.trim() : '';
+
+        // Show row if it matches the selected Kartlag or if "Show All" is selected
+        if (selectedKartlag === 'All' || cellKartlagValue === selectedKartlag) {
+            row.style.display = ''; // Show row
+        } else {
+            row.style.display = 'none'; // Hide row
+        }
+    });
+
+}
