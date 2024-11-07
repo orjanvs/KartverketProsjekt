@@ -1,7 +1,7 @@
 # KartverketProsjekt
 
 Kartet bruker nettleseren sin innebygde geolokasjons API for å vise startposisjon i kartet.
-For at kartet skal vises må stedsinfo godkjennes. 
+Hvis dette ikke aktiveres er default startposisjon koordinatene til Kristiansand. 
 
 Må være logget inn i en bruker for å bruke funksjoner i applikasjonen.
 
