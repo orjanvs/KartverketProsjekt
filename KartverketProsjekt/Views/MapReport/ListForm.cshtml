@@ -3,119 +3,75 @@
 @model List<MapReportModel>
 
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link   href="~/css/sortTableStyle.css"   rel="stylesheet" >
+    <script src="https://kit.fontawesome.com/5eea027e19.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<div class="container">
-    <div class="row align-items-start">
-        <div class="col">
-            <div id="markerInfo"></div>
-        </div>
-        <div class="col">
-            <div id="map"></div>
-        </div>
+
+<div class="box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchTable" placeholder="Søk..." />
+</div>
+
+<div id="portexe-search-root">
+    <div id="portexe-table-container">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-sortable" id="firstTableId">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Dato</th>
+                        <th>Beskrivelse</th>
+                        <th>GeoJson</th>
+                        <th>Kartlag</th>
+                        <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
+                        <th>Detaljer</th> <!-- Kolonne for detaljlenke -->
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var mapReport in Model)
+                    {
+                        <tr>
+                            <td>@mapReport.MapReportId</td>
+                            <td>@mapReport.SubmissionDate</td>
+                            <td>@mapReport.Description</td>
+                            <td>@mapReport.GeoJsonString</td>
+                            <td>@mapReport.MapLayer.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
+                            
+                            <td>
+                            
+                                    @if (mapReport.Attachments != null && mapReport.Attachments.Any())
+                                    {
+                                    <span class="badge bg-success">Vedlegg tilgjengelig</span> <!-- Indikator for vedlegg -->
+                                    }
+                                    else
+                                    {
+                                    <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
+                                    }
+                            </td>
+                            <td>
+                                <a asp-area=""
+                                   asp-controller="MapReport"
+                                   asp-action="ViewReport"
+                                   asp-route-id="@mapReport.MapReportId">
+                                    <img src="~/images/green-arrow.svg" alt="Gå til" style="height: 40px;" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Ingen innmeldinger funnet!</p>
+        }
+
+
     </div>
 </div>
-@section Scripts {
-    <link rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-    <link rel="stylesheet"
-          href="https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/css/MarkerCluster.css"  />
-    <link rel="stylesheet"
-          href="https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist//css/MarkerCluster.Default.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/test_markers.js"></script>
 
+<script>var modelData = @Html.Raw(Json.Serialize(Model)); </script>
 
-    <script>
-        // Wait for the page to load before initializing the map
-        document.addEventListener("DOMContentLoaded", function () {
-        // Add map layers
-        var baseMaps = {
-            "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-            "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-            "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-            "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
-        };
-
-        // Initialising map with geolocation variables as position and default map layer
-        var map = L.map('map', {
-            center: [60.14,10.25],
-            zoom: 9,
-            layers: [baseMaps["Fargekart"]] // Set default layer
-        });
-
-        // Add button to toggle map layers
-        L.control.layers(baseMaps).addTo(map);
-
-        // Progress bar for long load times
-        var progress = document.getElementById('progress');
-        var progressBar = document.getElementById('progress-bar');
-
-        function updateProgressBar(processed, total, elapsed, layersArray) {
-            if (elapsed > 1000) {
-                // if it takes more than a second to load, display the progress bar:
-                progress.style.display = 'block';
-                progressBar.style.width = Math.round(processed/total*100) + '%';
-            }
-
-            if (processed === total) {
-                // all markers processed - hide the progress bar:
-                progress.style.display = 'none';
-            }
-        }
-
-        // Event listener for when the base layer is changed
-        map.on('baselayerchange', function (e) {
-            var mapLayerId = determineMapLayerIdFromName(e.name);
-            document.getElementById('mapLayerIdInput').value = mapLayerId;
-            console.log(mapLayerId);
-            console.log(e);
-            console.log('MapLayerIdInput')
-        });
-
-        function determineMapLayerIdFromName(name) {
-            // Implement logic to determine MapLayerId based on the layer name
-            switch (name) {
-                case "Fargekart":
-                    return 1;
-                case "Gråtonekart":
-                    return 2;
-                case "Turkart":
-                    return 3;
-                case "Sjøkart":
-                    return 4;
-                default:
-                    return 0;
-
-            }
-            }
-
-        var markers = L.markerClusterGroup({
-            spiderfyOnMaxZoom: true,
-            showCoverageOnHover: false,
-            zoomToBoundsOnClick: false,
-            chunkedLoading: true,
-            chunkProgress: updateProgressBar 
-        });
-        var markerList = [];
-
-        for (var i = 0; i < centrePoints.length; i++) {
-            var a = centrePoints[i];
-            var title = a[2];
-            var marker = L.marker(L.latLng(a[0], a[1]), { title: title });
-            marker.bindPopup(title);
-            markerList.push(marker);
-        }
-
-        markers.addLayers(markerList);
-        map.addLayer(markers);
-
-
-        });
-    </script>
-}
+<script src="~/js/site.js"></script>

@@ -44,9 +44,9 @@ namespace KartverketProsjekt.Repositories
                 .Include(m => m.MapLayer)
                 .Include(m => m.MapReportStatus)
                 .Include(m => m.Attachments) // Inkluder vedleggene
-                .Take(50)
                 .ToListAsync();
         }
+
 
         public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
         {

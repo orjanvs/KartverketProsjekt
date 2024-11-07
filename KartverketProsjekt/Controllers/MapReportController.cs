@@ -84,6 +84,14 @@ namespace KartverketProsjekt.Controllers
         }
 
         [HttpGet]
+        // Presents a list of all map reports
+        public async Task<IActionResult> MapListForm()
+        {
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
+            return View(mapReports);
+        }
+
+        [HttpGet]
         // Presents view based on the id of the map report 
         public async Task<IActionResult> ViewReport(int id)
         {
