@@ -70,16 +70,16 @@
 
                 // Add map layers
                 var baseMaps = {
-                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
                 };
 
                 // Initialising map with geolocation variables as position and default map layer
                 var map = L.map('map', {
                     center: [latitude, longitude],
-                    zoom: 15,
+                    zoom: 14,
                     layers: [baseMaps["Fargekart"]] // Set default layer
                 });
 
