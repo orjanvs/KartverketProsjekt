@@ -62,11 +62,22 @@
 
         // Wait for the page to load before initializing the map
         document.addEventListener("DOMContentLoaded", function () {
-
             // Using browser geolocation to get the user's position
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    initializeMap(latitude, longitude);
+                },
+                function (error) {
+                    // Default coordinates for Kristiansand
+                    var latitude = 58.1467;
+                    var longitude = 7.9956;
+                    initializeMap(latitude, longitude);
+                }
+            );
+
+            function initializeMap(latitude, longitude) {
 
                 // Add map layers
                 var baseMaps = {
@@ -151,11 +162,7 @@
                     }
                     console.log(name);
                 }
-
-
-
-
-            });
+            }
         });
     </script>
 }
