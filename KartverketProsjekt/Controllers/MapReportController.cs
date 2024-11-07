@@ -39,10 +39,10 @@ namespace KartverketProsjekt.Controllers
                 Description = request.Description,
                 Title = request.Title,
                 GeoJsonString = request.GeoJson,
-                MapReportStatusId = 1, // Placeholder for case status 
+                MapReportStatusId = 1, // Default status for newly created map reports
                 MapLayerId = request.MapLayerId,
                 SubmissionDate = DateTime.Now,
-                SubmitterId = currentSubmitter.Id, // Placeholder value for test
+                SubmitterId = currentSubmitter.Id, 
                 Attachments = new List<AttachmentModel>()
             };
 
@@ -77,14 +77,34 @@ namespace KartverketProsjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
-
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
-            if (mapReport != null)
+            if (mapReport != null && mapReport.CaseHandlerId == currentCaseHandler.Id)
             {
                 mapReport.MapReportStatusId = 3; //Completed
                 await _mapReportRepository.UpdateMapReportAsync(mapReport);
+                return RedirectToAction("ViewReport", new { id });
             }
-            return RedirectToAction("ViewReport", new { id });
+            return Forbid();
+        }
+
+        [Authorize(Roles = "Case Handler")]
+        [HttpPost]
+        public async Task<IActionResult> AssignCaseHandler(int id, string newCaseHandlerId)
+        {
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+            var newCaseHandler = await _userManager.FindByIdAsync(newCaseHandlerId);
+
+            if (mapReport != null && newCaseHandler != null)
+            {
+                mapReport.CaseHandlerId = newCaseHandler.Id;
+                mapReport.CaseHandler = newCaseHandler;
+                await _mapReportRepository.UpdateMapReportAsync(mapReport);
+                return RedirectToAction("ViewReport", new { id });
+            }
+
+            return BadRequest("Invalid map report or case handler.");
         }
 
 
@@ -156,7 +176,8 @@ namespace KartverketProsjekt.Controllers
                     MapLayer = mapReport.MapLayer,
                     Attachments = mapReport.Attachments,
                     Submitter = mapReport.Submitter,
-                    CaseHandler = mapReport.CaseHandler
+                    CaseHandler = mapReport.CaseHandler,
+
                 };
 
                 return View(viewModel);

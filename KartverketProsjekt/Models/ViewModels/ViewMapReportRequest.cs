@@ -1,4 +1,5 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KartverketProsjekt.Models.ViewModels
 {
@@ -21,5 +22,8 @@ namespace KartverketProsjekt.Models.ViewModels
 
         public ApplicationUser Submitter { get; set; } // Navigation to Submitter (User)
         public ApplicationUser CaseHandler { get; set; } // Navigation to CaseHandler (User)
+
+        public List<SelectListItem> CaseHandlers { get; set; } // Add this property
+
     }
 }
