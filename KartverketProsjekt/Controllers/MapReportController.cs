@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace KartverketProsjekt.Controllers
 {
@@ -54,7 +55,7 @@ namespace KartverketProsjekt.Controllers
             //return RedirectToAction("ListForm");
         }
 
-        [Authorize (Roles = "Case Handler")]
+        [Authorize(Roles = "Case Handler")]
         [HttpPost]
         public async Task<IActionResult> StartHandlingMapReport(int id)
         {
@@ -76,7 +77,7 @@ namespace KartverketProsjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
-            
+
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
             if (mapReport != null)
             {
@@ -88,11 +89,11 @@ namespace KartverketProsjekt.Controllers
 
 
 
-            private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
+        private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
         {
             if (request.Attachments != null && request.Attachments.Count > 0)
             {
-               // newMapReport.Attachments = new List<AttachmentModel>();
+                // newMapReport.Attachments = new List<AttachmentModel>();
 
                 foreach (var file in request.Attachments)
                 {
@@ -120,19 +121,19 @@ namespace KartverketProsjekt.Controllers
         [Authorize]
         [HttpGet]
         // Lists all map reports
-public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
-    {
-        var user = await _userManager.GetUserAsync(User);
-        var userId = user.Id;
-        var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
+        public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id;
+            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
 
-        var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole, pageNumber, pageSize);
+            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole, pageNumber, pageSize);
 
-        ViewBag.PageNumber = pageNumber;
-        ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
 
-        return View(reports);
-    }
+            return View(reports);
+        }
         [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
@@ -163,8 +164,24 @@ public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
 
             return View(null); // Return empty view if no map report found
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> DeleteMapReport(int id)
+        {
+            var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
+
+            if (deletedReport != null)
+            {
+                return RedirectToAction("ListForm");
+            }
+
+            return RedirectToAction("ViewReport", new { id });
+        }
+
+
     }
-    }
+}
 
 
 
