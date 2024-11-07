@@ -7,7 +7,6 @@ namespace KartverketProsjekt.Models.ViewModels
         public int MapReportId { get; set; }
         public string Description { get; set; }
         public int MapLayerId { get; set; }
-        public string MapLayerType { get; set; } // Legg til dette feltet for å vise kartlaget
         public string GeoJsonString { get; set; }
         public int MapReportStatusId { get; set; }
         public DateTime SubmissionDate { get; set; }
@@ -16,6 +15,7 @@ namespace KartverketProsjekt.Models.ViewModels
         public string? CaseHandlerId { get; set; }
 
         public MapReportStatusModel MapReportStatus { get; set; } // Navigation property for status
+        public MapLayerModel MapLayer { get; set; } // Navigation property for map layer
         public ICollection<AttachmentModel> Attachments { get; set; } // Navigation property for attachments
 
         public ApplicationUser Submitter { get; set; } // Navigation to Submitter (User)
