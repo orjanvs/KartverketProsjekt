@@ -128,6 +128,10 @@
                     var type = e.layerType,
                         layer = e.layer;
 
+                    // Clear existing drawn items
+                    drawnItems.clearLayers();
+
+                    // Add the new layer
                     drawnItems.addLayer(layer);
 
                     // Convert the drawn shape to GeoJSON and set the value of the input field
