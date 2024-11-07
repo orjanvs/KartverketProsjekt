@@ -152,6 +152,7 @@ public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
                     MapReportStatusId = mapReport.MapReportStatusId,
                     MapReportStatus = mapReport.MapReportStatus,
                     MapLayerId = mapReport.MapLayerId,
+                    MapLayer = mapReport.MapLayer,
                     Attachments = mapReport.Attachments,
                     Submitter = mapReport.Submitter,
                     CaseHandler = mapReport.CaseHandler
