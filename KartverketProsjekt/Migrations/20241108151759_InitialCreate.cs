@@ -402,10 +402,9 @@ namespace KartverketProsjekt.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "d1692481-791a-4418-bad6-8e77bb285cd5", "sysadmin@test.com", false, "System", "Administrator", false, null, "SYSADMIN@TEST.COM", "SYSADMIN@TEST.COM", "AQAAAAIAAYagAAAAEFKYSX4eMq+O/sGkC8u7PPBxm5nP8ci+XynTYUn1BsXcZ+2jCzfpbdON9nxcAGlfaA==", null, false, "a6b192ff-e1d6-449e-bb36-298b418c0400", false, "sysadmin@test.com" },
-                    { "2", 0, "ff1ba3fb-f88c-42a5-a2b9-ae429694bed0", "submitter@test.com", false, "Test", "Submitter", false, null, "SUBMITTER@TEST.COM", "SUBMITTER@TEST.COM", "AQAAAAIAAYagAAAAEFqqq3cPY4tbjXAEzrcbbUclDDRvdx/yAnm8AdbKvxyuTmUB2FPfz8H4nH3Q4KiIGQ==", null, false, "6348df96-8a27-4273-955c-0615474d01ea", false, "submitter@test.com" },
-                    { "3", 0, "c7296e85-216f-45ea-9d23-b5c4d52f5ba7", "casehandler@test.com", false, "Test", "CaseHandler", false, null, "CASEHANDLER@TEST.COM", "CASEHANDLER@TEST.COM", "AQAAAAIAAYagAAAAEMOBEJXh36cUTqE/J1z4k+vA9voJTwwhb+rY62WAzYeKEFiK6JApyTJZ2PHoaMlU/g==", null, false, "d41c1f80-58e6-4e43-8836-2334bdbecc1e", false, "casehandler@test.com" },
-                    { "4", 0, "d2f62664-e4c9-4100-bfb3-4cb71accf603", "ch2@test.com", false, "Test2", "CaseHandler2", false, null, "CH2@TEST.COM", "CH2@TEST.COM", "AQAAAAIAAYagAAAAEOLsvSaE1Nj2ZtVd0I4dvI7YP+1IN+ujR+SUWSaYRSZxDqNvz2mn01RVYS8JaW5uYQ==", null, false, "3ab5234a-894e-426f-a4f6-81cb5da58f85", false, "ch2@test.com" }
+                    { "1", 0, "4a0ac344-55ea-4b26-865e-cf51d2c71099", "sysadmin@test.com", false, "System", "Administrator", false, null, "SYSADMIN@TEST.COM", "SYSADMIN@TEST.COM", "AQAAAAIAAYagAAAAEN/tw2R9MpSQYdqBWJFRo+9LZ1o94gTCPRguLPPKBcU7uxgmf/QKz2L48qAGZF4lVg==", null, false, "b2ad9bb9-e210-4555-9daa-8c85cc4cfcfe", false, "sysadmin@test.com" },
+                    { "2", 0, "99018e10-7d1a-4d9d-927f-a419e2a4a2ef", "submitter@test.com", false, "Test", "Submitter", false, null, "SUBMITTER@TEST.COM", "SUBMITTER@TEST.COM", "AQAAAAIAAYagAAAAEPCVmyEscFJBfNj+iWeo9HVpcifukpkeHOBtc6LgFW9vs27HKmvLftNz4WdfTQy23A==", null, false, "e4fe823d-24c0-403c-823e-9279f1aeed33", false, "submitter@test.com" },
+                    { "3", 0, "3f5e9cde-929e-42a9-973b-97b030c646b0", "casehandler@test.com", false, "Test", "CaseHandler", false, null, "CASEHANDLER@TEST.COM", "CASEHANDLER@TEST.COM", "AQAAAAIAAYagAAAAEB0weVk8qQIAjvORv+BBIldh/wo9/OLo9xTfAhzHTof5DvEkssA/u33HvKGPfZr3wQ==", null, false, "6550ea73-3bd8-438c-8c36-9b2fc3813b6d", false, "casehandler@test.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -449,8 +448,7 @@ namespace KartverketProsjekt.Migrations
                     { "2", "1" },
                     { "3", "1" },
                     { "3", "2" },
-                    { "2", "3" },
-                    { "2", "4" }
+                    { "2", "3" }
                 });
 
             migrationBuilder.InsertData(

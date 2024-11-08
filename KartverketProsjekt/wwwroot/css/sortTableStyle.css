@@ -69,3 +69,25 @@
 .table-sortable .sorted-desc {
     background: rgba(0, 0, 0, 0.1);
 }
+
+.filter-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+
+.form-select {
+    max-width: 200px;
+}
+
+.filter-box label {
+    color: #000; 
+    font-weight: bold; 
+}

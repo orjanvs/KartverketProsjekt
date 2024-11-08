@@ -179,15 +179,25 @@ namespace KartverketProsjekt.Controllers
 
         [Authorize]
         [HttpGet]
-        // Presents a list of all map reports
         public async Task<IActionResult> MapListForm()
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
             var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
-            return View(mapReports);
+
+            var viewModel = mapReports.Select(mapReport => new MapListViewModel
+            {
+                MapReportId = mapReport.MapReportId,
+                GeoJsonString = mapReport.GeoJsonString,
+                MapLayerId = mapReport.MapLayerId
+            }).ToList();
+
+            return View(viewModel);
         }
+    
+
+     
         [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
@@ -201,16 +211,24 @@ namespace KartverketProsjekt.Controllers
                 var viewModel = new ViewMapReportRequest
                 {
                     MapReportId = mapReport.MapReportId,
+                    Title = mapReport.Title,
                     Description = mapReport.Description,
                     GeoJsonString = mapReport.GeoJsonString,
                     SubmissionDate = mapReport.SubmissionDate,
                     MapReportStatusId = mapReport.MapReportStatusId,
-                    MapReportStatus = mapReport.MapReportStatus,
+                    StatusDescription = mapReport.MapReportStatus.StatusDescription,
                     MapLayerId = mapReport.MapLayerId,
-                    MapLayer = mapReport.MapLayer,
-                    Attachments = mapReport.Attachments,
-                    Submitter = mapReport.Submitter,
-                    CaseHandler = mapReport.CaseHandler,
+                    MapLayerType = mapReport.MapLayer.MapLayerType,
+                    Attachments = mapReport.Attachments.Select(a => new AddAttachmentRequest
+                    {
+                        AttachmentId = a.AttachmentId,
+                        MapReportId = a.MapReportId,
+                        FilePath = a.FilePath
+                    }).ToList(),
+                    SubmitterId = mapReport.SubmitterId,
+                    SubmitterName = $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}",
+                    CaseHandlerId = mapReport.CaseHandlerId,
+                    CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null
 
                 };
 
@@ -237,6 +255,5 @@ namespace KartverketProsjekt.Controllers
 
     }
 }
-
 
 
