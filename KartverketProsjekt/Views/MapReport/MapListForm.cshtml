@@ -5,18 +5,15 @@
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
-
-<div class="container" style="position: relative">
-    <div id=map></div>
-    <div class="row">
-        <div class="col" id="previewInfo" style=""> 
-            Preview
-        </div>
-        <div class="col">
-        </div>
-        <div class="col">
+<div class="container">
+   <div id="overlay">
+        <div class="z2 collapse collapse-horizontal" style="position: absolute; z-index: 20000; float: left;">
+            <div class="card card-body" id="previewInfo" style="width: 300px; height: 75vh; position: relative;">
+                <h1></h1>
+            </div>
         </div>
     </div>
+    <div id="map" style="z-index: 10000;"></div>
 </div>
 
 
@@ -51,8 +48,14 @@
             var map = L.map('map', {
                 center: [60.14, 10.25],
                 zoom: 9,
-                layers: [baseMaps["Fargekart"]] // Set default layer
+                layers: [baseMaps["Fargekart"]], // Set default layer
+                zoomControl: false
             });
+
+            // Positioning the zoom controls
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
 
             // Add button to toggle map layers
             L.control.layers(baseMaps).addTo(map);
@@ -78,7 +81,7 @@
                     case "Sjøkart":
                         return 4;
                     default:
-                        return 0;
+                        return 1;
 
                 }
             }
@@ -90,9 +93,12 @@
                             var centroid = turf.centroid(feature);
                             var lon = centroid.geometry.coordinates[0];
                             var lat = centroid.geometry.coordinates[1];
-                            var marker = L.marker(([lat, lon]), { title: title });
+                            var marker = L.marker(([lat, lon]), { id: id });
                             var title = `<a>ID: ${id}</a>`;
                             marker.bindPopup(title);
+                            marker.on('click', function(e) {
+                                $('#previewInfo').collapse('show');
+                            });
                             markerList.push(marker);
                         }
                     });
@@ -109,25 +115,14 @@
         @foreach (var mapReport in Model)
         {
             @: generateMarker(@mapReport.MapReportId, @Html.Raw(mapReport.GeoJsonString));
-            // <text>
-            //             var title = @mapReport.MapReportId;
-            //             var geoJsonData = @Html.Raw(@mapReport.GeoJsonString);
-            //             var geoJson = L.geoJson(geoJsonData,
-            //             {onEachFeature: function(feature,layer){
-            //                     var centroid=turf.centroid(feature);
-            //             var lon=centroid.geometry.coordinates[0];
-            //             var lat=centroid.geometry.coordinates[1];
-            //             var marker = L.marker(([lat,lon]), {title: title });
-            //             var title = '<a asp-controller="MapReport" asp-action="ViewReport" asp-route-id="@mapReport.MapReportId">Gå til innmelding</a>';
-            //             marker.bindPopup(title);
-            //             markerList.push(marker);
-            //                 }});
-            // </text>
         }
 
-            markers.addLayers(markerList);
-            map.addLayer(markers);
+        markers.addLayers(markerList);
+        map.addLayer(markers);
 
+        map.on('click', function(e) {        
+            $('#previewInfo').collapse('hide');
+         });
 
         });
     </script>
