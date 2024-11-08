@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Org.BouncyCastle.Asn1.Mozilla;
+using Org.BouncyCastle.Bcpg;
 
 namespace KartverketProsjekt.Controllers
 {
@@ -138,6 +139,16 @@ namespace KartverketProsjekt.Controllers
             }
         }
 
+        private async Task<(string userId, string userRole, List<MapReportModel> mapReports)> GetAllMapReportsBasedOnUserAndUserRoleAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id;
+            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
+            return (userId, userRole, mapReports);
+        }
+
+
         [Authorize]
         [HttpGet]
         // Lists all map reports
@@ -148,13 +159,9 @@ namespace KartverketProsjekt.Controllers
                 pageNumber = 1;
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            var userId = user.Id;
-            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
-            
-            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
+            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
-            var paginatedReports = reports
+            var paginatedReports = mapReports
                 
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -181,10 +188,7 @@ namespace KartverketProsjekt.Controllers
         [HttpGet]
         public async Task<IActionResult> MapListForm()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var userId = user.Id;
-            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
-            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
+            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
             var viewModel = mapReports.Select(mapReport => new MapListViewModel
             {
