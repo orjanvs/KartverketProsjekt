@@ -39,10 +39,10 @@ namespace KartverketProsjekt.Controllers
                 Description = request.Description,
                 Title = request.Title,
                 GeoJsonString = request.GeoJson,
-                MapReportStatusId = 1, // Placeholder for case status 
+                MapReportStatusId = 1, // Default status for newly created map reports
                 MapLayerId = request.MapLayerId,
                 SubmissionDate = DateTime.Now,
-                SubmitterId = currentSubmitter.Id, // Placeholder value for test
+                SubmitterId = currentSubmitter.Id, 
                 Attachments = new List<AttachmentModel>()
             };
 
@@ -77,14 +77,34 @@ namespace KartverketProsjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
-
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
-            if (mapReport != null)
+            if (mapReport != null && mapReport.CaseHandlerId == currentCaseHandler.Id)
             {
                 mapReport.MapReportStatusId = 3; //Completed
                 await _mapReportRepository.UpdateMapReportAsync(mapReport);
+                return RedirectToAction("ViewReport", new { id });
             }
-            return RedirectToAction("ViewReport", new { id });
+            return Forbid();
+        }
+
+        [Authorize(Roles = "Case Handler")]
+        [HttpPost]
+        public async Task<IActionResult> AssignCaseHandler(int id, string newCaseHandlerId)
+        {
+            var currentCaseHandler = await _userManager.GetUserAsync(User);
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+            var newCaseHandler = await _userManager.FindByIdAsync(newCaseHandlerId);
+
+            if (mapReport != null && newCaseHandler != null)
+            {
+                mapReport.CaseHandlerId = newCaseHandler.Id;
+                mapReport.CaseHandler = newCaseHandler;
+                await _mapReportRepository.UpdateMapReportAsync(mapReport);
+                return RedirectToAction("ViewReport", new { id });
+            }
+
+            return BadRequest("Invalid map report or case handler.");
         }
 
 
@@ -123,16 +143,50 @@ namespace KartverketProsjekt.Controllers
         // Lists all map reports
         public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
+            
+            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
 
-            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole, pageNumber, pageSize);
+            var paginatedReports = reports
+                
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(m => new ListReportsViewModel
+                {
+                    MapReportId = m.MapReportId,
+                    SubmissionDate = m.SubmissionDate,
+                    Title = m.Title,
+                    Description = m.Description,
+                    GeoJsonString = m.GeoJsonString,
+                    MapLayerType = m.MapLayer.MapLayerType,
+                    HasAttachments = m.Attachments != null && m.Attachments.Any(),
+                    StatusDescription = m.MapReportStatus.StatusDescription
+                })
+                .ToList();
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
 
-            return View(reports);
+            return View(paginatedReports);
+        }
+
+        [Authorize]
+        [HttpGet]
+        // Presents a list of all map reports
+        public async Task<IActionResult> MapListForm()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id;
+            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
+            return View(mapReports);
         }
         [Authorize]
         [HttpGet]
@@ -147,16 +201,25 @@ namespace KartverketProsjekt.Controllers
                 var viewModel = new ViewMapReportRequest
                 {
                     MapReportId = mapReport.MapReportId,
+                    Title = mapReport.Title,
                     Description = mapReport.Description,
                     GeoJsonString = mapReport.GeoJsonString,
                     SubmissionDate = mapReport.SubmissionDate,
                     MapReportStatusId = mapReport.MapReportStatusId,
-                    MapReportStatus = mapReport.MapReportStatus,
+                    StatusDescription = mapReport.MapReportStatus.StatusDescription,
                     MapLayerId = mapReport.MapLayerId,
-                    MapLayer = mapReport.MapLayer,
-                    Attachments = mapReport.Attachments,
-                    Submitter = mapReport.Submitter,
-                    CaseHandler = mapReport.CaseHandler
+                    MapLayerType = mapReport.MapLayer.MapLayerType,
+                    Attachments = mapReport.Attachments.Select(a => new AddAttachmentRequest
+                    {
+                        AttachmentId = a.AttachmentId,
+                        MapReportId = a.MapReportId,
+                        FilePath = a.FilePath
+                    }).ToList(),
+                    SubmitterId = mapReport.SubmitterId,
+                    SubmitterName = $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}",
+                    CaseHandlerId = mapReport.CaseHandlerId,
+                    CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null
+
                 };
 
                 return View(viewModel);

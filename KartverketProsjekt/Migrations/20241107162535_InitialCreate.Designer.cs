@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107162535_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,7 +109,6 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SYSADMIN@TEST.COM",
                             NormalizedUserName = "SYSADMIN@TEST.COM",
-                            
                             PasswordHash = "AQAAAAIAAYagAAAAEFKYSX4eMq+O/sGkC8u7PPBxm5nP8ci+XynTYUn1BsXcZ+2jCzfpbdON9nxcAGlfaA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "a6b192ff-e1d6-449e-bb36-298b418c0400",
@@ -125,7 +127,6 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CASEHANDLER@TEST.COM",
                             NormalizedUserName = "CASEHANDLER@TEST.COM",
-                            
                             PasswordHash = "AQAAAAIAAYagAAAAEMOBEJXh36cUTqE/J1z4k+vA9voJTwwhb+rY62WAzYeKEFiK6JApyTJZ2PHoaMlU/g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "d41c1f80-58e6-4e43-8836-2334bdbecc1e",
@@ -144,7 +145,6 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CH2@TEST.COM",
                             NormalizedUserName = "CH2@TEST.COM",
-                            
                             PasswordHash = "AQAAAAIAAYagAAAAEOLsvSaE1Nj2ZtVd0I4dvI7YP+1IN+ujR+SUWSaYRSZxDqNvz2mn01RVYS8JaW5uYQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3ab5234a-894e-426f-a4f6-81cb5da58f85",
@@ -163,10 +163,6 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SUBMITTER@TEST.COM",
                             NormalizedUserName = "SUBMITTER@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAED55rLwCVCR9WQ1h9yXN+XbtJhHtScTowNqLNcUXto8HJoQlzTE9mFeWq5lWzX3YHw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "e20be9e8-4e7b-4654-b84d-6012d312b859",
-
                             PasswordHash = "AQAAAAIAAYagAAAAEFqqq3cPY4tbjXAEzrcbbUclDDRvdx/yAnm8AdbKvxyuTmUB2FPfz8H4nH3Q4KiIGQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "6348df96-8a27-4273-955c-0615474d01ea",

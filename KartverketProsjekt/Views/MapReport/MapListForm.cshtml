@@ -1,0 +1,134 @@
+﻿@using KartverketProsjekt.Models.DomainModels
+
+@model List<MapReportModel>
+
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<div class="container" style="position: relative">
+    <div id=map></div>
+    <div class="row">
+        <div class="col" id="previewInfo" style=""> 
+            Preview
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="@("https://unpkg.com/@turf/turf@7.0.0/turf.min.js")"></script>
+
+
+
+    <script>
+        // Wait for the page to load before initializing the map
+        document.addEventListener("DOMContentLoaded", function () {
+            // Add map layers
+            var baseMaps = {
+                "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+            };
+
+            // Initialising map with geolocation variables as position and default map layer
+            var map = L.map('map', {
+                center: [60.14, 10.25],
+                zoom: 9,
+                layers: [baseMaps["Fargekart"]] // Set default layer
+            });
+
+            // Add button to toggle map layers
+            L.control.layers(baseMaps).addTo(map);
+
+            // Event listener for when the base layer is changed
+            map.on('baselayerchange', function (e) {
+                var mapLayerId = determineMapLayerIdFromName(e.name);
+                document.getElementById('mapLayerIdInput').value = mapLayerId;
+                console.log(mapLayerId);
+                console.log(e);
+                console.log('MapLayerIdInput')
+            });
+
+            function determineMapLayerIdFromName(name) {
+                // Implement logic to determine MapLayerId based on the layer name
+                switch (name) {
+                    case "Fargekart":
+                        return 1;
+                    case "Gråtonekart":
+                        return 2;
+                    case "Turkart":
+                        return 3;
+                    case "Sjøkart":
+                        return 4;
+                    default:
+                        return 0;
+
+                }
+            }
+
+            function generateMarker(id, geojsonstring) {
+                var geoJson = L.geoJson(geojsonstring,
+                    {
+                        onEachFeature: function (feature, layer) {
+                            var centroid = turf.centroid(feature);
+                            var lon = centroid.geometry.coordinates[0];
+                            var lat = centroid.geometry.coordinates[1];
+                            var marker = L.marker(([lat, lon]), { title: title });
+                            var title = `<a>ID: ${id}</a>`;
+                            marker.bindPopup(title);
+                            markerList.push(marker);
+                        }
+                    });
+            }
+
+            var markers = L.markerClusterGroup({
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                zoomToBoundsOnClick: false,
+                chunkedLoading: true,
+            });
+            var markerList = [];
+
+        @foreach (var mapReport in Model)
+        {
+            @: generateMarker(@mapReport.MapReportId, @Html.Raw(mapReport.GeoJsonString));
+            // <text>
+            //             var title = @mapReport.MapReportId;
+            //             var geoJsonData = @Html.Raw(@mapReport.GeoJsonString);
+            //             var geoJson = L.geoJson(geoJsonData,
+            //             {onEachFeature: function(feature,layer){
+            //                     var centroid=turf.centroid(feature);
+            //             var lon=centroid.geometry.coordinates[0];
+            //             var lat=centroid.geometry.coordinates[1];
+            //             var marker = L.marker(([lat,lon]), {title: title });
+            //             var title = '<a asp-controller="MapReport" asp-action="ViewReport" asp-route-id="@mapReport.MapReportId">Gå til innmelding</a>';
+            //             marker.bindPopup(title);
+            //             markerList.push(marker);
+            //                 }});
+            // </text>
+        }
+
+            markers.addLayers(markerList);
+            map.addLayer(markers);
+
+
+        });
+    </script>
+}
