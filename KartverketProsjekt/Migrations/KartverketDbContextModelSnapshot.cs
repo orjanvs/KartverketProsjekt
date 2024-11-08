@@ -98,7 +98,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8cf9b8bf-4187-497b-bfd9-a4fac4691b8e",
+                            ConcurrencyStamp = "d1692481-791a-4418-bad6-8e77bb285cd5",
                             Email = "sysadmin@test.com",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -106,9 +106,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SYSADMIN@TEST.COM",
                             NormalizedUserName = "SYSADMIN@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEviR2/lEQrRbT0Fx1WpXoVb1SNmL/urbh8qk6qq0Og+XUrkEjDftcF+Gk5ahQi+KA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFKYSX4eMq+O/sGkC8u7PPBxm5nP8ci+XynTYUn1BsXcZ+2jCzfpbdON9nxcAGlfaA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2950eee4-3d4f-4912-b5a6-da73bd74a004",
+                            SecurityStamp = "a6b192ff-e1d6-449e-bb36-298b418c0400",
                             TwoFactorEnabled = false,
                             UserName = "sysadmin@test.com"
                         },
@@ -116,7 +116,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b08c078-e7a0-48d0-87d4-0ac3a216524a",
+                            ConcurrencyStamp = "c7296e85-216f-45ea-9d23-b5c4d52f5ba7",
                             Email = "casehandler@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -124,17 +124,35 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CASEHANDLER@TEST.COM",
                             NormalizedUserName = "CASEHANDLER@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGhGgtTDnIarQaOPuPK7dhHdUZnIWZw9SISifkHHpqDLDibWlv00deWl5KeJVgpqJg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMOBEJXh36cUTqE/J1z4k+vA9voJTwwhb+rY62WAzYeKEFiK6JApyTJZ2PHoaMlU/g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4117f928-c23f-448b-867f-86a4c20c2702",
+                            SecurityStamp = "d41c1f80-58e6-4e43-8836-2334bdbecc1e",
                             TwoFactorEnabled = false,
                             UserName = "casehandler@test.com"
                         },
                         new
                         {
+                            Id = "4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d2f62664-e4c9-4100-bfb3-4cb71accf603",
+                            Email = "ch2@test.com",
+                            EmailConfirmed = false,
+                            FirstName = "Test2",
+                            LastName = "CaseHandler2",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "CH2@TEST.COM",
+                            NormalizedUserName = "CH2@TEST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOLsvSaE1Nj2ZtVd0I4dvI7YP+1IN+ujR+SUWSaYRSZxDqNvz2mn01RVYS8JaW5uYQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3ab5234a-894e-426f-a4f6-81cb5da58f85",
+                            TwoFactorEnabled = false,
+                            UserName = "ch2@test.com"
+                        },
+                        new
+                        {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "37a044a6-181b-448b-ac29-3b54a0779339",
+                            ConcurrencyStamp = "ff1ba3fb-f88c-42a5-a2b9-ae429694bed0",
                             Email = "submitter@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -142,9 +160,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SUBMITTER@TEST.COM",
                             NormalizedUserName = "SUBMITTER@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPSq8UF8TvN2wDUZSmWOymUS2lscAfKM4RP7gt6CKxOhaAqdOni9bOyJQ/U36DuabA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFqqq3cPY4tbjXAEzrcbbUclDDRvdx/yAnm8AdbKvxyuTmUB2FPfz8H4nH3Q4KiIGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "92e847f9-e684-4abf-9c8d-2864f49a7088",
+                            SecurityStamp = "6348df96-8a27-4273-955c-0615474d01ea",
                             TwoFactorEnabled = false,
                             UserName = "submitter@test.com"
                         });
@@ -592,6 +610,11 @@ namespace KartverketProsjekt.Migrations
                         new
                         {
                             UserId = "3",
+                            RoleId = "2"
+                        },
+                        new
+                        {
+                            UserId = "4",
                             RoleId = "2"
                         },
                         new
