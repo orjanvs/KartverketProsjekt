@@ -182,7 +182,10 @@ namespace KartverketProsjekt.Controllers
         // Presents a list of all map reports
         public async Task<IActionResult> MapListForm()
         {
-            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
+            var user = await _userManager.GetUserAsync(User);
+            var userId = user.Id;
+            var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
             return View(mapReports);
         }
         [Authorize]
