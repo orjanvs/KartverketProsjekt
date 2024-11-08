@@ -179,15 +179,25 @@ namespace KartverketProsjekt.Controllers
 
         [Authorize]
         [HttpGet]
-        // Presents a list of all map reports
         public async Task<IActionResult> MapListForm()
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
             var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
-            return View(mapReports);
+
+            var viewModel = mapReports.Select(mapReport => new MapListViewModel
+            {
+                MapReportId = mapReport.MapReportId,
+                GeoJsonString = mapReport.GeoJsonString,
+                MapLayerId = mapReport.MapLayerId
+            }).ToList();
+
+            return View(viewModel);
         }
+    
+
+     
         [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
@@ -245,6 +255,5 @@ namespace KartverketProsjekt.Controllers
 
     }
 }
-
 
 

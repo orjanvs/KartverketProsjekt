@@ -62,6 +62,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<IMapReportRepository, MapReportRepository>();
+builder.Services.AddScoped<IKommuneInfoService, KommuneInfoService>();
+builder.Services.AddScoped<IStedsnavnService, StedsnavnService>();
 
 var app = builder.Build();
 
