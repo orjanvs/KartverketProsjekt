@@ -3,8 +3,17 @@ using KartverketProsjekt.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using KartverketProsjekt.Models.DomainModels;
+using KartverketProsjekt.Services;
+using KartverketProsjekt.API_Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Bind the API settings from appsettings.json
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+
+// Register services and their interfaces
+builder.Services.AddHttpClient<IKommuneInfoService, KommuneInfoService>();
+builder.Services.AddHttpClient<IStedsnavnService, StedsnavnService>();
 
 
 // Add services to the container.
