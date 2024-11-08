@@ -143,17 +143,40 @@ namespace KartverketProsjekt.Controllers
         // Lists all map reports
         public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
         {
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
 
-            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole, pageNumber, pageSize);
+            var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
+
+            var paginatedReports = reports
+                
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(m => new ListReportsViewModel
+                {
+                    MapReportId = m.MapReportId,
+                    SubmissionDate = m.SubmissionDate,
+                    Title = m.Title,
+                    Description = m.Description,
+                    GeoJsonString = m.GeoJsonString,
+                    MapLayerType = m.MapLayer.MapLayerType,
+                    HasAttachments = m.Attachments != null && m.Attachments.Any(),
+                    StatusDescription = m.MapReportStatus.StatusDescription
+                })
+                .ToList();
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
 
-            return View(reports);
+            return View(paginatedReports);
         }
+
         [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
