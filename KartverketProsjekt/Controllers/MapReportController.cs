@@ -79,7 +79,7 @@ namespace KartverketProsjekt.Controllers
         // Presents a list of all map reports
         public async Task<IActionResult> ListForm()
         {
-            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
+            var mapReports = await _mapReportRepository.GetSomeMapReportsAsync();
             return View(mapReports);
         }
 

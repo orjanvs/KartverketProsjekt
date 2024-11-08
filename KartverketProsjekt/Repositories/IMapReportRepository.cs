@@ -6,6 +6,8 @@ namespace KartverketProsjekt.Repositories
     {
         Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync();
 
+        Task<IEnumerable<MapReportModel>> GetSomeMapReportsAsync();
+
         Task<MapReportModel?> GetMapReportByIdAsync(int id);
 
         Task<MapReportModel> AddMapReportAsync(MapReportModel mapReport);

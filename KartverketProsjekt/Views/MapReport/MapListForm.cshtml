@@ -73,6 +73,19 @@
             }
             }
 
+        function generateMarker(id, geojsonstring) {
+            var geoJson = L.geoJson(geoJsonData, 
+                {onEachFeature: function(feature,layer){
+                    var centroid=turf.centroid(feature); 
+                    var lon=centroid.geometry.coordinates[0];
+                    var lat=centroid.geometry.coordinates[1]; 
+                    var marker = L.marker(([lat,lon]), {title: title });
+                    var title = `<a asp-controller="MapReport" asp-action="ViewReport" asp-route-id="${id}">Gå til innmelding</a>`;
+                    marker.bindPopup(title);
+                    markerList.push(marker);
+                }});
+        }
+
         var markers = L.markerClusterGroup({
             spiderfyOnMaxZoom: true,
             showCoverageOnHover: false,
@@ -83,6 +96,7 @@
 
         @foreach (var mapReport in Model)
         {
+            //@: generateMarker(@mapReport.MapReportId, @Html.Raw(mapReport.GeoJsonString));
             <text>
             var title = @mapReport.MapReportId;
             var geoJsonData = @Html.Raw(@mapReport.GeoJsonString);
