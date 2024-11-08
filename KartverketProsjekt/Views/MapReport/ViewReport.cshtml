@@ -92,7 +92,7 @@
                             Start behandling
                         </button>
                     }
-                    else if (Model.MapReportStatusId == 2 && Model.CaseHandler.Id == currentUserId)
+                    else if (Model.MapReportStatusId == 2 && Model.CaseHandler?.Id == currentUserId)
                     {
                         <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
                                 class="btn btn-success"
@@ -100,7 +100,7 @@
                             Fullfør behandling
                         </button>
                     }
-                    @if (Model.CaseHandler.Id == currentUserId) 
+                    @if (Model.CaseHandler?.Id == currentUserId || Model.MapReportStatusId == 1) 
                     {
                     <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
                             class="btn btn-danger"
