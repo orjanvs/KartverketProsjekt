@@ -22,19 +22,18 @@ body {
 }
 
 .center-container {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
+    position: absolute; /* Allows it to fill the viewport without affecting the navbar and footer */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
     background: url('/images/BG.jpg') no-repeat center center;
     background-size: cover;
-    height: 600px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    align-items: center;
+    z-index: -1; /* Places it behind other content */
 }
-
 .center-button {
     background-color: #156630;
     color: white;
@@ -44,12 +43,12 @@ body {
     cursor: pointer;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Legger til skygge under knappen */
-    transition: box-shadow 0.3s ease; /* Legger til overgang for skyggen */
+    transition: box-shadow 0.3s ease; / Legger til overgang for skyggen */
 }
 
 .center-button:hover {
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Forsterker skyggen når knappen hovres over */
-    }
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); / Forsterker skyggen nÃ¥r knappen hovres over */
+}
 
 #map {
     height: 75vh;
