@@ -1,10 +1,11 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
+using KartverketProsjekt.Models.ViewModels;
 
 namespace KartverketProsjekt.Repositories
 {
     public interface IMapReportRepository
     {
-        Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync();
+        Task<IEnumerable<ListReportsViewModel>> GetAllMapReportsAsync(string userId, string userRole, int pageNumber, int pageSize);
 
         Task<MapReportModel?> GetMapReportByIdAsync(int id);
 

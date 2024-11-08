@@ -26,7 +26,7 @@ body {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    background: url('/images/naturbakgrunn-forside.jpg') no-repeat center center;
+    background: url('/images/BG.jpg') no-repeat center center;
     background-size: cover;
     height: 600px;
     display: flex;
@@ -43,7 +43,13 @@ body {
     font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Legger til skygge under knappen */
+    transition: box-shadow 0.3s ease; /* Legger til overgang for skyggen */
 }
+
+.center-button:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Forsterker skyggen når knappen hovres over */
+    }
 
 #map {
     height: 75vh;
