@@ -151,7 +151,7 @@ namespace KartverketProsjekt.Controllers
             var user = await _userManager.GetUserAsync(User);
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
-
+            
             var reports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
 
             var paginatedReports = reports
@@ -177,6 +177,14 @@ namespace KartverketProsjekt.Controllers
             return View(paginatedReports);
         }
 
+        [Authorize]
+        [HttpGet]
+        // Presents a list of all map reports
+        public async Task<IActionResult> MapListForm()
+        {
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync();
+            return View(mapReports);
+        }
         [Authorize]
         [HttpGet]
         // Presents view based on the id of the map report 
