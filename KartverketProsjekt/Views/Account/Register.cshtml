@@ -1,0 +1,53 @@
+﻿@model KartverketProsjekt.Models.ViewModels.RegisterViewModel
+
+<head>
+    <link href="~/css/loginSheet.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<div class="wrapper">
+    <form asp-controller="Account" asp-action="Register" method="post">
+        <h1>Registrering</h1>
+
+        <!-- Name Field -->
+        <div class="input-box">
+            <input type="text" name="firstName" placeholder="Fornavn" asp-for = "FirstName" required>
+            <i class="bx bxs-user"></i>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="lastName" placeholder="Etternavn" asp-for = "LastName" required>
+            <i class="bx bxs-user"></i>
+        </div>
+
+        <!-- Email Field -->
+        <div class="input-box">
+            <input type="email" name="email" placeholder="E-post" asp-for = "Email" required>
+            <i class="bx bxs-envelope"></i>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-box">
+            <input type="password" name="password" placeholder="Passord" asp-for = "Password" required>
+            <i class="bx bxs-lock-alt"></i>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="input-box">
+            <input type="password" name="confirmPassword" placeholder="Bekreft passord" asp-for = "ConfirmPassword" required>
+            <i class="bx bxs-lock"></i>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn">Registrer deg</button>
+
+        <!-- Link to Login Page -->
+        <div class="register-link">
+            <p>
+                Har du allerede en konto?
+                <a asp-controller="Account" asp-action="Login">Logg inn</a>
+            </p>
+        </div>
+    </form>
+</div>
+

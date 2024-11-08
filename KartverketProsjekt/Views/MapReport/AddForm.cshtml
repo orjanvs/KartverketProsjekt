@@ -6,14 +6,21 @@
 <div class="container py-5">
     <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
-        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" /> 
-        
+        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
+
+        <div class="mb-3">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Tittel</label>
+                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+            </div>
+        </div>
+
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
             <textarea id="description" name="Description" class="form-control"></textarea>
         </div>
 
-       
+
         <!-- Nytt felt for vedlegg -->
         <div id="attachments-container" class="mb-3">
             <label for="attachment" class="form-label">Last opp vedlegg</label>
@@ -55,24 +62,35 @@
 
         // Wait for the page to load before initializing the map
         document.addEventListener("DOMContentLoaded", function () {
-
             // Using browser geolocation to get the user's position
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    initializeMap(latitude, longitude);
+                },
+                function (error) {
+                    // Default coordinates for Kristiansand
+                    var latitude = 58.1467;
+                    var longitude = 7.9956;
+                    initializeMap(latitude, longitude);
+                }
+            );
+
+            function initializeMap(latitude, longitude) {
 
                 // Add map layers
                 var baseMaps = {
-                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 15, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
                 };
 
-                // Initialising map with geolocation variables as position and default map layer 
+                // Initialising map with geolocation variables as position and default map layer
                 var map = L.map('map', {
                     center: [latitude, longitude],
-                    zoom: 15,
+                    zoom: 14,
                     layers: [baseMaps["Fargekart"]] // Set default layer
                 });
 
@@ -99,6 +117,7 @@
                     },
                     edit: {
                         featureGroup: drawnItems,
+                        edit: false, // Disable the edit functionality
                         remove: true // Enable the remove functionality
                     }
                 });
@@ -109,6 +128,10 @@
                     var type = e.layerType,
                         layer = e.layer;
 
+                    // Clear existing drawn items
+                    drawnItems.clearLayers();
+
+                    // Add the new layer
                     drawnItems.addLayer(layer);
 
                     // Convert the drawn shape to GeoJSON and set the value of the input field
@@ -139,16 +162,12 @@
                         case "Sjøkart":
                             return 4;
                         default:
-                            return 0;
-                        
+                            return 1;
+
                     }
-                        console.log(name);
+                    console.log(name);
                 }
-
-
-                
-
-            });
+            }
         });
     </script>
 }

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using KartverketProsjekt.Models.DomainModels
+@inject SignInManager<ApplicationUser> signInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,73 +31,71 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Innmeldingsoversikt
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="MapReport"
-                                       asp-action="ListForm">
-                                        Tabellvisning
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="MapReport"
-                                       asp-action="MapListForm">
-                                        Kartvisning
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                      
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Innmeldingsoversikt
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="MapReport"
+                                           asp-action="ListForm">
+                                            Tabellvisning
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="MapReport"
+                                           asp-action="MapListForm">
+                                            Kartvisning
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Saksbehandler
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="MapReport"
-                                       asp-action="ListForm">
-                                        Oversikt
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item dropdown ms-auto">
+                            <a class="me-3 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @if (signInManager.IsSignedIn(User))
+                                {
+                                    <li class="dropdown-item-text text-black-50">
+                                        @User?.Identity?.Name 
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
+                                            Logg ut
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    
                                 <li>
                                     <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
-                                       asp-action="CreateAccount">
-                                        Lag bruker
+                                       asp-controller="Account"
+                                       asp-action="Register">
+                                        Registrer
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
+                                       asp-controller="Account"
                                        asp-action="Login">
                                         Logg inn
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="ProfileManagement"
-                                       asp-action="LogOut">
-                                        Logg ut
-                                    </a>
-                                </li>
+                                }
                             </ul>
                         </li>
                     </ul>
@@ -109,7 +111,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - KartverketProsjekt - <a asp-controller="ProfileManagement" asp-action="CreateAccount">Registrer deg</a>
+            &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

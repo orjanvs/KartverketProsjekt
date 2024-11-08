@@ -8,20 +8,25 @@
 }
 
 body {
-    background-image: url('../images/backgroundImageLogin.jpg');
+    background-image: url('../images/BGloginGreen.svg');
+    background-size: cover; /* Dekker hele bakgrunnen */
+    background-position: center; /* Sentrerer bildet */
+    background-repeat: no-repeat; /* Ingen repetisjon */
 }
 
 .wrapper {
     width: 420px;
-    background: purple;
-    color: #ffffff;
+    background: #ffffff; /* Hvit bakgrunn for wrapper */
+    color: #000000; /* Svart tekst */
     border-radius: 10px;
     padding: 30px 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Diskret skygge */
 }
 
     .wrapper h1 {
         font-size: 36px;
         text-align: center;
+        color: #006400; /* Grønn farge for å matche sidens overskrifter */
     }
 
     .wrapper .input-box {
@@ -35,16 +40,14 @@ body {
     width: 100%;
     height: 100%;
     background: transparent;
-    border: none;
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid rgba(0, 0, 0, .2); /* Endret til svart kant for synlighet */
     border-radius: 40px;
-    color: #fff;
+    color: #000000; /* Svart tekst */
     padding: 20px 45px 20px 20px;
 }
 
     .input-box input::placeholder {
-        color: #fff;
+        color: #666666; /* Lys grå for placeholder */
     }
 
 .wrapper .remember-forgot {
@@ -52,15 +55,16 @@ body {
     justify-content: space-between;
     font-size: 14.5px;
     margin: -15px 0 15px;
+    color: #000000; /* Svart tekst */
 }
 
 .remember-forgot label input {
-    accent-color: #fff;
+    accent-color: #006400; /* Grønn farge for aksenter */
     margin-right: 3px;
 }
 
 .remember-forgot a {
-    color: #fff;
+    color: #006400; /* Grønn farge for lenker */
     text-decoration: none;
 }
 
@@ -71,14 +75,14 @@ body {
 .btn {
     width: 100%;
     height: 45px;
-    background: #fff;
+    background: #006400; /* Grønn bakgrunn for knappen */
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Knappens skygge */
     cursor: pointer;
     font-size: 16px;
-    color: #333;
+    color: #ffffff; /* Hvit tekst for kontrast */
     font-weight: 600;
 }
 
@@ -86,10 +90,11 @@ body {
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
+    color: #000000; /* Svart tekst */
 }
 
 .register-link p a {
-    color: #fff;
+    color: #006400; /* Grønn farge for registrer-lenken */
     text-decoration: none;
     font-weight: 600;
 }
@@ -102,6 +107,7 @@ body {
     position: absolute;
     right: 20px;
     top: 50%;
-    transform: translateY(-50);
+    transform: translateY(-50%);
     font-size: 20px;
+    color: #666666; /* Lys grå for ikon */
 }
