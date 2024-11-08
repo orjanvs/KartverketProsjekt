@@ -1,4 +1,5 @@
-﻿@using KartverketProsjekt.Models.ViewModels
+﻿@using System.Security.Claims
+@using KartverketProsjekt.Models.ViewModels
 @model ViewMapReportRequest
 
 
@@ -79,6 +80,9 @@
             }
 
             <form method="post">
+
+                @{var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);}
+
                 @if (User.IsInRole("Case Handler"))
                 {
                     @if (Model.MapReportStatusId == 1)
@@ -88,18 +92,22 @@
                             Start behandling
                         </button>
                     }
-                    else if (Model.MapReportStatusId == 2)
+                    else if (Model.MapReportStatusId == 2 && Model.CaseHandler?.Id == currentUserId)
                     {
                         <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                                class="btn btn-success">
+                                class="btn btn-success"
+                                onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
                             Fullfør behandling
                         </button>
                     }
+                    @if (Model.CaseHandler?.Id == currentUserId || Model.MapReportStatusId == 1) 
+                    {
                     <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
                             class="btn btn-danger"
                             onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
                         Slett innmelding
                     </button>
+                    }
                 }
                 else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
                 {

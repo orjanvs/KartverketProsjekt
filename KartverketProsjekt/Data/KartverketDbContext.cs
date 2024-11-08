@@ -131,6 +131,32 @@ namespace KartverketProsjekt.Data
                 }
             );
 
+            //// Seed second case handler
+            //var caseHandlerId2 = "4";
+            //var caseHandlerUser2 = new ApplicationUser
+            //{
+            //    Id = caseHandlerId2,
+            //    UserName = "ch2@test.com",
+            //    NormalizedUserName = "CH2@TEST.COM",
+            //    Email = "ch2@test.com",
+            //    NormalizedEmail = "CH2@TEST.COM",
+            //    FirstName = "Test2",
+            //    LastName = "CaseHandler2"
+            //};
+
+            //caseHandlerUser2.PasswordHash = new PasswordHasher<ApplicationUser>()
+            //    .HashPassword(caseHandlerUser2, "CaseHandler2@123");
+
+            //modelBuilder.Entity<ApplicationUser>().HasData(caseHandlerUser2);
+
+            //modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            //    new IdentityUserRole<string>
+            //    {
+            //        RoleId = caseHandlerRoleId,
+            //        UserId = caseHandlerId2
+            //    }
+            //);
+
             // Seed Submitter
             var submitterId = "2";
             var submitterUser = new ApplicationUser

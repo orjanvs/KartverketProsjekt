@@ -10,7 +10,7 @@ using KartverketProsjekt.Models.ViewModels;
 namespace KartverketProsjekt.Repositories
 {
     public class MapReportRepository : IMapReportRepository
-    {
+    { 
         private readonly KartverketDbContext _kartverketDbContext;
 
         public MapReportRepository(KartverketDbContext kartverketDbContext)
@@ -37,13 +37,8 @@ namespace KartverketProsjekt.Repositories
         }
 
 
-        public async Task<IEnumerable<ListReportsViewModel>> GetSomeMapReportsAsync(string userId, string userRole, int pageNumber, int pageSize)
+        public async Task<List<MapReportModel>> GetAllMapReportsAsync(string userId, string userRole)
         {
-            if (pageNumber < 1)
-            {
-                pageNumber = 1;
-            }
-
             var query = _kartverketDbContext.MapReport
                 .Include(m => m.Submitter)
                 .Include(m => m.CaseHandler)
@@ -57,21 +52,7 @@ namespace KartverketProsjekt.Repositories
                 query = query.Where(m => m.SubmitterId == userId);
             }
 
-            return await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(m => new ListReportsViewModel
-                {
-                    MapReportId = m.MapReportId,
-                    SubmissionDate = m.SubmissionDate,
-                    Title = m.Title,
-                    Description = m.Description,
-                    GeoJsonString = m.GeoJsonString,
-                    MapLayerType = m.MapLayer.MapLayerType,
-                    HasAttachments = m.Attachments != null && m.Attachments.Any(),
-                    StatusDescription = m.MapReportStatus.StatusDescription
-                })
-                .ToListAsync();
+            return await query.ToListAsync();
         }
         public async Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync()
         {
@@ -83,6 +64,7 @@ namespace KartverketProsjekt.Repositories
                 .Include(m => m.MapReportStatus)
                 .ToListAsync();
         }
+
 
 
         public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
