@@ -14,6 +14,60 @@
     <input type="text" id="searchTable" placeholder="Søk..." />
 </div>
 
+<head>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+            /* Custom styling for filter-box */
+        .filter-box {
+
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        /* Dropdown size */
+        .form-select {
+            max-width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div class="filter-container">
+            <div class="filter-box">
+                <label for="filterStatusDropdown" class="me-2 text-dark">Filter by Status:</label>
+                <select id="filterStatusDropdown" class="form-select">
+                    <option value="All">Show All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+
+            <div class="filter-box">
+                <label for="filterKartlagDropdown" class="me-2 text-dark">Filter by Kartlag:</label>
+                <select id="filterKartlagDropdown" class="form-select">
+                    <option value="All">Show All</option>
+                    <option value="Turkart">Turkart</option>
+                    <option value="Sjøkart">Sjøkart</option>
+                    <option value="Fargekart">Fargekart</option>
+                    <option value="Gråtonekart">Gråtonekart</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</body>
+
+
 <div id="portexe-search-root">
     <div id="portexe-table-container">
         @if (Model != null && Model.Any())
@@ -89,4 +143,4 @@
 
 <script>var modelData = @Html.Raw(Json.Serialize(Model));</script>
 
-<script src="~/js/site.js"></script>
+<script src="~/js/site.js" defer></script>

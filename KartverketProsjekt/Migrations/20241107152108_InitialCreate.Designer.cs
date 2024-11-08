@@ -4,6 +4,7 @@ using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartverketProsjekt.Migrations
 {
     [DbContext(typeof(KartverketDbContext))]
-    partial class KartverketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107152108_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,7 +101,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1692481-791a-4418-bad6-8e77bb285cd5",
+                            ConcurrencyStamp = "653f0d90-c0a9-40ad-aab4-db77ecce2ee2",
                             Email = "sysadmin@test.com",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -106,10 +109,9 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SYSADMIN@TEST.COM",
                             NormalizedUserName = "SYSADMIN@TEST.COM",
-                            
-                            PasswordHash = "AQAAAAIAAYagAAAAEFKYSX4eMq+O/sGkC8u7PPBxm5nP8ci+XynTYUn1BsXcZ+2jCzfpbdON9nxcAGlfaA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFK9f2EeBoGciDi5bSt/o25foz+mFeB4vBAqSSXj0FAao0IrHxyOLuVU2qUqDW9AnQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a6b192ff-e1d6-449e-bb36-298b418c0400",
+                            SecurityStamp = "989a0b17-df88-41e3-8c28-7b494544d4b9",
                             TwoFactorEnabled = false,
                             UserName = "sysadmin@test.com"
                         },
@@ -117,7 +119,7 @@ namespace KartverketProsjekt.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c7296e85-216f-45ea-9d23-b5c4d52f5ba7",
+                            ConcurrencyStamp = "315fceac-048a-4252-b68c-4362df074197",
                             Email = "casehandler@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -125,37 +127,17 @@ namespace KartverketProsjekt.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CASEHANDLER@TEST.COM",
                             NormalizedUserName = "CASEHANDLER@TEST.COM",
-                            
-                            PasswordHash = "AQAAAAIAAYagAAAAEMOBEJXh36cUTqE/J1z4k+vA9voJTwwhb+rY62WAzYeKEFiK6JApyTJZ2PHoaMlU/g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEmwglFTxs47dXRxHX7Gn7r4GMGvV6luIo8eHDqbCT2Cd3HzmGpU5zQBz9CE3Ojd3g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d41c1f80-58e6-4e43-8836-2334bdbecc1e",
+                            SecurityStamp = "0c5a0dc9-8bcf-4b97-821d-a4f95c634c33",
                             TwoFactorEnabled = false,
                             UserName = "casehandler@test.com"
                         },
                         new
                         {
-                            Id = "4",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2f62664-e4c9-4100-bfb3-4cb71accf603",
-                            Email = "ch2@test.com",
-                            EmailConfirmed = false,
-                            FirstName = "Test2",
-                            LastName = "CaseHandler2",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "CH2@TEST.COM",
-                            NormalizedUserName = "CH2@TEST.COM",
-                            
-                            PasswordHash = "AQAAAAIAAYagAAAAEOLsvSaE1Nj2ZtVd0I4dvI7YP+1IN+ujR+SUWSaYRSZxDqNvz2mn01RVYS8JaW5uYQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "3ab5234a-894e-426f-a4f6-81cb5da58f85",
-                            TwoFactorEnabled = false,
-                            UserName = "ch2@test.com"
-                        },
-                        new
-                        {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ff1ba3fb-f88c-42a5-a2b9-ae429694bed0",
+                            ConcurrencyStamp = "42febfa5-34bc-46f1-9325-fd2e451fe168",
                             Email = "submitter@test.com",
                             EmailConfirmed = false,
                             FirstName = "Test",
@@ -166,10 +148,6 @@ namespace KartverketProsjekt.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAED55rLwCVCR9WQ1h9yXN+XbtJhHtScTowNqLNcUXto8HJoQlzTE9mFeWq5lWzX3YHw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "e20be9e8-4e7b-4654-b84d-6012d312b859",
-
-                            PasswordHash = "AQAAAAIAAYagAAAAEFqqq3cPY4tbjXAEzrcbbUclDDRvdx/yAnm8AdbKvxyuTmUB2FPfz8H4nH3Q4KiIGQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "6348df96-8a27-4273-955c-0615474d01ea",
                             TwoFactorEnabled = false,
                             UserName = "submitter@test.com"
                         });
@@ -617,11 +595,6 @@ namespace KartverketProsjekt.Migrations
                         new
                         {
                             UserId = "3",
-                            RoleId = "2"
-                        },
-                        new
-                        {
-                            UserId = "4",
                             RoleId = "2"
                         },
                         new
