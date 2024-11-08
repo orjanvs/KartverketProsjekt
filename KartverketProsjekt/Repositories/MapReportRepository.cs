@@ -37,7 +37,7 @@ namespace KartverketProsjekt.Repositories
         }
 
 
-        public async Task<IEnumerable<ListReportsViewModel>> GetAllMapReportsAsync(string userId, string userRole, int pageNumber, int pageSize)
+        public async Task<IEnumerable<ListReportsViewModel>> GetSomeMapReportsAsync(string userId, string userRole, int pageNumber, int pageSize)
         {
             if (pageNumber < 1)
             {
@@ -73,6 +73,17 @@ namespace KartverketProsjekt.Repositories
                 })
                 .ToListAsync();
         }
+        public async Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync()
+        {
+            // Eager loading related data for display purposes
+            return await _kartverketDbContext.MapReport
+                .Include(m => m.Submitter)
+                .Include(m => m.CaseHandler)
+                .Include(m => m.MapLayer)
+                .Include(m => m.MapReportStatus)
+                .ToListAsync();
+        }
+
 
         public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
         {

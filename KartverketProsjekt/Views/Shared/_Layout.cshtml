@@ -33,8 +33,28 @@
                         </li>
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="ListForm">Innmeldingsoversikt</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Innmeldingsoversikt
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="MapReport"
+                                           asp-action="ListForm">
+                                            Tabellvisning
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="MapReport"
+                                           asp-action="MapListForm">
+                                            Kartvisning
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         <li class="nav-item">
