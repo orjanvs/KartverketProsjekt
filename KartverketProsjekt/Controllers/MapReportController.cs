@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Org.BouncyCastle.Bcpg;
 
@@ -89,24 +90,24 @@ namespace KartverketProsjekt.Controllers
             return Forbid();
         }
 
-        [Authorize(Roles = "Case Handler")]
-        [HttpPost]
-        public async Task<IActionResult> AssignCaseHandler(int id, string newCaseHandlerId)
-        {
-            var currentCaseHandler = await _userManager.GetUserAsync(User);
-            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
-            var newCaseHandler = await _userManager.FindByIdAsync(newCaseHandlerId);
+        //[Authorize(Roles = "Case Handler")]
+        //[HttpPost]
+        //public async Task<IActionResult> AssignCaseHandler(int id, string newCaseHandlerId)
+        //{
+        //    var currentCaseHandler = await _userManager.GetUserAsync(User);
+        //    var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+        //    var newCaseHandler = await _userManager.FindByIdAsync(newCaseHandlerId);
 
-            if (mapReport != null && newCaseHandler != null)
-            {
-                mapReport.CaseHandlerId = newCaseHandler.Id;
-                mapReport.CaseHandler = newCaseHandler;
-                await _mapReportRepository.UpdateMapReportAsync(mapReport);
-                return RedirectToAction("ViewReport", new { id });
-            }
+        //    if (mapReport != null && newCaseHandler != null)
+        //    {
+        //        mapReport.CaseHandlerId = newCaseHandler.Id;
+        //        mapReport.CaseHandler = newCaseHandler;
+        //        await _mapReportRepository.UpdateMapReportAsync(mapReport);
+        //        return RedirectToAction("ViewReport", new { id });
+        //    }
 
-            return BadRequest("Invalid map report or case handler.");
-        }
+        //    return BadRequest("Invalid map report or case handler.");
+        //}
 
 
 
@@ -209,6 +210,8 @@ namespace KartverketProsjekt.Controllers
         {
             // Find map report based on id
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+            var caseHandlers = await _userManager.GetUsersInRoleAsync("CASEHANDLER");
+            
 
             if (mapReport != null)
             {
@@ -232,14 +235,34 @@ namespace KartverketProsjekt.Controllers
                     SubmitterId = mapReport.SubmitterId,
                     SubmitterName = $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}",
                     CaseHandlerId = mapReport.CaseHandlerId,
-                    CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null
-
+                    CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null,
+                    AvailableCaseHandlers = caseHandlers.Select(ch => new SelectListItem
+                    {
+                        Value = ch.Id,
+                        Text = $"{ch.FirstName} {ch.LastName}"
+                    }).ToList()
                 };
 
                 return View(viewModel);
             }
 
             return View(null); // Return empty view if no map report found
+        }
+
+        [Authorize(Roles = "Case Handler")]
+        [HttpPost]
+        public async Task<IActionResult> AssignCaseHandler(ViewMapReportRequest model)
+        {
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(model.MapReportId);
+            if (mapReport != null)
+            {
+                mapReport.CaseHandlerId = model.CaseHandlerId;
+                var newCaseHandler = await _userManager.FindByIdAsync(model.CaseHandlerId);
+                mapReport.CaseHandler = newCaseHandler;
+                await _mapReportRepository.UpdateMapReportAsync(mapReport);
+            }
+            return RedirectToAction("ViewReport", new { id = model.MapReportId });
+
         }
 
         [Authorize]
