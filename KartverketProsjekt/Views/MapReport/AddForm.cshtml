@@ -1,170 +1,205 @@
 ﻿@using KartverketProsjekt.Models.ViewModels
 @model AddMapReportRequest
 
-<div id="map"></div>
+<div class="container py-3" style="margin-top: -15px;"> <!-- Reduced padding and moved up -->
 
-<div class="container py-5">
-    <form asp-action="AddForm" enctype="multipart/form-data" method="post">
-        <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
-        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
+    <h5 id="form-title-preview">Ny innmelding</h5> <!-- Title preview -->
+    
+    <div class="container py-4">
+        <div class="row">
+            <!-- Submission Form Section -->
+            <div class="col-md-6">
+                <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
+                    <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+                    <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
-        <div class="mb-3">
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Tittel</label>
-                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Tittel</label>
+                            <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Beskrivelse av feil</label>
+                        <textarea id="description" name="Description" class="form-control"></textarea>
+                    </div>
+
+                    <!-- Attachments -->
+                    <div id="attachments-container" class="mb-3">
+                        <label for="attachment" class="form-label">Last opp vedlegg</label>
+                        <input type="file" id="attachment" name="Attachments" class="form-control" />
+                    </div>
+                    <button type="button" id="add-attachment" class="btn btn-secondary btn-sm mb-3">Legg til vedlegg</button>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success btn-lg">Send inn</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Map Section -->
+            <div class="col-md-6">
+                <div id="map" style="height: 600px;" class="shadow-sm rounded mb-4"></div>
             </div>
         </div>
+    </div>
+    </div> 
 
-        <div class="mb-3">
-            <label class="form-label">Beskrivelse av feil</label>
-            <textarea id="description" name="Description" class="form-control"></textarea>
-        </div>
+    @section Scripts {
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
+        <script>
 
-        <!-- Nytt felt for vedlegg -->
-        <div id="attachments-container" class="mb-3">
-            <label for="attachment" class="form-label">Last opp vedlegg</label>
-            <input type="file" id="attachment" name="Attachments" class="form-control" />
-        </div>
-        <button type="button" id="add-attachment" class="btn btn-secondary">Legg til vedlegg</button>
+            // Adding real-time title preview functionality
+            document.addEventListener("DOMContentLoaded", function () {
+                var titleInput = document.getElementById('title');
+                var titlePreview = document.getElementById('form-title-preview');
 
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success">Send inn</button>
-        </div>
-    </form>
-</div>
-
-
-@section Scripts {
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-
-    <script>
-        document.getElementById('add-attachment').addEventListener('click', function () {
-            // Create a new input element for file upload
-            var newAttachmentInput = document.createElement('input');
-            newAttachmentInput.type = 'file';
-            newAttachmentInput.name = 'Attachments';
-            newAttachmentInput.classList.add('form-control');
-            newAttachmentInput.classList.add('mt-2'); // Add some margin for spacing
-
-            // Add the new input to the attachments container
-            document.getElementById('attachments-container').appendChild(newAttachmentInput);
-        });
-    </script>
-
-    <script>
-        // Code from GeoJSON lab exercise with some modifications
-
-        // Wait for the page to load before initializing the map
-        document.addEventListener("DOMContentLoaded", function () {
-            // Using browser geolocation to get the user's position
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                    initializeMap(latitude, longitude);
-                },
-                function (error) {
-                    // Default coordinates for Kristiansand
-                    var latitude = 58.1467;
-                    var longitude = 7.9956;
-                    initializeMap(latitude, longitude);
-                }
-            );
-
-            function initializeMap(latitude, longitude) {
-
-                // Add map layers
-                var baseMaps = {
-                    "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-                    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
-                };
-
-                // Initialising map with geolocation variables as position and default map layer
-                var map = L.map('map', {
-                    center: [latitude, longitude],
-                    zoom: 14,
-                    layers: [baseMaps["Fargekart"]] // Set default layer
+                titleInput.addEventListener('input', function () {
+                    var currentTitle = titleInput.value;
+                    if (currentTitle.length > 0) {
+                        titlePreview.innerText = "Ny innmelding - " + currentTitle;
+                    } else {
+                        titlePreview.innerText = "Ny innmelding";
+                    }
                 });
+            });
 
-                // Set default MapLayerId to 1
-                document.getElementById('mapLayerIdInput').value = 1;
+            document.getElementById('add-attachment').addEventListener('click', function () {
+                // Create a new input element for file upload
+                var newAttachmentInput = document.createElement('input');
+                newAttachmentInput.type = 'file';
+                newAttachmentInput.name = 'Attachments';
+                newAttachmentInput.classList.add('form-control');
+                newAttachmentInput.classList.add('mt-2'); // Add some margin for spacing
 
-                // Add button to toggle map layers
-                L.control.layers(baseMaps).addTo(map);
+                // Add the new input to the attachments container
+                document.getElementById('attachments-container').appendChild(newAttachmentInput);
+            });
+        </script>
 
-                // Initializes the feature that will hold the drawn shapes and adds it to the map layer
-                var drawnItems = new L.FeatureGroup();
-                map.addLayer(drawnItems);
+        <script>
+            // Code from GeoJSON lab exercise with some modifications
 
-                // Creates draw toolbar on left hand side
-                var drawControl = new L.Control.Draw({
-                    draw: {
-                        marker: true,
-                        polyline: true,
-                        polygon: true,
-                        circle: false, // Disable the circle tool because of error with the GeoJson data
-                        circlemarker: false,
-                        rectangle: true,
+            // Wait for the page to load before initializing the map
+            document.addEventListener("DOMContentLoaded", function () {
+                // Using browser geolocation to get the user's position
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+                        initializeMap(latitude, longitude);
                     },
-                    edit: {
-                        featureGroup: drawnItems,
-                        edit: false, // Disable the edit functionality
-                        remove: true // Enable the remove functionality
+                    function (error) {
+                        // Default coordinates for Kristiansand
+                        var latitude = 58.1467;
+                        var longitude = 7.9956;
+                        initializeMap(latitude, longitude);
                     }
-                });
-                map.addControl(drawControl);
+                );
 
-                // Event listener for when a shape is drawn
-                map.on('draw:created', (e) => {
-                    var type = e.layerType,
-                        layer = e.layer;
+                function initializeMap(latitude, longitude) {
 
-                    // Clear existing drawn items
-                    drawnItems.clearLayers();
+                    // Add map layers
+                    var baseMaps = {
+                        "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                        "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                        "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
+                        "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+                    };
 
-                    // Add the new layer
-                    drawnItems.addLayer(layer);
+                    // Initialising map with geolocation variables as position and default map layer
+                    var map = L.map('map', {
+                        center: [latitude, longitude],
+                        zoom: 14,
+                        layers: [baseMaps["Fargekart"]] // Set default layer
+                    });
 
-                    // Convert the drawn shape to GeoJSON and set the value of the input field
-                    var geoJsonString = JSON.stringify(layer.toGeoJSON());
+                    // Set default MapLayerId to 1
+                    document.getElementById('mapLayerIdInput').value = 1;
 
-                    // Set the value of the input field to the GeoJSON string
-                    document.getElementById('geoJsonInput').value = geoJsonString
-                });
+                    // Add button to toggle map layers
+                    L.control.layers(baseMaps).addTo(map);
 
-                // Event listener for when the base layer is changed
-                map.on('baselayerchange', function (e) {
-                    var mapLayerId = determineMapLayerIdFromName(e.name);
-                    document.getElementById('mapLayerIdInput').value = mapLayerId;
-                    console.log(mapLayerId);
-                    console.log(e);
-                    console.log('MapLayerIdInput')
-                });
+                    // Initializes the feature that will hold the drawn shapes and adds it to the map layer
+                    var drawnItems = new L.FeatureGroup();
+                    map.addLayer(drawnItems);
 
-                function determineMapLayerIdFromName(name) {
-                    // Implement logic to determine MapLayerId based on the layer name
-                    switch (name) {
-                        case "Fargekart":
-                            return 1;
-                        case "Gråtonekart":
-                            return 2;
-                        case "Turkart":
-                            return 3;
-                        case "Sjøkart":
-                            return 4;
-                        default:
-                            return 1;
+                    // Creates draw toolbar on left-hand side
+                    var drawControl = new L.Control.Draw({
+                        draw: {
+                            marker: true,
+                            polyline: true,
+                            polygon: true,
+                            circle: false, // Disable the circle tool because of error with the GeoJson data
+                            circlemarker: false,
+                            rectangle: true,
+                        },
+                        edit: {
+                            featureGroup: drawnItems,
+                            edit: false, // Disable the edit functionality
+                            remove: true // Enable the remove functionality
+                        }
+                    });
+                    map.addControl(drawControl);
+
+                    // Event listener for when a shape is drawn
+                    map.on('draw:created', (e) => {
+                        var type = e.layerType,
+                            layer = e.layer;
+
+                        // Clear existing drawn items
+                        drawnItems.clearLayers();
+
+                        // Add the new layer
+                        drawnItems.addLayer(layer);
+
+                        // Convert the drawn shape to GeoJSON and set the value of the input field
+                        var geoJsonString = JSON.stringify(layer.toGeoJSON());
+
+                        // Set the value of the input field to the GeoJSON string
+                        document.getElementById('geoJsonInput').value = geoJsonString;
+                    });
+
+                    // Event listener for when the base layer is changed
+                    map.on('baselayerchange', function (e) {
+                        var mapLayerId = determineMapLayerIdFromName(e.name);
+                        document.getElementById('mapLayerIdInput').value = mapLayerId;
+                        console.log(mapLayerId);
+                        console.log(e);
+                        console.log('MapLayerIdInput');
+                    });
+
+                    function determineMapLayerIdFromName(name) {
+                        // Implement logic to determine MapLayerId based on the layer name
+                        switch (name) {
+                            case "Fargekart":
+                                return 1;
+                            case "Gråtonekart":
+                                return 2;
+                            case "Turkart":
+                                return 3;
+                            case "Sjøkart":
+                                return 4;
+                            default:
+                                return 1;
+                        }
+                        console.log(name);
                     }
-                    console.log(name);
                 }
+            });
+        </script>
+
+        <style>
+            .form-height {
+                height: 600px; /* Match the height of the map */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
-        });
-    </script>
-}
+        </style>
+    }
