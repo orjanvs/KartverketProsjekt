@@ -1,5 +1,4 @@
-﻿
-namespace KartverketProsjekt.Models.ViewModels
+﻿namespace KartverketProsjekt.Models.ViewModels
 {
     public class ViewMapReportRequest
     {

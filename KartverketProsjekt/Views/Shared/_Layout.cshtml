@@ -37,7 +37,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Innmeldingsoversikt
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" style="z-index: 30000">
                                     <li>
                                         <a class="dropdown-item"
                                            asp-area=""
@@ -64,7 +64,7 @@
                             <a class="me-3 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end" style="z-index: 30000">
                                 @if (signInManager.IsSignedIn(User))
                                 {
                                     <li class="dropdown-item-text text-black-50">

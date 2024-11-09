@@ -77,7 +77,6 @@ namespace KartverketProsjekt.Repositories
                 .Include(m => m.MapReportStatus)
                 .Include(m => m.Attachments) // Legg til denne linjen for å inkludere vedleggene
                 .FirstOrDefaultAsync(m => m.MapReportId == id);
-
         }
 
         public async Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport)

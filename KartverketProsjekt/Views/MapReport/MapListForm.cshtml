@@ -7,9 +7,9 @@
 </head>
 <div class="container">
    <div id="overlay">
-        <div class="z2 collapse collapse-horizontal" style="position: absolute; z-index: 20000; float: left;">
-            <div class="card card-body" id="previewInfo" style="width: 300px; height: 75vh; position: relative;">
-                <h1></h1>
+        <div class="collapse collapse-horizontal" id="previewInfo" style="position: absolute; z-index: 20000; float: left;">
+            <div class="card card-body" id="loadPreview" style="width: 30vw; height: 75vh; position: relative;">
+                PLACEHOLDER
             </div>
         </div>
     </div>
@@ -98,6 +98,9 @@
                             marker.bindPopup(title);
                             marker.on('click', function(e) {
                                 $('#previewInfo').collapse('show');
+                                $.get(`/MapReport/PreviewMapReport/${id}`, function (data) {
+                                    $('#loadPreview').html(data);
+                                });
                             });
                             markerList.push(marker);
                         }
