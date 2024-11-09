@@ -99,6 +99,9 @@
                                 onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
                             Fullfør behandling
                         </button>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reassignModal">
+                            Reassign Case Handler
+                        </button>
                     }
                     @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1) 
                     {
@@ -125,6 +128,28 @@
         <div class="col-md-8">
             <div id="map"></div>
 
+        </div>
+    </div>
+</div>
+
+<!-- Modal for reassigning case handler -->
+<div class="modal fade" id="reassignModal" tabindex="-1" aria-labelledby="reassignModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reassignModalLabel">Reassign Case Handler</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="AssignCaseHandler">
+                    <input type="hidden" asp-for="MapReportId" />
+                    <div class="mb-3">
+                        <label for="newCaseHandler" class="form-label">Select New Case Handler</label>
+                        <select id="newCaseHandler" class="form-select" asp-for="CaseHandlerId" asp-items="Model.AvailableCaseHandlers"></select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Reassign</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
