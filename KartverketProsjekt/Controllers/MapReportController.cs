@@ -34,6 +34,16 @@ namespace KartverketProsjekt.Controllers
         // Adds a new map report to the list of map reports
         public async Task<IActionResult> AddForm(AddMapReportRequest request)            // string geoJson, string description, int mapLayerId
         {
+            // Server-side check for GeoJson presence
+            if (request.GeoJson == null)
+            {
+                ModelState.AddModelError("GeoJson", "Please draw a shape on the map before submitting.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
             var newMapReport = new MapReportModel

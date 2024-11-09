@@ -3,6 +3,9 @@
 
 <div id="map"></div>
 
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
 <div class="container py-5">
     <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
@@ -11,13 +14,13 @@
         <div class="mb-3">
             <div class="form-group">
                 <label for="title">Tittel</label>
-                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
             </div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
-            <textarea id="description" name="Description" class="form-control"></textarea>
+            <textarea id="description" name="Description" class="form-control" required></textarea>
         </div>
 
 
@@ -167,6 +170,26 @@
                     }
                     console.log(name);
                 }
+
+                // function validateGeoJson() {
+                //     var geoJsonInput = document.getElementById('geoJsonInput').value;
+    
+                //     // Check if geoJsonInput is empty or null
+                //     if (!geoJsonInput || geoJsonInput === "null") {
+                //         alert('Please draw a shape on the map before submitting.');
+                //         return false;
+                //     }
+    
+                //     // Try parsing the GeoJSON to ensure it's valid JSON
+                //     try {
+                //         JSON.parse(geoJsonInput);
+                //     } catch (e) {
+                //         alert('Invalid GeoJSON data. Please redraw the shape.');
+                //         return false;
+                //     }
+    
+                //     return true;
+                // }
             }
         });
     </script>

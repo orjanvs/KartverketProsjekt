@@ -73,38 +73,46 @@ namespace KartverketProsjekt.Controllers
                 }
             }
             // Show error notification
-            return View(); 
+            return View();
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-           var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Email, 
-               loginViewModel.Password, false, false);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Email,
+                loginViewModel.Password, false, false);
 
             if (signInResult != null && signInResult.Succeeded)
             {
                 return RedirectToAction("ListForm", "MapReport");
             }
 
+            // Show error notification
             return View();
-        }
-
-        
-        [HttpGet]
-        public async Task<IActionResult> ProfilePage()
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var profilePageViewModel = new ProfilePageViewModel
-            {
-                Email = currentUser.Email,
-                FirstName = currentUser.FirstName,
-                LastName = currentUser.LastName
-            };
-            return View(profilePageViewModel);
         } 
-        
-       
+
+
+
+            [HttpGet]
+            public async Task<IActionResult> ProfilePage()
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                var profilePageViewModel = new ProfilePageViewModel
+                {
+                    Email = currentUser.Email,
+                    FirstName = currentUser.FirstName,
+                    LastName = currentUser.LastName
+                };
+                return View(profilePageViewModel);
+            }
+
+
+        }
     }
-}
+
