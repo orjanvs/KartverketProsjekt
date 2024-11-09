@@ -40,36 +40,40 @@ namespace KartverketProsjekt.Controllers
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
 
-            var identityUser = new ApplicationUser
+            if (ModelState.IsValid)
             {
-                UserName = registerViewModel.Email,
-                Email = registerViewModel.Email,
-                FirstName = registerViewModel.FirstName,
-                LastName = registerViewModel.LastName
-
-
-            };
-
-            var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
-
-            if (identityResult.Succeeded)
-            {
-                // assign this user the "User" role
-                var roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Submitter");
-
-                if (roleIdentityResult.Succeeded)
+                var identityUser = new ApplicationUser
                 {
-                    //show success notification
-                    return RedirectToAction("Login");
-                }
-                else
+                    UserName = registerViewModel.Email,
+                    Email = registerViewModel.Email,
+                    FirstName = registerViewModel.FirstName,
+                    LastName = registerViewModel.LastName
+
+
+                };
+
+                var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
+
+                if (identityResult.Succeeded)
                 {
-                    // Show error notification
-                    return RedirectToAction("Register");
+                    // assign this user the "User" role
+                    var roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Submitter");
+
+                    if (roleIdentityResult.Succeeded)
+                    {
+                        //show success notification
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        // Show error notification
+                        return RedirectToAction("Register");
+                    }
+
                 }
-               
             }
-            return RedirectToAction("Register");
+            // Show error notification
+            return View(); 
         }
 
 
