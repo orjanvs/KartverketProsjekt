@@ -1,0 +1,36 @@
+﻿/* AddForm Specific Styling */
+.add-form-height {
+    height: 600px; /* Match the height of the map */
+    max-width: 100%; /* Limit the width of the form */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Restrict resizing of the textarea to only vertical */
+textarea {
+    resize: vertical; /* Allow only vertical resizing */
+    max-width: 100%; /* Ensure the textarea cannot be wider than the form */
+    height: 150px; /* Increase the height of the description box */
+}
+
+#attachments-container {
+    overflow-y: auto; /* Add vertical scroll if necessary */
+    max-height: 300px; /* Increased height for better spacing */
+    margin-bottom: 15px; /* Add space between the container and other elements */
+}
+
+    #attachments-container input[type="file"] {
+        max-width: 100%; /* Ensure attachment input fields do not expand beyond the form */
+        margin-bottom: 10px; /* Add some space between each attachment */
+    }
+
+.attachment-button {
+    align-self: flex-start; /* Position the add attachment button at the start */
+    margin-bottom: 15px; /* Add some space between the button and subsequent elements */
+}
+
+.submit-button {
+    width: 100%; /* Make sure the submit button fills the entire width of the form */
+    margin-top: 20px; /* Add some margin to separate from the previous element */
+}

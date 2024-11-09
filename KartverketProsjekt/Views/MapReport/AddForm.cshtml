@@ -1,49 +1,74 @@
 ﻿@using KartverketProsjekt.Models.ViewModels
 @model AddMapReportRequest
 
-<div id="map"></div>
+<div class="container py-3" style="margin-top: -15px;">
+    <!-- Reduced padding and moved up -->
+    <h5 id="form-title-preview">Ny innmelding</h5> <!-- Title preview -->
 
-<div class="container py-5">
-    <form asp-action="AddForm" enctype="multipart/form-data" method="post">
-        <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
-        <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
+    <div class="container py-4">
+        <div class="row">
+            <!-- Submission Form Section -->
+            <div class="col-md-4">
+                <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
+                    <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+                    <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
-        <div class="mb-3">
-            <div class="form-group">
-                <label for="title">Tittel</label>
-                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Tittel</label>
+                            <input type="text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Beskrivelse av feil</label>
+                        <textarea id="description" name="Description" class="form-control"></textarea>
+                    </div>
+
+                    <!-- Attachments -->
+                    <div id="attachments-container" class="mb-3">
+                        <label for="attachment" class="form-label">Last opp vedlegg</label>
+                        <input type="file" id="attachment" name="Attachments" class="form-control" />
+                    </div>
+                    <button type="button" id="add-attachment" class="btn btn-secondary btn-sm mb-3 attachment-button">Legg til vedlegg</button>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success submit-button">Send inn</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Map Section -->
+            <div class="col-md-8">
+                <div id="map" style="height: 600px;" class="shadow-sm rounded mb-4"></div>
             </div>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Beskrivelse av feil</label>
-            <textarea id="description" name="Description" class="form-control"></textarea>
-        </div>
-
-
-        <!-- Nytt felt for vedlegg -->
-        <div id="attachments-container" class="mb-3">
-            <label for="attachment" class="form-label">Last opp vedlegg</label>
-            <input type="file" id="attachment" name="Attachments" class="form-control" />
-        </div>
-        <button type="button" id="add-attachment" class="btn btn-secondary">Legg til vedlegg</button>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success">Send inn</button>
-        </div>
-
-    </form>
+    </div>
 </div>
 
-
 @section Scripts {
+    <link rel="stylesheet" href="~/css/AddFormStyleSheet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
     <script>
+        // Adding real-time title preview functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            var titleInput = document.getElementById('title');
+            var titlePreview = document.getElementById('form-title-preview');
+
+            titleInput.addEventListener('input', function () {
+                var currentTitle = titleInput.value;
+                if (currentTitle.length > 0) {
+                    titlePreview.innerText = "Ny innmelding - " + currentTitle;
+                } else {
+                    titlePreview.innerText = "Ny innmelding";
+                }
+            });
+        });
+
         document.getElementById('add-attachment').addEventListener('click', function () {
             // Create a new input element for file upload
             var newAttachmentInput = document.createElement('input');
@@ -78,7 +103,6 @@
             );
 
             function initializeMap(latitude, longitude) {
-
                 // Add map layers
                 var baseMaps = {
                     "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
@@ -97,7 +121,6 @@
                 // Set default MapLayerId to 1
                 document.getElementById('mapLayerIdInput').value = 1;
 
-
                 // Add button to toggle map layers
                 L.control.layers(baseMaps).addTo(map);
 
@@ -105,7 +128,7 @@
                 var drawnItems = new L.FeatureGroup();
                 map.addLayer(drawnItems);
 
-                // Creates draw toolbar on left hand side
+                // Creates draw toolbar on left-hand side
                 var drawControl = new L.Control.Draw({
                     draw: {
                         marker: true,
@@ -138,7 +161,7 @@
                     var geoJsonString = JSON.stringify(layer.toGeoJSON());
 
                     // Set the value of the input field to the GeoJSON string
-                    document.getElementById('geoJsonInput').value = geoJsonString
+                    document.getElementById('geoJsonInput').value = geoJsonString;
                 });
 
                 // Event listener for when the base layer is changed
@@ -147,7 +170,7 @@
                     document.getElementById('mapLayerIdInput').value = mapLayerId;
                     console.log(mapLayerId);
                     console.log(e);
-                    console.log('MapLayerIdInput')
+                    console.log('MapLayerIdInput');
                 });
 
                 function determineMapLayerIdFromName(name) {
@@ -163,7 +186,6 @@
                             return 4;
                         default:
                             return 1;
-
                     }
                     console.log(name);
                 }
