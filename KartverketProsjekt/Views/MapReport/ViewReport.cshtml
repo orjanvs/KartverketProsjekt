@@ -152,6 +152,7 @@
 {
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="@("https://unpkg.com/@turf/turf@7.0.0/turf.min.js")"></script>
 
 <script>
     var mapLayerId = @Model.MapLayerId;
@@ -159,4 +160,5 @@
     var title = @Html.Raw(Json.Serialize(Model.Title));
 </script>
 <script src="~/js/viewReportLeaflet.js"></script>
+
 }
