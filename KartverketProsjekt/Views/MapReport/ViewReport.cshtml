@@ -113,6 +113,15 @@
 
         <div class="col-md-8">
             <div id="map"></div>
+
+            @if (User.IsInRole("Case Handler"))
+            {
+            <div class="d-flex justify-content-center mt-3">
+                <a href="" id="googleMapsLink" class="btn btn-info">
+                    Åpne i Google Maps satellittvisning
+                </a>
+            </div>
+            }
         </div>
     </div>
 </div>
@@ -141,8 +150,8 @@
 
 @section Scripts 
 {
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
     var mapLayerId = @Model.MapLayerId;
