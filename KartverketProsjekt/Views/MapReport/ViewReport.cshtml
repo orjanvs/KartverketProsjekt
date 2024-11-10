@@ -139,62 +139,15 @@
     </div>
 </div>
 
-@section Scripts {
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+@section Scripts 
+{
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<script>
-    var baseMaps = {
-        "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-        "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-        "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-        "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
-    };
-
+    <script>
     var mapLayerId = @Model.MapLayerId;
-
-    function getMapLayerById(mapLayerId) {
-        switch (mapLayerId) {
-            case 1:
-                return baseMaps["Fargekart"];
-            case 2:
-                return baseMaps["Gråtonekart"];
-            case 3:
-                return baseMaps["Turkart"];
-            case 4:
-                return baseMaps["Sjøkart"];
-            default:
-                return baseMaps["Fargekart"];
-        }
-    }
-
-    var map = L.map('map').setView([60.145, 10.25], 15);
-    getMapLayerById(mapLayerId).addTo(map);
-
-    @if (Model != null && !string.IsNullOrEmpty(Model.GeoJsonString))
-    {
-    <text>
-    try {
-        var geoJsonData = @Html.Raw(Model.GeoJsonString);
-        var drawnItems = new L.FeatureGroup();
-
-        L.geoJSON(geoJsonData, {
-            onEachFeature: function(feature, layer) {
-                layer.bindPopup('@Html.Raw(Json.Serialize(Model.Description))');
-                drawnItems.addLayer(layer);
-            }
-        });
-
-        map.addLayer(drawnItems);
-
-        var bounds = drawnItems.getBounds();
-        if (bounds.isValid()) {
-            map.fitBounds(bounds);
-        }
-    } catch (error) {
-        console.error("Error processing GeoJSON:", error);
-    }
-    </text>
-    }
-</script>
+    var geoJsonData = @Html.Raw(Model.GeoJsonString);
+    var title = @Html.Raw(Json.Serialize(Model.Title));
+    </script>
+    <script src="~/js/viewReportLeaflet.js"></script>
 }
