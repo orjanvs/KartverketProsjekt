@@ -1,6 +1,15 @@
-﻿// Code from GeoJSON lab exercise with some modifications
-
-// Wait for the page to load before initializing the map
+﻿// Wait for the page to load before initializing the map
+function ajax(url) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            resolve(this.responseText);
+        };
+        xhr.onerror = reject;
+        xhr.open('GET', url);
+        xhr.send();
+    });
+}
 document.addEventListener("DOMContentLoaded", function () {
     // Using browser geolocation to get the user's position
     navigator.geolocation.getCurrentPosition(
@@ -77,6 +86,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Set the value of the input field to the GeoJSON string
             document.getElementById('geoJsonInput').value = geoJsonString;
+
+
+            var centroid = turf.centroid(JSON.parse(geoJsonString));
+            
+            var thisLon = centroid.geometry.coordinates[0];
+            var thisLat = centroid.geometry.coordinates[1];
+
+            var apiUrl = 'https://api.kartverket.no/kommuneinfo/v1/punkt?nord=' + thisLat + '&ost=' + thisLon + '&koordsys=4258';
+
+            ajax(apiUrl)
+                .then(function (result) {
+                    var kommuneInfo = JSON.parse(result);
+                    document.getElementById('municipalityInput').value = kommuneInfo.kommunenavn;
+                    document.getElementById('countyInput').value = kommuneInfo.fylkesnavn;
+                })
+                .catch(function () {
+                    console.log('error');
+                });
         });
 
         // Event listener for when the base layer is changed

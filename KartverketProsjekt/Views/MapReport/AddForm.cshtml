@@ -14,6 +14,8 @@
 
                 <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
                     <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+                    <input type="hidden" id="municipalityInput" name="Municipality" asp-for="Municipality" />
+                    <input type="hidden" id="countyInput" name="County" asp-for="County" />
                     <span asp-validation-for="GeoJson" class="text-danger"></span>
                     <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
@@ -54,6 +56,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="@("https://unpkg.com/@turf/turf@7.0.0/turf.min.js")"></script>
     <script src="~/js/realTimeTitlePreview.js"></script>
     <script src="~/js/attachmentScript.js"></script>
     <script src="~/js/addReportLeaflet.js"></script>    
