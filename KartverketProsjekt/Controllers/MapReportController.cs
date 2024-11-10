@@ -54,8 +54,8 @@ namespace KartverketProsjekt.Controllers
                     SubmissionDate = DateTime.Now,
                     SubmitterId = currentSubmitter.Id,
                     Attachments = new List<AttachmentModel>(),
-                    //County = request.County,
-                    //Municipality = request.Municipality
+                    County = request.County,
+                    Municipality = request.Municipality
                 };
 
 
