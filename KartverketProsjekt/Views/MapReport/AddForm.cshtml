@@ -3,12 +3,11 @@
 
 <div id="map"></div>
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 
 <div class="container py-5">
     <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+        <span asp-validation-for="GeoJson" class="text-danger"></span>
         <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
         <div class="mb-3">
@@ -23,8 +22,6 @@
             <textarea id="description" name="Description" class="form-control" required></textarea>
         </div>
 
-
-        <!-- Nytt felt for vedlegg -->
         <div id="attachments-container" class="mb-3">
             <label for="attachment" class="form-label">Last opp vedlegg</label>
             <input type="file" id="attachment" name="Attachments" class="form-control" />
@@ -34,7 +31,6 @@
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
-
     </form>
 </div>
 
@@ -59,6 +55,7 @@
             document.getElementById('attachments-container').appendChild(newAttachmentInput);
         });
     </script>
+    
 
     <script>
         // Code from GeoJSON lab exercise with some modifications
@@ -170,27 +167,9 @@
                     }
                     console.log(name);
                 }
-
-                // function validateGeoJson() {
-                //     var geoJsonInput = document.getElementById('geoJsonInput').value;
-    
-                //     // Check if geoJsonInput is empty or null
-                //     if (!geoJsonInput || geoJsonInput === "null") {
-                //         alert('Please draw a shape on the map before submitting.');
-                //         return false;
-                //     }
-    
-                //     // Try parsing the GeoJSON to ensure it's valid JSON
-                //     try {
-                //         JSON.parse(geoJsonInput);
-                //     } catch (e) {
-                //         alert('Invalid GeoJSON data. Please redraw the shape.');
-                //         return false;
-                //     }
-    
-                //     return true;
-                // }
             }
         });
     </script>
+
+    
 }
