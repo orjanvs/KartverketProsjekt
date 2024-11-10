@@ -5,17 +5,16 @@
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
+
 <div class="container">
    <div id="overlay">
         <div class="collapse collapse-horizontal" id="previewInfo" style="position: absolute; z-index: 20000; float: left;">
             <div class="card" id="loadPreview" style="width: 25vw; height: 75vh; position: relative;">
-                PLACEHOLDER
             </div>
         </div>
     </div>
     <div id="map" style="z-index: 10000;"></div>
 </div>
-
 
 @section Scripts {
     <link rel="stylesheet"
@@ -60,73 +59,69 @@
             // Add button to toggle map layers
             L.control.layers(baseMaps).addTo(map);
 
-            // Event listener for when the base layer is changed
-            map.on('baselayerchange', function (e) {
-                var mapLayerId = determineMapLayerIdFromName(e.name);
-                document.getElementById('mapLayerIdInput').value = mapLayerId;
-                console.log(mapLayerId);
-                console.log(e);
-                console.log('MapLayerIdInput')
-            });
-
-            function determineMapLayerIdFromName(name) {
-                // Implement logic to determine MapLayerId based on the layer name
-                switch (name) {
-                    case "Fargekart":
-                        return 1;
-                    case "Gråtonekart":
-                        return 2;
-                    case "Turkart":
-                        return 3;
-                    case "Sjøkart":
-                        return 4;
-                    default:
-                        return 1;
-
-                }
-            }
-
-            function generateMarker(id, geojsonstring) {
+            // Function for generating markers using the centre point + preview functionality
+            function generateMarker(id, geojsonstring, maplayerid) {
                 var geoJson = L.geoJson(geojsonstring,
                     {
                         onEachFeature: function (feature, layer) {
                             var centroid = turf.centroid(feature);
                             var lon = centroid.geometry.coordinates[0];
                             var lat = centroid.geometry.coordinates[1];
-                            var marker = L.marker(([lat, lon]), { id: id });
+                            var marker = L.marker([lat, lon]);
                             var title = `<a>${id}</a>`;
                             marker.bindPopup(title);
-                            marker.on('click', function(e) {
+                            marker.on('click', function (e) {
                                 $('#previewInfo').collapse('show');
                                 $.get(`/MapReport/PreviewMapReport/${id}`, function (data) {
                                     $('#loadPreview').html(data);
                                 });
                             });
-                            markerList.push(marker);
+
+                            markerGroups[maplayerid-1].addLayer(marker);
                         }
                     });
             }
 
-            var markers = L.markerClusterGroup({
-                spiderfyOnMaxZoom: true,
-                showCoverageOnHover: false,
-                zoomToBoundsOnClick: false,
-                chunkedLoading: true,
+            // Defining markerGroups for displaying markers according to selected basemap
+            var markerGroup1 = L.markerClusterGroup();
+            var markerGroup2 = L.markerClusterGroup();
+            var markerGroup3 = L.markerClusterGroup();
+            var markerGroup4 = L.markerClusterGroup();
+            var markerGroup5 = L.markerClusterGroup();
+
+            var markerGroups = [markerGroup1, markerGroup2, markerGroup3, markerGroup4, markerGroup5];
+
+            // Iterate over mapReports and generate markers
+            @foreach (var mapReport in Model)
+            {
+                @: generateMarker(@mapReport.MapReportId, @Html.Raw(mapReport.GeoJsonString), @mapReport.MapLayerId);
+            }
+
+            // Add initial markerGroup
+            map.addLayer(markerGroup1);
+
+            // Functionality for hiding preview card
+            map.on('click', function(e) {        
+                $('#previewInfo').collapse('hide');
+             });
+
+            // Replace current markers when changing base layer
+            map.on('baselayerchange', function (event) {
+                for(const markerGroup of markerGroups) {
+                    map.removeLayer(markerGroup);
+                }
+                map.removeLayer(markerGroup1)
+                if (event.name === "Gråtonekart"){
+                    map.addLayer(markerGroup2);
+                } else if (event.name === "Turkart") {
+                    map.addLayer(markerGroup3);
+                } else if (event.name === "Sjøkart") {
+                    map.addLayer(markerGroup4);
+                } else {
+                    map.addLayer(markerGroup1);
+                }
             });
-            var markerList = [];
 
-        @foreach (var mapReport in Model)
-        {
-            @: generateMarker(@mapReport.MapReportId, @Html.Raw(mapReport.GeoJsonString));
-        }
-
-        markers.addLayers(markerList);
-        map.addLayer(markers);
-
-        map.on('click', function(e) {        
-            $('#previewInfo').collapse('hide');
-         });
-
-        });
+            });
     </script>
 }

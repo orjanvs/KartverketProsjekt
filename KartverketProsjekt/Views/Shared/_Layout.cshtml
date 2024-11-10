@@ -29,7 +29,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
+                            <a class="nav-link" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
                         </li>
                         @if (signInManager.IsSignedIn(User))
                         {
@@ -107,7 +107,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted" style="z-index: 30000">
+    <footer class="border-top footer text-muted bg-white" style="z-index: 30000">
         <div class="container">
             &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>
         </div>
