@@ -13,6 +13,9 @@ namespace KartverketProsjekt.Models.ViewModels
         public int MapReportStatusId { get; set; }
         public string StatusDescription { get; set; }
         public DateTime SubmissionDate { get; set; }
+        public string County { get; set; }
+        public string Municipality { get; set; }
+
 
         public string SubmitterId { get; set; } 
         public string SubmitterName { get; set; }

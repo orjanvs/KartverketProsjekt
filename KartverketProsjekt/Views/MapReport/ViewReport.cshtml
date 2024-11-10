@@ -29,6 +29,16 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Fylke</label>
+                    <input type="text" id="county" class="form-control" asp-for="County" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kommune</label>
+                    <input type="text" id="municipality" class="form-control" asp-for="Municipality" readonly />
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Beskrivelse</label>
                     <textarea id="description" class="form-control" asp-for="Description" readonly style="resize: vertical;"></textarea>
                 </div>
