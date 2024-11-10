@@ -9,18 +9,27 @@
             {
                 <div class="card" style="box-sizing: border-box; padding: 10px;">
                     <h7 class="card-header">
-                        <small class="text-muted">
-                            Innmelder
-                        </small>
-                        <br />
-                        @Model.SubmitterName
-                        <span style="float: right;">
+                        <div class="container">
                             <small class="text-muted">
-                                Saksbehandler
+                                Innmelder
                             </small>
-                            <br />
-                            @Model.CaseHandlerName
-                        </span>
+                            <span style="float: right;">
+                                <small class="text-muted">
+                                    Saksbehandler
+                                </small>
+                            </span>
+                        </div>
+                        <div class="container">
+                            @Model.SubmitterName
+                            <span style="float: right;">
+                            @if (@Model.CaseHandlerName == null) {
+                                <text>Ingen tildelt</text>
+                            } else  {
+                                @Model.CaseHandlerName
+                            }
+                            </span>
+                        </div>
+                        
                     </h7>
                     <div class="mb3">
                         <p class="card-text">
