@@ -11,10 +11,12 @@
             <div class="input-box">
                 <input type="email" placeholder="E-post" asp-for = "Email" required>
                 <i class='bx bxs-user'></i>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         <div class="input-box">
-            <input type="password" placeholder="Passord" asp-for = "Password" required>
+            <input type="password" placeholder="Passord" asp-for = "Password" required minlength="8">
             <i class='bx bxs-lock-alt'></i>
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="remember-forgot">
             <label> <input type="checkbox"> Husk meg 
@@ -23,11 +25,11 @@
         </div>
 
         <button type="submit" class="btn"> Logg inn</button>
+
         <div class="register-link">
             <p> Har du ikke en konto? <a asp-controller="Account" asp-action="Register">
                 Registrer deg</a>
             </p>
-
         </div>
     </form>
 </div>

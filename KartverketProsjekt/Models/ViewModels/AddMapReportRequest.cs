@@ -19,7 +19,7 @@ namespace KartverketProsjekt.Models.ViewModels
         [Required]
         public int MapLayerId { get; set; }
 
-        public List<IFormFile> Attachments { get; set; } // Legg til dette feltet for vedleggsopplasting
+        public List<IFormFile>? Attachments { get; set; } // Legg til dette feltet for vedleggsopplasting
 
     }
 }

@@ -13,29 +13,34 @@
         <div class="input-box">
             <input type="text" name="firstName" placeholder="Fornavn" asp-for = "FirstName" required>
             <i class="bx bxs-user"></i>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
 
         <div class="input-box">
             <input type="text" name="lastName" placeholder="Etternavn" asp-for = "LastName" required>
             <i class="bx bxs-user"></i>
+            <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
 
         <!-- Email Field -->
         <div class="input-box">
             <input type="email" name="email" placeholder="E-post" asp-for = "Email" required>
             <i class="bx bxs-envelope"></i>
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
         <!-- Password Field -->
         <div class="input-box">
-            <input type="password" name="password" placeholder="Passord" asp-for = "Password" required>
+            <input type="password" name="password" placeholder="Passord" asp-for = "Password" required minlength="8"> 
             <i class="bx bxs-lock-alt"></i>
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
         <!-- Confirm Password Field -->
         <div class="input-box">
             <input type="password" name="confirmPassword" placeholder="Bekreft passord" asp-for = "ConfirmPassword" required>
             <i class="bx bxs-lock"></i>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
         <!-- Submit Button -->
@@ -50,4 +55,10 @@
         </div>
     </form>
 </div>
+
+
+@section Scripts {
+    <script src="~/js/passwordValidator.js"></script>
+
+}
 
