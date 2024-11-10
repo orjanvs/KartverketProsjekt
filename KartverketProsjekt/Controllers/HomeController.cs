@@ -11,7 +11,7 @@ namespace KartverketProsjekt.Controllers
         //private readonly IKommuneInfoService _kommuneInfoService;
         //private readonly IStedsnavnService _stedsnavnService;
 
-        public HomeController(ILogger<HomeController> logger, IKommuneInfoService kommuneInfoService, IStedsnavnService stedsnavnService)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             //_kommuneInfoService = kommuneInfoService;
@@ -23,10 +23,6 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
-        public IActionResult About()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

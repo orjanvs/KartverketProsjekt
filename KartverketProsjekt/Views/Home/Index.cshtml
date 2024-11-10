@@ -1,5 +1,15 @@
-﻿<div class="center-container">
+﻿@using Microsoft.AspNetCore.Identity
+@using KartverketProsjekt.Models.DomainModels
+@inject SignInManager<ApplicationUser> signInManager
 
+<div class="center-container">
 
-    <a href="@Url.Action("AddForm", "MapReport")" class="center-button btn btn-success btn-lg">Meld inn i kartet</a>
+    @if (signInManager.IsSignedIn(User))
+    {
+        <a href="@Url.Action("AddForm", "MapReport")" class="center-button btn btn-success btn-lg">Meld inn i kartet</a>
+    }
+    else
+    {
+        <a href="@Url.Action("Login", "Account")" class="center-button btn btn-success btn-lg">Logg inn for å melde inn i kartet</a>
+    }
 </div>

@@ -42,6 +42,8 @@ namespace KartverketProsjekt.Controllers
 
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
+            if (currentSubmitter != null)
+            {
                 var newMapReport = new MapReportModel
                 {
                     Description = request.Description,
@@ -51,8 +53,11 @@ namespace KartverketProsjekt.Controllers
                     MapLayerId = request.MapLayerId,
                     SubmissionDate = DateTime.Now,
                     SubmitterId = currentSubmitter.Id,
-                    Attachments = new List<AttachmentModel>()
+                    Attachments = new List<AttachmentModel>(),
+                    County = request.County,
+                    Municipality = request.Municipality
                 };
+
 
                 HandleAttachments(request, newMapReport);
 
@@ -61,8 +66,9 @@ namespace KartverketProsjekt.Controllers
                 // Redirect to view form with the id of the new map report
                 return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
                 //return RedirectToAction("ListForm");
-            
-            
+            }
+            //Show error message
+            return View();
         }
 
         [Authorize(Roles = "Case Handler")]
@@ -97,26 +103,6 @@ namespace KartverketProsjekt.Controllers
             }
             return Forbid();
         }
-
-        //[Authorize(Roles = "Case Handler")]
-        //[HttpPost]
-        //public async Task<IActionResult> AssignCaseHandler(int id, string newCaseHandlerId)
-        //{
-        //    var currentCaseHandler = await _userManager.GetUserAsync(User);
-        //    var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
-        //    var newCaseHandler = await _userManager.FindByIdAsync(newCaseHandlerId);
-
-        //    if (mapReport != null && newCaseHandler != null)
-        //    {
-        //        mapReport.CaseHandlerId = newCaseHandler.Id;
-        //        mapReport.CaseHandler = newCaseHandler;
-        //        await _mapReportRepository.UpdateMapReportAsync(mapReport);
-        //        return RedirectToAction("ViewReport", new { id });
-        //    }
-
-        //    return BadRequest("Invalid map report or case handler.");
-        //}
-
 
 
         private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
@@ -183,7 +169,9 @@ namespace KartverketProsjekt.Controllers
                     GeoJsonString = m.GeoJsonString,
                     MapLayerType = m.MapLayer.MapLayerType,
                     HasAttachments = m.Attachments != null && m.Attachments.Any(),
-                    StatusDescription = m.MapReportStatus.StatusDescription
+                    StatusDescription = m.MapReportStatus.StatusDescription,
+                    County = m.County,
+                    Municipality = m.Municipality
                 })
                 .ToList();
 

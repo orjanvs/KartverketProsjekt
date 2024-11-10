@@ -58,7 +58,6 @@
                         <th>Kommune</th>
                         <th>Kartlag</th>
                         <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
-                        <th>Prioritet</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -68,8 +67,8 @@
                         <tr>
                             <td>@mapReport.SubmissionDate</td>
                             <td>@mapReport.Title</td>
-                            <td>@mapReport.Description</td>
-                            <td>@mapReport.GeoJsonString</td>
+                            <td>@mapReport.County</td>
+                            <td>@mapReport.Municipality</td>
                             <td>@mapReport.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
                             <td>
 
@@ -82,7 +81,6 @@
                                     <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
                                 }
                             </td>
-                            <td>@mapReport.Description</td>
                             <td>@mapReport.StatusDescription</td>
 
                             <td>

@@ -16,55 +16,61 @@
           crossorigin="" />
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="~/images/kartverket-logo.svg" alt="Kartverket Logo" style="height: 60px;" />
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
-                    </li>
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Innmeldingsoversikt
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-area=""
-                                   asp-controller="MapReport"
-                                   asp-action="ListForm">
-                                    Tabellvisning
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-area=""
-                                   asp-controller="MapReport"
-                                   asp-action="MapListForm">
-                                    Kartvisning
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    }
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
-                    </li>
 
-                    <li class="nav-item ms-auto d-flex align-items-center">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/kartverket-logo.svg" alt="Kartverket Logo" style="height: 60px;" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
                         @if (signInManager.IsSignedIn(User))
                         {
-                        <span class="text-black-50 me-2">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Innmeldingsoversikt
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="MapReport"
+                                           asp-action="ListForm">
+                                            Tabellvisning
+                                        </a>
+                                    </li>
+                                  }
+                                  <li class="nav-item ms-auto d-flex align-items-center">
+                                      @if (signInManager.IsSignedIn(User))
+                                      {
+                                          <span class="text-black-50 me-2">
+                                      <li>
+                                          <a class="dropdown-item"
+                                             asp-area=""
+                                             asp-controller="MapReport"
+                                             asp-action="MapListForm">
+                                              Kartvisning
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </li>
+                              }
+                              <li class="nav-item">
+                                  <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
+                              </li>
+
+                              <li class="nav-item ms-auto d-flex align-items-center">
+                                  @if (signInManager.IsSignedIn(User))
+                                  {
+                                  <span class="text-black-50 me-2">
                                     <a class="nav-link text-dark" asp-controller="Account" asp-action="ProfilePage"> @User?.Identity?.Name</a>
                                 </span>
                         }
