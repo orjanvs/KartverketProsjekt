@@ -18,9 +18,9 @@ namespace KartverketProsjekt.Models.ViewModels
         [Required]
         public int MapLayerId { get; set; }
 
-        public string County { get; set; }
+        public string? County { get; set; }
         
-        public string Municipality { get; set; }
+        public string? Municipality { get; set; }
 
         public List<IFormFile>? Attachments { get; set; } // Legg til dette feltet for vedleggsopplasting
 
