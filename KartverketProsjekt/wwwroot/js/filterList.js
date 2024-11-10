@@ -163,13 +163,38 @@ function filterTableByKartlag(selectedKartlag) {
     });
 }
 
+// Combined filtering function
+function filterTable() {
+    const table = document.getElementById('firstTableId');
+    const rows = table.querySelectorAll('tbody tr');
+    const statusColumnIndex = 6; // Status column is at index 6
+    const kartlagColumnIndex = 4; // Kartlag column is at index 4
+
+    const selectedStatus = document.getElementById('filterStatusDropdown').value.toLowerCase();
+    const selectedKartlag = document.getElementById('filterKartlagDropdown').value.toLowerCase();
+
+    rows.forEach(row => {
+        const statusCell = row.children[statusColumnIndex];
+        const kartlagCell = row.children[kartlagColumnIndex];
+
+        const cellStatusValue = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
+        const cellKartlagValue = kartlagCell ? kartlagCell.textContent.trim().toLowerCase() : '';
+
+        // Check if both status and kartlag match the selected values
+        const statusMatch = (selectedStatus === 'all' || cellStatusValue === selectedStatus);
+        const kartlagMatch = (selectedKartlag === 'all' || cellKartlagValue === selectedKartlag);
+
+        // Show or hide row based on the combined status and kartlag filter
+        if (statusMatch && kartlagMatch) {
+            row.style.display = ''; // Show row if both filters match
+        } else {
+            row.style.display = 'none'; // Hide row if filters don't match
+        }
+    });
+}
+
 // Event listener for Status filter
-document.getElementById('filterStatusDropdown').addEventListener('change', function () {
-    filterTableByStatus(this.value);
-});
+document.getElementById('filterStatusDropdown').addEventListener('change', filterTable);
 
 // Event listener for Kartlag filter
-document.getElementById('filterKartlagDropdown').addEventListener('change', function () {
-    filterTableByKartlag(this.value);
-});
-
+document.getElementById('filterKartlagDropdown').addEventListener('change', filterTable);
