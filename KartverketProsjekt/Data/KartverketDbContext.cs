@@ -16,8 +16,6 @@ namespace KartverketProsjekt.Data
         public DbSet<MapReportModel> MapReport { get; set; }
         public DbSet<MapLayerModel> MapLayer { get; set; }
         public DbSet<MapReportStatusModel> MapReportStatus { get; set; }
-        public DbSet<UserModel> User { get; set; }
-        public DbSet<UserRoleModel> UserRole { get; set; }
         public DbSet<DialogueModel> Dialogue { get; set; }
         public DbSet<AttachmentModel> Attachment { get; set; }
 
@@ -131,32 +129,6 @@ namespace KartverketProsjekt.Data
                 }
             );
 
-            //// Seed second case handler
-            //var caseHandlerId2 = "4";
-            //var caseHandlerUser2 = new ApplicationUser
-            //{
-            //    Id = caseHandlerId2,
-            //    UserName = "ch2@test.com",
-            //    NormalizedUserName = "CH2@TEST.COM",
-            //    Email = "ch2@test.com",
-            //    NormalizedEmail = "CH2@TEST.COM",
-            //    FirstName = "Test2",
-            //    LastName = "CaseHandler2"
-            //};
-
-            //caseHandlerUser2.PasswordHash = new PasswordHasher<ApplicationUser>()
-            //    .HashPassword(caseHandlerUser2, "CaseHandler2@123");
-
-            //modelBuilder.Entity<ApplicationUser>().HasData(caseHandlerUser2);
-
-            //modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-            //    new IdentityUserRole<string>
-            //    {
-            //        RoleId = caseHandlerRoleId,
-            //        UserId = caseHandlerId2
-            //    }
-            //);
-
             // Seed Submitter
             var submitterId = "2";
             var submitterUser = new ApplicationUser
@@ -192,10 +164,6 @@ namespace KartverketProsjekt.Data
                 .HasKey(ml => ml.MapLayerId);
             modelBuilder.Entity<MapReportStatusModel>()
                 .HasKey(ms => ms.MapReportStatusId);
-            modelBuilder.Entity<UserModel>()
-                .HasKey(u => u.UserId);
-            modelBuilder.Entity<UserRoleModel>()
-                .HasKey(ur => ur.UserRoleId);
             modelBuilder.Entity<DialogueModel>()
                 .HasKey(d => d.DialogueId);
             modelBuilder.Entity<AttachmentModel>()
@@ -230,19 +198,10 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Relasjon mellom MapReportModel og AttachmentModel
             modelBuilder.Entity<MapReportModel>()
-                .HasMany(m => m.Attachments) // MapReport har mange vedlegg
-                .WithOne(a => a.MapReport)    // Vedlegg har én MapReport
+                .HasMany(m => m.Attachments) 
+                .WithOne(a => a.MapReport)    
                 .HasForeignKey(a => a.MapReportId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // UserModel relationship with UserRoleModel
-            modelBuilder.Entity<UserModel>()
-                .HasOne(u => u.UserRole)
-                .WithMany()
-                .HasForeignKey(u => u.UserRoleId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -285,52 +244,7 @@ namespace KartverketProsjekt.Data
                 new MapReportStatusModel { MapReportStatusId = 3, StatusDescription = "Completed" },
                 new MapReportStatusModel { MapReportStatusId = 4, StatusDescription = "Rejected" }
             );
-
-            // Seed data for UserRoleModel
-            modelBuilder.Entity<UserRoleModel>().HasData(
-                new UserRoleModel { UserRoleId = 1, UserRoleName = "Systemadministrator", IsPrioritised = false },
-                new UserRoleModel { UserRoleId = 2, UserRoleName = "Saksbehandler", IsPrioritised = false },
-                new UserRoleModel { UserRoleId = 3, UserRoleName = "Innmelder", IsPrioritised = false }
-            );
-
-
-            // Test seed data for users
-            modelBuilder.Entity<UserModel>().HasData(
-                new UserModel
-                {
-                    UserId = 1,
-                    FirstName = "Default",
-                    LastName = "User",
-                    Email = "default@example.com",
-                    PhoneNumber = "0000000000",
-                    UserRoleId = 2 // Assume role with this ID exists
-                },
-                new UserModel
-                {
-                    UserId = 2,
-                    FirstName = "Test",
-                    LastName = "Submitter",
-                    Email = "submitter@example.com",
-                    PhoneNumber = "1100000000",
-                    UserRoleId = 3 // Assume role with this ID exists
-                },
-                new UserModel
-                {
-                    UserId = 3,
-                    FirstName = "Test",
-                    LastName = "CaseHandler",
-                    Email = "casehandler@example.com",
-                    PhoneNumber = "1200000000",
-                    UserRoleId = 2 // Assume role with this ID exists
-                }
-            );
-
-            
-
-
         }
     }
-
-
 }
 

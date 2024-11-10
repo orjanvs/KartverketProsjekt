@@ -1,4 +1,6 @@
-﻿namespace KartverketProsjekt.Models.DomainModels
+﻿using Org.BouncyCastle.Bcpg;
+
+namespace KartverketProsjekt.Models.DomainModels
 {
     public class MapReportModel
     {
@@ -11,6 +13,9 @@
         public string Description { get; set; }
         public string GeoJsonString { get; set; }
         public DateTime SubmissionDate { get; set; }
+        public string? County { get; set; }
+        public string? Municipality { get; set; }
+
 
         // Navigation properties
         public ApplicationUser Submitter { get; set; } // Navigation to Submitter (User)
