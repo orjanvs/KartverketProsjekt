@@ -1,5 +1,4 @@
-﻿using KartverketProsjekt.Models.DomainModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
@@ -7,7 +6,7 @@ namespace KartverketProsjekt.Models.ViewModels
 {
     public class AddMapReportRequest
     {
-        [Required]
+        [Required(ErrorMessage = "A GeoJson shape is required. Please draw a shape on the map.")]
         public string GeoJson { get; set; }
 
         [Required]
