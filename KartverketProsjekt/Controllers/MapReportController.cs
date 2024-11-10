@@ -225,6 +225,8 @@ namespace KartverketProsjekt.Controllers
                     StatusDescription = mapReport.MapReportStatus.StatusDescription,
                     MapLayerId = mapReport.MapLayerId,
                     MapLayerType = mapReport.MapLayer.MapLayerType,
+                    County = mapReport.County,
+                    Municipality = mapReport.Municipality,
                     Attachments = mapReport.Attachments.Select(a => new AddAttachmentRequest
                     {
                         AttachmentId = a.AttachmentId,
