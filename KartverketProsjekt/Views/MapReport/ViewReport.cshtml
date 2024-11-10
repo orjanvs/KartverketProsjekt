@@ -206,9 +206,9 @@
             <text>
 
                     try {
-                                                    // Initializing a variable with the GeoJson property value.
-                                                    // Html.Raw() is used to avoid encoding the JSON string
-                                                    var geoJsonData = @Html.Raw(Model.GeoJsonString);
+                    // Initializing a variable with the GeoJson property value.
+                    // Html.Raw() is used to avoid encoding the JSON string
+                    var geoJsonData = @Html.Raw(Model.GeoJsonString);
 
                     // Creates new featuregroup instance to store layers from GeoJSON data
                     var drawnItems = new L.FeatureGroup();
@@ -229,7 +229,7 @@
                     if (bounds.isValid()) {
                         map.fitBounds(bounds);
                                                     }
-                                                } catch (error) {
+                    } catch (error) {
                         console.error("Error processing GeoJSON:", error);
                                                 }
             </text>
