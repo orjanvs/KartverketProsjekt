@@ -22,17 +22,17 @@ body {
 }
 
 .center-container {
-    position: absolute; /* Allows it to fill the viewport without affecting the navbar and footer */
+    position: absolute; 
     top: 0;
     left: 0;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
+    width: 100vw; 
+    height: 100vh; 
     background: url('/images/BG.jpg') no-repeat center center;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: -1; /* Places it behind other content */
+    z-index: -1; 
 }
 .center-button {
     background-color: #156630;
@@ -42,12 +42,12 @@ body {
     font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Legger til skygge under knappen */
-    transition: box-shadow 0.3s ease; / Legger til overgang for skyggen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transition: box-shadow 0.3s ease;
 }
 
 .center-button:hover {
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); / Forsterker skyggen når knappen hovres over */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
 #map {

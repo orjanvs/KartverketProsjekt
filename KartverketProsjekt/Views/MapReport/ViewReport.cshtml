@@ -153,10 +153,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <script>
+<script>
     var mapLayerId = @Model.MapLayerId;
     var geoJsonData = @Html.Raw(Model.GeoJsonString);
     var title = @Html.Raw(Json.Serialize(Model.Title));
-    </script>
-    <script src="~/js/viewReportLeaflet.js"></script>
+</script>
+<script src="~/js/viewReportLeaflet.js"></script>
 }
