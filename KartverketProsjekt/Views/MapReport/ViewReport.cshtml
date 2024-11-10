@@ -8,7 +8,7 @@
             @if (Model != null)
             {
                 <div class="card" style="box-sizing: border-box; padding: 10px;">
-                    <h7 class="card-header">
+                    <h7 class="card-header border-bottom-0">
                         <div class="container">
                             <small class="text-muted">
                                 Innmelder
@@ -32,7 +32,7 @@
                         
                     </h7>
                     <div class="mb3">
-                        <p class="card-text">
+                        <p class="card-text" style="box-sizing: border-box; padding-left: 10px;">
                             <small class="text-muted">
                                 Innmelding #@Model.MapReportId
                                 <span style="float: right;">
@@ -42,7 +42,7 @@
                         </p>
                      </div>
                     <div class="mb3">
-                        <p class="card-text">
+                        <p class="card-text" style="box-sizing: border-box; padding-left: 10px;">
                             <small class="text-muted">
                                 @Model.Municipality, @Model.County
                             </small>
@@ -80,10 +80,57 @@
                         <p>Ingen vedlegg tilgjengelig.</p>
                         }
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer border-top-0">
                         <div class="container" style="text-align: center;">
                             <h1>@Model.StatusDescription</h1>
                         </div>
+                    </div>
+                    <div class="container">
+                        <form method="post">
+                            @{
+                                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            }
+
+                            <div class="d-flex gap-2" style="align-items: center;">
+                                @if (User.IsInRole("Case Handler"))
+                                {
+                                    @if (Model.MapReportStatusId == 1)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-primary flex-fill">
+                                            Start behandling
+                                        </button>
+                                    }
+                                    else if (Model.MapReportStatusId == 2 && Model.CaseHandlerId == currentUserId)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-success flex-fill"
+                                                onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
+                                            Fullfør behandling
+                                        </button>
+                                        <button type="button" class="btn btn-warning flex-fill" data-bs-toggle="modal" data-bs-target="#reassignModal">
+                                            Tildel sak
+                                        </button>
+                                    }
+                                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-danger flex-fill"
+                                                onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
+                                            Slett innmelding
+                                        </button>
+                                    }
+                                }
+                                else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
+                                {
+                                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
+                                            class="btn btn-danger flex-fill"
+                                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
+                                        Slett innmelding
+                                    </button>
+                                }
+                            </div>
+                        </form>
                     </div>
                 </div>
             }
@@ -91,50 +138,6 @@
             {
             <p>Ingen innmelding funnet!</p>
             }
-
-            <form method="post">
-                @{var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);}
-
-                <div class="d-flex gap-2">
-                    @if (User.IsInRole("Case Handler"))
-                    {
-                    @if (Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-primary flex-fill">
-                        Start behandling
-                    </button>
-                    }
-                    else if (Model.MapReportStatusId == 2 && Model.CaseHandlerId == currentUserId)
-                    {
-                    <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-success flex-fill"
-                            onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
-                        Fullfør behandling
-                    </button>
-                    <button type="button" class="btn btn-warning flex-fill" data-bs-toggle="modal" data-bs-target="#reassignModal">
-                        Tildel til annen saksbehandler
-                    </button>
-                    }
-                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger flex-fill"
-                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
-                        Slett innmelding
-                    </button>
-                    }
-                    }
-                    else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger flex-fill"
-                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
-                        Slett innmelding
-                    </button>
-                    }
-                </div>
-            </form>
         </div>
 
         <div class="col-md-8">
