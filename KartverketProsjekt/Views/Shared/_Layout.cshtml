@@ -13,110 +13,110 @@
     <link rel="stylesheet" href="~/KartverketProsjekt.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" /> 
+          crossorigin="" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/kartverket-logo.svg" alt="Kartverket Logo" style="height: 60px;" />
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
-                        </li>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/kartverket-logo.svg" alt="Kartverket Logo" style="height: 60px;" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
+                    </li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Innmeldingsoversikt
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-area=""
+                                   asp-controller="MapReport"
+                                   asp-action="ListForm">
+                                    Tabellvisning
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-area=""
+                                   asp-controller="MapReport"
+                                   asp-action="MapListForm">
+                                    Kartvisning
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
+                    </li>
+
+                    <li class="nav-item ms-auto d-flex align-items-center">
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Innmeldingsoversikt
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area=""
-                                           asp-controller="MapReport"
-                                           asp-action="ListForm">
-                                            Tabellvisning
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area=""
-                                           asp-controller="MapReport"
-                                           asp-action="MapListForm">
-                                            Kartvisning
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
-                        </li>
-
-                        <li class="nav-item ms-auto d-flex align-items-center">
-                            @if (signInManager.IsSignedIn(User))
-                            {
-                                <span class="text-black-50 me-2">
+                        <span class="text-black-50 me-2">
                                     <a class="nav-link text-dark" asp-controller="Account" asp-action="ProfilePage"> @User?.Identity?.Name</a>
                                 </span>
+                        }
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
+                                    Logg ut
+                                </a>
+                            </li>
                             }
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                @if (signInManager.IsSignedIn(User))
-                                {
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
-                                            Logg ut
-                                        </a>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Register">
-                                            Registrer
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Login">
-                                            Logg inn
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                            else
+                            {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+                                    Registrer
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Login">
+                                    Logg inn
+                                </a>
+                            </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted bg-white">
-        <div class="container">
-            &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted bg-white">
+    <div class="container">
+        &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

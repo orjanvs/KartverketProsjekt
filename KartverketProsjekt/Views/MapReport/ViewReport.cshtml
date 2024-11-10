@@ -2,132 +2,117 @@
 @using KartverketProsjekt.Models.ViewModels
 @model ViewMapReportRequest
 
-
-
 <div class="container py-5">
     <div class="row">
         <div class="col-md-4">
             @if (Model != null)
             {
-                <form method="get">
+            <form method="get">
+                <div class="mb-3">
+                    <label class="form-label">Id</label>
+                    <input type="text" id="id" class="form-control" asp-for="MapReportId" readonly />
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Id</label>
-                        <input type="text" id="id" class="form-control" asp-for="MapReportId" readonly />
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Kartlag</label>
+                    <input type="text" id="mapLayer" class="form-control" asp-for="MapLayerType" readonly />
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Kartlag</label> <!-- Nytt felt for Kartlag -->
-                        <input type="text" id="mapLayer" class="form-control"
-                               asp-for="MapLayerType" readonly />
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Dato</label>
+                    <input type="text" id="date" class="form-control" asp-for="SubmissionDate" readonly />
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Dato</label>
-                        <input type="text" id="date" class="form-control" asp-for="SubmissionDate" readonly />
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <input type="text" id="status" class="form-control" asp-for="StatusDescription" readonly />
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <input type="text" id="status" class="form-control"
-                              asp-for="StatusDescription" readonly />
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Beskrivelse</label>
+                    <textarea id="description" class="form-control" asp-for="Description" readonly style="resize: vertical;"></textarea>
+                </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Innsender</label>
+                    <input type="text" id="submitter" class="form-control" asp-for="SubmitterName" readonly />
+                </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Saksbehandler</label>
+                    <input type="text" id="caseHandler" class="form-control" asp-for="CaseHandlerName" readonly />
+                </div>
 
-                    <div class="mb-3">
-                        <div class="mb-3">
-                            <label class="form-label">Beskrivelse</label>
-                            <textarea id="description" class="form-control" asp-for="Description" readonly style="resize: vertical;"></textarea>
-                        </div>
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Innsender</label>
-                        <input type="text" id="submitter" class="form-control" asp-for="SubmitterName" readonly />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Saksbehandler</label>
-                        <input type="text" id="caseHandler" class="form-control" asp-for="CaseHandlerName" readonly />
-                    </div>
-
-
-
-                    <div class="mb-3">
-                        <label class="form-label">Vedlegg</label>
-                        @if (Model.Attachments != null && Model.Attachments.Any())
+                <div class="mb-3">
+                    <label class="form-label">Vedlegg</label>
+                    @if (Model.Attachments != null && Model.Attachments.Any())
+                    {
+                    <ul>
+                        @foreach (var attachment in Model.Attachments)
                         {
-                            <ul>
-                                @foreach (var attachment in Model.Attachments)
-                                {
-                                    <li>@attachment.FilePath</li> <!-- Viser filnavnet som tekst -->
-                                }
-                            </ul>
+                        <li>@attachment.FilePath</li>
                         }
-                        else
-                        {
-                            <p>Ingen vedlegg tilgjengelig.</p>
-                        }
-                    </div>
-
-                </form>
+                    </ul>
+                    }
+                    else
+                    {
+                    <p>Ingen vedlegg tilgjengelig.</p>
+                    }
+                </div>
+            </form>
             }
             else
             {
-                <p>Ingen innmelding funnet!</p>
+            <p>Ingen innmelding funnet!</p>
             }
 
             <form method="post">
-
                 @{var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);}
 
-                @if (User.IsInRole("Case Handler"))
-                {
+                <div class="d-flex gap-2">
+                    @if (User.IsInRole("Case Handler"))
+                    {
                     @if (Model.MapReportStatusId == 1)
                     {
-                        <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                                class="btn btn-primary">
-                            Start behandling
-                        </button>
+                    <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                            class="btn btn-primary flex-fill">
+                        Start behandling
+                    </button>
                     }
                     else if (Model.MapReportStatusId == 2 && Model.CaseHandlerId == currentUserId)
                     {
-                        <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                                class="btn btn-success"
-                                onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
-                            Fullfør behandling
-                        </button>
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reassignModal">
-                            Reassign Case Handler
-                        </button>
+                    <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                            class="btn btn-success flex-fill"
+                            onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
+                        Fullfør behandling
+                    </button>
+                    <button type="button" class="btn btn-warning flex-fill" data-bs-toggle="modal" data-bs-target="#reassignModal">
+                        Tildel til annen saksbehandler
+                    </button>
                     }
-                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1) 
+                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
                     {
                     <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger"
+                            class="btn btn-danger flex-fill"
                             onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
                         Slett innmelding
                     </button>
                     }
-                }
-                else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
-                {
+                    }
+                    else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
+                    {
                     <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger"
+                            class="btn btn-danger flex-fill"
                             onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
                         Slett innmelding
                     </button>
-                }
-
+                    }
+                </div>
             </form>
         </div>
 
-
         <div class="col-md-8">
             <div id="map"></div>
-
         </div>
     </div>
 </div>
@@ -137,24 +122,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="reassignModalLabel">Reassign Case Handler</h5>
+                <h5 class="modal-title" id="reassignModalLabel">Tildel til annen saksbehandler</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method="post" asp-action="AssignCaseHandler">
                     <input type="hidden" asp-for="MapReportId" />
                     <div class="mb-3">
-                        <label for="newCaseHandler" class="form-label">Select New Case Handler</label>
+                        <label for="newCaseHandler" class="form-label">Velg saksbehandler</label>
                         <select id="newCaseHandler" class="form-select" asp-for="CaseHandlerId" asp-items="Model.AvailableCaseHandlers"></select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Reassign</button>
+                    <button type="submit" class="btn btn-primary">Tildel</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
+@section Scripts 
+{
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
