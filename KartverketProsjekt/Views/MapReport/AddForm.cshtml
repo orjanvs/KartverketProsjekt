@@ -5,27 +5,25 @@
 
 
 <div class="container py-3" style="margin-top: -15px;">
-    <!-- Reduced padding and moved up -->
-    <h5 id="form-title-preview">Ny innmelding</h5> <!-- Title preview -->
-
     <div class="container py-4">
         <div class="row">
-            <!-- Submission Form Section -->
+            <!-- Left Column with Title and Form -->
             <div class="col-md-4">
+                <!-- Title centered in the form container -->
+                <h3 id="form-title-preview" class="text-center mb-4">Ny innmelding</h3>
+
                 <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
                     <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
                     <span asp-validation-for="GeoJson" class="text-danger"></span>
                     <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
                     <div class="mb-3">
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Tittel</label>
-                            <input type="text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
-                        </div>
+                        <label for="title" class="form-label">Tittel</label>
+                        <input type="text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Beskrivelse av feil</label>
+                        <label for="description" class="form-label">Beskrivelse av feil</label>
                         <textarea id="description" name="Description" class="form-control" required></textarea>
                     </div>
 
@@ -42,14 +40,13 @@
                 </form>
             </div>
 
-            <!-- Map Section -->
+            <!-- Right Column with Map -->
             <div class="col-md-8">
                 <div id="map" style="height: 600px;" class="shadow-sm rounded mb-4"></div>
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts 
 {
     <link rel="stylesheet" href="~/css/AddFormStyleSheet.css" />
