@@ -78,7 +78,7 @@ namespace KartverketProsjekt.Controllers
             var currentCaseHandler = await _userManager.GetUserAsync(User);
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
 
-            if (mapReport != null)
+            if (mapReport != null && currentCaseHandler != null)
             {
                 mapReport.MapReportStatusId = 2; // Placeholder value for status "Under behandling"
                 mapReport.CaseHandlerId = currentCaseHandler.Id;
@@ -95,7 +95,7 @@ namespace KartverketProsjekt.Controllers
         {
             var currentCaseHandler = await _userManager.GetUserAsync(User);
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
-            if (mapReport != null && mapReport.CaseHandlerId == currentCaseHandler.Id)
+            if (mapReport != null && currentCaseHandler != null && mapReport.CaseHandlerId == currentCaseHandler.Id)
             {
                 mapReport.MapReportStatusId = 3; //Completed
                 await _mapReportRepository.UpdateMapReportAsync(mapReport);
@@ -137,6 +137,10 @@ namespace KartverketProsjekt.Controllers
         private async Task<(string userId, string userRole, List<MapReportModel> mapReports)> GetAllMapReportsBasedOnUserAndUserRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null) 
+            {
+                throw new InvalidOperationException("User not found.");
+            }
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
             var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
@@ -253,6 +257,10 @@ namespace KartverketProsjekt.Controllers
             {
                 mapReport.CaseHandlerId = model.CaseHandlerId;
                 var newCaseHandler = await _userManager.FindByIdAsync(model.CaseHandlerId);
+                if (newCaseHandler == null)
+                {
+                    return NotFound("Case handler not found.");
+                }
                 mapReport.CaseHandler = newCaseHandler;
                 await _mapReportRepository.UpdateMapReportAsync(mapReport);
             }

@@ -103,16 +103,20 @@ namespace KartverketProsjekt.Controllers
             public async Task<IActionResult> ProfilePage()
             {
                 var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser != null)
+            {
                 var profilePageViewModel = new ProfilePageViewModel
                 {
                     Email = currentUser.Email,
                     FirstName = currentUser.FirstName,
                     LastName = currentUser.LastName
                 };
-                return View(profilePageViewModel);
+                return View(profilePageViewModel); 
             }
-
-
+            // Show error notification
+            return RedirectToAction("Login");
         }
     }
+}
 
