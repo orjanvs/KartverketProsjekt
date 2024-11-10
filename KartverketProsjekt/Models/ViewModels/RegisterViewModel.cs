@@ -16,6 +16,8 @@ namespace KartverketProsjekt.Models.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(8, ErrorMessage = "Password has to be at least 8 characters")]
+        [PasswordComplexity]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

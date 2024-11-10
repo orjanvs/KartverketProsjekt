@@ -34,27 +34,35 @@ namespace KartverketProsjekt.Controllers
         // Adds a new map report to the list of map reports
         public async Task<IActionResult> AddForm(AddMapReportRequest request)            // string geoJson, string description, int mapLayerId
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
-            var newMapReport = new MapReportModel
-            {
-                Description = request.Description,
-                Title = request.Title,
-                GeoJsonString = request.GeoJson,
-                MapReportStatusId = 1, // Default status for newly created map reports
-                MapLayerId = request.MapLayerId,
-                SubmissionDate = DateTime.Now,
-                SubmitterId = currentSubmitter.Id, 
-                Attachments = new List<AttachmentModel>()
-            };
+                var newMapReport = new MapReportModel
+                {
+                    Description = request.Description,
+                    Title = request.Title,
+                    GeoJsonString = request.GeoJson,
+                    MapReportStatusId = 1, // Default status for newly created map reports
+                    MapLayerId = request.MapLayerId,
+                    SubmissionDate = DateTime.Now,
+                    SubmitterId = currentSubmitter.Id,
+                    Attachments = new List<AttachmentModel>()
+                };
 
-            HandleAttachments(request, newMapReport);
+                HandleAttachments(request, newMapReport);
 
-            await _mapReportRepository.AddMapReportAsync(newMapReport);
+                await _mapReportRepository.AddMapReportAsync(newMapReport);
 
-            // Redirect to view form with the id of the new map report
-            return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
-            //return RedirectToAction("ListForm");
+                // Redirect to view form with the id of the new map report
+                return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
+                //return RedirectToAction("ListForm");
+            
+            
         }
 
         [Authorize(Roles = "Case Handler")]

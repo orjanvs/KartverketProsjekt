@@ -3,25 +3,25 @@
 
 <div id="map"></div>
 
+
 <div class="container py-5">
     <form asp-action="AddForm" enctype="multipart/form-data" method="post">
         <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+        <span asp-validation-for="GeoJson" class="text-danger"></span>
         <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
         <div class="mb-3">
             <div class="form-group">
                 <label for="title">Tittel</label>
-                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5">
+                <input type="Text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
             </div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Beskrivelse av feil</label>
-            <textarea id="description" name="Description" class="form-control"></textarea>
+            <textarea id="description" name="Description" class="form-control" required></textarea>
         </div>
 
-
-        <!-- Nytt felt for vedlegg -->
         <div id="attachments-container" class="mb-3">
             <label for="attachment" class="form-label">Last opp vedlegg</label>
             <input type="file" id="attachment" name="Attachments" class="form-control" />
@@ -31,7 +31,6 @@
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Send inn</button>
         </div>
-
     </form>
 </div>
 
@@ -56,6 +55,7 @@
             document.getElementById('attachments-container').appendChild(newAttachmentInput);
         });
     </script>
+    
 
     <script>
         // Code from GeoJSON lab exercise with some modifications
@@ -170,4 +170,6 @@
             }
         });
     </script>
+
+    
 }
