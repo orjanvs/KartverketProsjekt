@@ -8,7 +8,7 @@
 <div class="container">
    <div id="overlay">
         <div class="collapse collapse-horizontal" id="previewInfo" style="position: absolute; z-index: 20000; float: left;">
-            <div class="card card-body" id="loadPreview" style="width: 30vw; height: 75vh; position: relative;">
+            <div class="card" id="loadPreview" style="width: 25vw; height: 75vh; position: relative;">
                 PLACEHOLDER
             </div>
         </div>
@@ -47,7 +47,7 @@
             // Initialising map with geolocation variables as position and default map layer
             var map = L.map('map', {
                 center: [60.14, 10.25],
-                zoom: 9,
+                zoom: 6,
                 layers: [baseMaps["Fargekart"]], // Set default layer
                 zoomControl: false
             });
@@ -94,7 +94,7 @@
                             var lon = centroid.geometry.coordinates[0];
                             var lat = centroid.geometry.coordinates[1];
                             var marker = L.marker(([lat, lon]), { id: id });
-                            var title = `<a>ID: ${id}</a>`;
+                            var title = `<a>${id}</a>`;
                             marker.bindPopup(title);
                             marker.on('click', function(e) {
                                 $('#previewInfo').collapse('show');

@@ -263,8 +263,7 @@ namespace KartverketProsjekt.Controllers
                     MapReportId = mapReport.MapReportId,
                     Title = mapReport.Title,
                     Description = mapReport.Description,
-                    MapLayerId = mapReport.MapLayerId,
-                    MapLayerType = mapReport.MapLayer.MapLayerType,
+                    SubmissionDate = mapReport.SubmissionDate
                 };
                 return PartialView(viewModel);
             }

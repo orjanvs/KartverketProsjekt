@@ -1,15 +1,20 @@
 ﻿@using KartverketProsjekt.Models.ViewModels
 @model ViewMapReportRequest
 
-<div class="mb-3">
-    <div class="mb-3">
-        <h1>
-            @Model.Title
-        </h1>
-    </div>
-</div>
-<div class="mb-3">
-    <div class="mb-3">
+<h4 class="card-header">
+    Innmelding #@Model.MapReportId
+</h4>
+<div class="card-body">
+    <h3 class="card-title">
+        @Model.Title
+    </h3>
+    <p class="card-text overflow-auto" style="height:30vh;">
         @Model.Description
+    </p>
+    <p class="card-text"><small class="text-muted">Lagt til @Model.SubmissionDate</small></p>
+</div>
+<div class="card-footer">
+    <div class="container">
+        <a asp-controller="MapReport" asp-action="ViewReport" asp-route-id="@Model.MapReportId" class="btn btn-primary">Gå til innmelding</a>
     </div>
 </div>
