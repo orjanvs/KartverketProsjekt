@@ -42,6 +42,8 @@ namespace KartverketProsjekt.Controllers
 
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
+            if (currentSubmitter != null)
+            {
                 var newMapReport = new MapReportModel
                 {
                     Description = request.Description,
@@ -56,6 +58,7 @@ namespace KartverketProsjekt.Controllers
                     Municipality = request.Municipality
                 };
 
+
                 HandleAttachments(request, newMapReport);
 
                 await _mapReportRepository.AddMapReportAsync(newMapReport);
@@ -63,8 +66,9 @@ namespace KartverketProsjekt.Controllers
                 // Redirect to view form with the id of the new map report
                 return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
                 //return RedirectToAction("ListForm");
-            
-            
+            }
+            //Show error message
+            return View();
         }
 
         [Authorize(Roles = "Case Handler")]
