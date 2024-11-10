@@ -1,0 +1,30 @@
+@model KartverketProsjekt.Models.ViewModels.ProfilePageViewModel
+
+<head>
+    <link href="~/css/profilePageSheet.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<div class="center-background">
+    <div class="profile-wrapper">
+        <h1>Profil</h1>
+        <div class="avatar-container">
+            <img src="~/images/BGprofileBlack.svg" alt="Avatar" class="avatar">
+        </div>
+
+        <div class="profile-info">
+            <div class="input-box">
+                <label for="FirstName">Fornavn:</label>
+                <input type="text" asp-for="FirstName" readonly>
+            </div>
+            <div class="input-box">
+                <label for="LastName">Etternavn:</label>
+                <input type="text" asp-for="LastName" readonly>
+            </div>
+            <div class="input-box">
+                <label for="Email">E-post:</label>
+                <input type="email" asp-for="Email" readonly>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/KartverketProsjekt.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" /> 
+          crossorigin="" />
 </head>
 <body>
     <header>
@@ -28,11 +28,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
-                        </li>
                         @if (signInManager.IsSignedIn(User))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Innmeldingsoversikt
@@ -57,19 +57,19 @@
                                 </ul>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Om oss</a>
-                        </li>
-                        <li class="nav-item dropdown ms-auto">
-                            <a class="me-3 nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item ms-auto d-flex align-items-center">
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <span class="text-black-50 me-2">
+                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="ProfilePage"> @User?.Identity?.Name</a>
+                                </span>
+                            }
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" style="z-index: 30000">
                                 @if (signInManager.IsSignedIn(User))
                                 {
-                                    <li class="dropdown-item-text text-black-50">
-                                        @User?.Identity?.Name 
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
                                             Logg ut
@@ -78,21 +78,16 @@
                                 }
                                 else
                                 {
-                                    
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Account"
-                                       asp-action="Register">
-                                        Registrer
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Account"
-                                       asp-action="Login">
-                                        Logg inn
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+                                            Registrer
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Login">
+                                            Logg inn
+                                        </a>
+                                    </li>
                                 }
                             </ul>
                         </li>
@@ -106,7 +101,6 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted bg-white" style="z-index: 30000">
         <div class="container">
             &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>

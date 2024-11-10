@@ -1,4 +1,6 @@
-﻿namespace KartverketProsjekt.Models.ViewModels
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace KartverketProsjekt.Models.ViewModels
 {
     public class ViewMapReportRequest
     {
@@ -21,6 +23,8 @@
 
 
         public ICollection<AddAttachmentRequest> Attachments { get; set; }
+
+        public List<SelectListItem> AvailableCaseHandlers { get; set; }
 
 
     }

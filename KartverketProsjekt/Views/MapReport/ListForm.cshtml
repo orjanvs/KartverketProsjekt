@@ -14,30 +14,7 @@
     <input type="text" id="searchTable" placeholder="Søk..." />
 </div>
 
-<head>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-            /* Custom styling for filter-box */
-        .filter-box {
 
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .filter-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        /* Dropdown size */
-        .form-select {
-            max-width: 200px;
-        }
-    </style>
-</head>
 
 <body>
     <div class="container mt-3">
@@ -81,7 +58,6 @@
                         <th>Kommune</th>
                         <th>Kartlag</th>
                         <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
-                        <th>Prioritet</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -91,8 +67,8 @@
                         <tr>
                             <td>@mapReport.SubmissionDate</td>
                             <td>@mapReport.Title</td>
-                            <td>@mapReport.Description</td>
-                            <td>@mapReport.GeoJsonString</td>
+                            <td>@mapReport.County</td>
+                            <td>@mapReport.Municipality</td>
                             <td>@mapReport.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
                             <td>
 
@@ -105,7 +81,6 @@
                                     <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
                                 }
                             </td>
-                            <td>@mapReport.Description</td>
                             <td>@mapReport.StatusDescription</td>
 
                             <td>

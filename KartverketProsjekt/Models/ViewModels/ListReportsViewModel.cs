@@ -10,5 +10,8 @@ public class ListReportsViewModel
     public string MapLayerType { get; set; }
     public bool HasAttachments { get; set; }
     public string StatusDescription { get; set; }
+    public string County { get; set; }
+    public string Municipality { get; set; }
+
 
 }
