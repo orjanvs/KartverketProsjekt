@@ -196,7 +196,6 @@ namespace KartverketProsjekt.Controllers
 
             return View(viewModel);
         }
-    
 
      
         [Authorize]
@@ -275,6 +274,24 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id });
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> PreviewMapReport(int id)
+        {
+            var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);
+            if (mapReport != null) 
+            {
+                var viewModel = new ViewMapReportRequest
+                {
+                    MapReportId = mapReport.MapReportId,
+                    Title = mapReport.Title,
+                    Description = mapReport.Description,
+                    SubmissionDate = mapReport.SubmissionDate
+                };
+                return PartialView(viewModel);
+            }
+            return View("MapListForm");
+        }
 
     }
 }

@@ -1,4 +1,3 @@
-﻿
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KartverketProsjekt.Models.ViewModels

@@ -37,7 +37,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Innmeldingsoversikt
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" style="z-index: 30000">
                                     <li>
                                         <a class="dropdown-item"
                                            asp-area=""
@@ -67,7 +67,7 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end" style="z-index: 30000">
                                 @if (signInManager.IsSignedIn(User))
                                 {
                                     <li>
@@ -101,8 +101,7 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted bg-white">
+    <footer class="border-top footer text-muted bg-white" style="z-index: 30000">
         <div class="container">
             &copy; 2024 - KartverketProsjekt - <a asp-controller="Account" asp-action="Register">Registrer deg</a>
         </div>
