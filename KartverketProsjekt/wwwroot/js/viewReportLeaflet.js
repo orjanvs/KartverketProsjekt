@@ -3,7 +3,7 @@ var baseMaps = {
     "Fargekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
     "Gråtonekart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
     "Turkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' }),
-    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 9, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
+    "Sjøkart": L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 18, attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>' })
 };
 
 // Function to get the map layer based on mapLayerId
@@ -23,7 +23,7 @@ function getMapLayerById(mapLayerId) {
 }
 
 // Initialize the map with the correct layer
-var map = L.map('map').setView([60.145, 10.25], 10);
+var map = L.map('map').setView([60.145, 10.25], 15);
 getMapLayerById(mapLayerId).addTo(map);
 
 // Handle the GeoJSON data if it exists
