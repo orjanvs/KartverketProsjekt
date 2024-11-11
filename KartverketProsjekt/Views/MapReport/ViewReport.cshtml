@@ -7,118 +7,137 @@
         <div class="col-md-4">
             @if (Model != null)
             {
-            <form method="get">
-                <div class="mb-3">
-                    <label class="form-label">Id</label>
-                    <input type="text" id="id" class="form-control" asp-for="MapReportId" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Kartlag</label>
-                    <input type="text" id="mapLayer" class="form-control" asp-for="MapLayerType" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Dato</label>
-                    <input type="text" id="date" class="form-control" asp-for="SubmissionDate" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Status</label>
-                    <input type="text" id="status" class="form-control" asp-for="StatusDescription" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Fylke</label>
-                    <input type="text" id="county" class="form-control" asp-for="County" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Kommune</label>
-                    <input type="text" id="municipality" class="form-control" asp-for="Municipality" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Beskrivelse</label>
-                    <textarea id="description" class="form-control" asp-for="Description" readonly style="resize: vertical;"></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Innsender</label>
-                    <input type="text" id="submitter" class="form-control" asp-for="SubmitterName" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Saksbehandler</label>
-                    <input type="text" id="caseHandler" class="form-control" asp-for="CaseHandlerName" readonly />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Vedlegg</label>
-                    @if (Model.Attachments != null && Model.Attachments.Any())
-                    {
-                    <ul>
-                        @foreach (var attachment in Model.Attachments)
+                <div class="card" style="box-sizing: border-box; padding: 10px;">
+                    <h7 class="card-header border-bottom-0">
+                        <div class="container">
+                            <small class="text-muted">
+                                Innmelder
+                            </small>
+                            <span style="float: right;">
+                                <small class="text-muted">
+                                    Saksbehandler
+                                </small>
+                            </span>
+                        </div>
+                        <div class="container">
+                            @Model.SubmitterName
+                            <span style="float: right;">
+                            @if (@Model.CaseHandlerName == null) {
+                                <text>Ingen tildelt</text>
+                            } else  {
+                                @Model.CaseHandlerName
+                            }
+                            </span>
+                        </div>
+                        
+                    </h7>
+                    <div class="mb3">
+                        <p class="card-text" style="box-sizing: border-box; padding-left: 10px;">
+                            <small class="text-muted">
+                                Innmelding #@Model.MapReportId
+                                <span style="float: right;">
+                                    Lagt til @Model.SubmissionDate
+                                </span>
+                            </small>
+                        </p>
+                     </div>
+                    <div class="mb3">
+                        <p class="card-text" style="box-sizing: border-box; padding-left: 10px;">
+                            <small class="text-muted">
+                                @Model.Municipality, @Model.County
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <small class="text-muted">
+                            Tittel:
+                        </small>
+                        <br />
+                        <h5 class="card-title">
+                            @Model.Title
+                        </h5>
+                        <small class="text-muted">
+                            Beskrivelse:
+                        </small>
+                        <br />
+                        <p class="card-text overflow-auto" style="height:30vh;">
+                            @Model.Description
+                        </p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vedlegg</label>
+                        @if (Model.Attachments != null && Model.Attachments.Any())
                         {
-                        <li>@attachment.FilePath</li>
+                        <ul>
+                            @foreach (var attachment in Model.Attachments)
+                            {
+                            <li>@attachment.FilePath</li>
+                            }
+                        </ul>
                         }
-                    </ul>
-                    }
-                    else
-                    {
-                    <p>Ingen vedlegg tilgjengelig.</p>
-                    }
+                        else
+                        {
+                        <p>Ingen vedlegg tilgjengelig.</p>
+                        }
+                    </div>
+                    <div class="card-footer border-top-0">
+                        <div class="container" style="text-align: center;">
+                            <h1>@Model.StatusDescription</h1>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <form method="post">
+                            @{
+                                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            }
+
+                            <div class="d-flex gap-2" style="align-items: center;">
+                                @if (User.IsInRole("Case Handler"))
+                                {
+                                    @if (Model.MapReportStatusId == 1)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-primary flex-fill">
+                                            Start behandling
+                                        </button>
+                                    }
+                                    else if (Model.MapReportStatusId == 2 && Model.CaseHandlerId == currentUserId)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-success flex-fill"
+                                                onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
+                                            Fullfør behandling
+                                        </button>
+                                        <button type="button" class="btn btn-warning flex-fill" data-bs-toggle="modal" data-bs-target="#reassignModal">
+                                            Tildel sak
+                                        </button>
+                                    }
+                                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
+                                                class="btn btn-danger flex-fill"
+                                                onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
+                                            Slett innmelding
+                                        </button>
+                                    }
+                                }
+                                else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
+                                {
+                                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
+                                            class="btn btn-danger flex-fill"
+                                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
+                                        Slett innmelding
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
             }
             else
             {
             <p>Ingen innmelding funnet!</p>
             }
-
-            <form method="post">
-                @{var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);}
-
-                <div class="d-flex gap-2">
-                    @if (User.IsInRole("Case Handler"))
-                    {
-                    @if (Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("StartHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-primary flex-fill">
-                        Start behandling
-                    </button>
-                    }
-                    else if (Model.MapReportStatusId == 2 && Model.CaseHandlerId == currentUserId)
-                    {
-                    <button type="submit" formaction="@Url.Action("FinishHandlingMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-success flex-fill"
-                            onclick="return confirm('Er du sikker på at du vil fullføre behandlingen av denne innmeldingen?')">
-                        Fullfør behandling
-                    </button>
-                    <button type="button" class="btn btn-warning flex-fill" data-bs-toggle="modal" data-bs-target="#reassignModal">
-                        Tildel til annen saksbehandler
-                    </button>
-                    }
-                    @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger flex-fill"
-                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
-                        Slett innmelding
-                    </button>
-                    }
-                    }
-                    else if (User.IsInRole("Submitter") && Model.MapReportStatusId == 1)
-                    {
-                    <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
-                            class="btn btn-danger flex-fill"
-                            onclick="return confirm ('Er du sikker på at du vil slette denne innmeldingen?');">
-                        Slett innmelding
-                    </button>
-                    }
-                </div>
-            </form>
         </div>
 
         <div class="col-md-8">
