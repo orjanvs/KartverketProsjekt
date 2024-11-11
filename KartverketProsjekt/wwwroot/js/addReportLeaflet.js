@@ -48,6 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add button to toggle map layers
         L.control.layers(baseMaps).addTo(map);
 
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: true,
+            collapsed: false,
+            position: 'bottomleft',
+            defaultMarkGeocode: false
+        }).addTo(map);
+            //.on('markgeocode', function (e) {
+            //    var latlng = e.geocode.center;
+            //    map.setView(latlng, 13);
+            //})
+            //.addTo(map);
+
         // Initializes the feature that will hold the drawn shapes and adds it to the map layer
         var drawnItems = new L.FeatureGroup();
         map.addLayer(drawnItems);
@@ -69,6 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
         map.addControl(drawControl);
+        
+
 
         // Event listener for when a shape is drawn
         map.on('draw:created', (e) => {
