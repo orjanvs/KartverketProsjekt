@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
+// Namespace for API models in KartverketProsjekt
 namespace KartverketProsjekt.API_Models
 {
+    // Class representing the response structure for place names (Stedsnavn) API
     public class StedsnavnResponse
     {
         [JsonPropertyName("metadata")]
@@ -11,6 +13,7 @@ namespace KartverketProsjekt.API_Models
         public List<Navn> Navn { get; set; } = new List<Navn>();
     }
 
+    // Class representing metadata for pagination and search details
     public class Metadata
     {
         [JsonPropertyName("side")]
@@ -32,6 +35,7 @@ namespace KartverketProsjekt.API_Models
         public int? ViserTil { get; set; }
     }
 
+    // Class representing details of a place name
     public class Navn
     {
         [JsonPropertyName("fylker")]
@@ -65,6 +69,7 @@ namespace KartverketProsjekt.API_Models
         public string? Stedstatus { get; set; }
     }
 
+    // Class representing county (fylke) information
     public class Fylke
     {
         [JsonPropertyName("fylkesnavn")]
@@ -74,6 +79,7 @@ namespace KartverketProsjekt.API_Models
         public string? Fylkesnummer { get; set; }
     }
 
+    // Class representing municipality information
     public class Kommune
     {
         [JsonPropertyName("kommunenavn")]
@@ -83,6 +89,7 @@ namespace KartverketProsjekt.API_Models
         public string? Kommunenummer { get; set; }
     }
 
+    // Class representing coordinates in a coordinate system
     public class Representasjonspunkt
     {
         [JsonPropertyName("koordsys")]
