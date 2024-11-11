@@ -23,7 +23,7 @@ function getMapLayerById(mapLayerId) {
 }
 
 // Initialize the map with the correct layer
-var map = L.map('map').setView([60.145, 10.25], 15);
+var map = L.map('map').setView([60.145, 10.25], 10);
 getMapLayerById(mapLayerId).addTo(map);
 
 // Handle the GeoJSON data if it exists
