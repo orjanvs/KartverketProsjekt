@@ -48,12 +48,14 @@ if (typeof geoJsonData !== 'undefined' && geoJsonData) {
         if (bounds.isValid()) {
             map.fitBounds(bounds);
         }
+        // Get centroid of figure and insert lat, lon into url
         var centroid = turf.centroid(geoJsonData);
         var thisLon = centroid.geometry.coordinates[0];
         var thisLat = centroid.geometry.coordinates[1];
         var mapsUrl = 'https://www.google.com/maps/place/'+thisLat+','+thisLon
         document.getElementById('googleMapsLink').href = mapsUrl;
 
+    // Error in case of GeoJSON processing failure, e.g. formatting errors
     } catch (error) {
         console.error("Error processing GeoJSON:", error);
     }

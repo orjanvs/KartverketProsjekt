@@ -5,6 +5,7 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-md-4">
+            <!--Outputs Model content if Model is not empty-->
             @if (Model != null)
             {
                 <div class="card" style="box-sizing: border-box; padding: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
@@ -91,6 +92,7 @@
                                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                             }
 
+                            <!--Displays case handling tools based on User role-->
                             <div class="d-flex gap-2" style="align-items: center; padding-top: 8px;">
                                 @if (User.IsInRole("Case Handler"))
                                 {
