@@ -91,7 +91,7 @@
                                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                             }
 
-                            <div class="d-flex gap-2" style="align-items: center;">
+                            <div class="d-flex gap-2" style="align-items: center; padding-top: 8px;">
                                 @if (User.IsInRole("Case Handler"))
                                 {
                                     @if (Model.MapReportStatusId == 1)
