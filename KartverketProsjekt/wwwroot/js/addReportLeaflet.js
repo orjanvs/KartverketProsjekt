@@ -1,4 +1,4 @@
-﻿// Wait for the page to load before initializing the map
+﻿// Function for request to Kommune API, makes a httprequest, returns response or reject error
 function ajax(url) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
@@ -10,6 +10,7 @@ function ajax(url) {
         xhr.send();
     });
 }
+// Wait for the page to load before initializing the map
 document.addEventListener("DOMContentLoaded", function () {
     // Using browser geolocation to get the user's position
     navigator.geolocation.getCurrentPosition(
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
+    // Init map
     function initializeMap(latitude, longitude) {
         // Add map layers
         var baseMaps = {
