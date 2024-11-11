@@ -1,39 +1,51 @@
+/* Base font size for the document */
 html {
     font-size: 14px;
 }
 
+/* Increase font size for larger screens (768px and above) */
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+/* Focus styling for buttons and input fields */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+/* HTML element settings for height */
 html {
     position: relative;
     min-height: 100%;
 }
 
+/* Body styling for extra space at the bottom */
 body {
     margin-bottom: 60px;
 }
 
+/* Container for centering background image and content */
 .center-container {
-    position: absolute; 
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw; 
-    height: 100vh; 
+    width: 100vw;
+    height: 100vh;
     background: url('/images/BG.jpg') no-repeat center center;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: -1; 
+    z-index: -1;
 }
+
+/* Styling for a button in the center */
 .center-button {
     background-color: #156630;
     color: white;
@@ -42,14 +54,16 @@ body {
     font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.3s ease;
 }
 
-.center-button:hover {
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
-}
+    /* Hover effect for center button */
+    .center-button:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
 
+/* Map container height styling */
 #map {
     height: 75vh;
 }
