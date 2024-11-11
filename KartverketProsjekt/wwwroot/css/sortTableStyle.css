@@ -1,12 +1,15 @@
-﻿body {
+﻿/* Body styling for extra bottom space */
+body {
     margin-bottom: 60px;
 }
 
+/* Styling for icon inside anchor tags */
 .box a .fa-solid {
     color: #1daf;
     font-size: 18px;
 }
 
+/* Box container styling for a clickable section */
 .box {
     height: 30px;
     display: flex;
@@ -19,10 +22,12 @@
     margin-bottom: 30px;
 }
 
+    /* Expand input field width on hover */
     .box:hover input {
         width: 1000px;
     }
 
+    /* Input field styling inside box */
     .box input {
         padding-left: 20px;
         border: none;
@@ -31,63 +36,67 @@
         transition: none;
     }
 
-    .box a .fa-solid {
-        color: #1daf;
-        font-size: 18px;
-    }
-
-
+/* Table header row styling */
 .table thead tr {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
 }
 
+/* Table sorting headers */
 .table-sortable th {
     cursor: pointer;
 }
 
+    /* Hover effect for sortable table headers */
     .table-sortable th:hover {
         background-color: #009879;
         color: white;
     }
 
+/* Up arrow indicator for ascending sort */
 .table-sortable .sorted-asc::after {
     content: "\25b4";
 }
 
+/* Down arrow indicator for descending sort */
 .table-sortable .sorted-desc::after {
     content: "\25be";
 }
 
+/* Margin styling for sort indicators */
 .table-sortable .sorted-asc::after,
 .table-sortable .sorted-desc::after {
     margin-left: 5px;
 }
 
-.table-sortable .sorted-asc
+/* Background styling for sorted columns */
+.table-sortable .sorted-asc,
 .table-sortable .sorted-desc {
     background: rgba(0, 0, 0, 0.1);
 }
 
+/* Filter box styling */
 .filter-box {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
+/* Container for filter section */
 .filter-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
 }
 
-
+/* Form select dropdown styling */
 .form-select {
     max-width: 200px;
 }
 
+/* Label styling inside filter box */
 .filter-box label {
-    color: #000; 
-    font-weight: bold; 
+    color: #000;
+    font-weight: bold;
 }
