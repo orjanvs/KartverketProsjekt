@@ -1,7 +1,46 @@
 # KartverketProsjekt
 
+## Applikasjonens oppsett
+Teknologier brukt i applikasjonen er som følger:
+
+* Docker: For å bygge opp og kjøre applikasjonen og databasen.
+* MariaDB: Relasjonsdatabase for lagring av data.
+* Applikasjonen er utviklet som en ASP.NET MVC-app i versjon 8.0 av .NET-rammeverket.
+* En IDE som støtter .NET. E.g. Visual Studio eller Rider.
+
+## Hvordan applikasjonen kjøres
+For å kjøre applikasjonen må følgende gjøres:
+
+* Windows
+  1. Installer Docker på systemet som skal kjøre applikasjonen
+  2. Klone koden fra repositorien til systemet som skal kjøre applikasjonen
+  3. Åpne applikasjonen i Visual Studio eller Rider
+  4. Kjøre applikasjonen med Docker Compose for å starte opp både applikasjonen og databasen i egne containere.
+ 
+* Mac
+Grunnet en ukjent feil får en ikke til å kjøre applikasjonen i en Docker container med Mac. For at applikasjonen skal kunne kjøres må den kjøres lokalt med en kobling til MariaDB-container som må settes opp manuelt. 
+  1. Følg samme steg frem til og med steg 3 for Windows.
+  2. Endre connection string på linje 28 i Program.cs til "MariaDbConnection".
+  3. Opprett en MariaDB Docker container med kommandoen under:
+`
+          docker run --name mariadb \
+        -e MYSQL_ROOT_PASSWORD=kartverket \  
+        -e MYSQL_DATABASE=KartverketDb \
+        -p 3307:3306 \
+        -v mariadb_data:/var/lib/mysql \
+        -d mariadb:latest`
+
+  4. Start applikasjonen lokalt fra IDEen med HTTPS. 
+
+
+
+
+
 Kartet bruker nettleseren sin innebygde geolokasjons API for å vise startposisjon i kartet.
-Hvis dette ikke aktiveres er default startposisjon koordinatene til Kristiansand. 
+Hvis dette ikke aktiveres er default startposisjon koordinatene til Kristiansand.
+
+
+
 
 Må være logget inn i en bruker for å bruke funksjoner i applikasjonen.
 
