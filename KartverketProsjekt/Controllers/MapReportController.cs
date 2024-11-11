@@ -109,8 +109,6 @@ namespace KartverketProsjekt.Controllers
         {
             if (request.Attachments != null && request.Attachments.Count > 0)
             {
-                // newMapReport.Attachments = new List<AttachmentModel>();
-
                 foreach (var file in request.Attachments)
                 {
                     if (file.Length > 0)
@@ -151,7 +149,7 @@ namespace KartverketProsjekt.Controllers
         [Authorize]
         [HttpGet]
         // Lists all map reports
-        public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 50)
+        public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 30)
         {
             if (pageNumber < 1)
             {
