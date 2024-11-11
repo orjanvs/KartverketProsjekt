@@ -1,5 +1,6 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using KartverketProsjekt.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,18 +18,21 @@ namespace KartverketProsjekt.Controllers
             _signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -36,6 +40,7 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
@@ -77,6 +82,7 @@ namespace KartverketProsjekt.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
@@ -95,14 +101,14 @@ namespace KartverketProsjekt.Controllers
 
             // Show error notification
             return View();
-        } 
+        }
 
 
-
-            [HttpGet]
-            public async Task<IActionResult> ProfilePage()
-            {
-                var currentUser = await _userManager.GetUserAsync(User);
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ProfilePage()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
 
             if (currentUser != null)
             {
