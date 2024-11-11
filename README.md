@@ -39,7 +39,7 @@ Brukere kan registrere egne brukere. Epost benyttes som brukernavn.
 
 ### Innlogging/Autentisering
 For å få tilgang til å bruke applikasjonen må brukere logge inn. 
-For testet er det seeded to testbrukere inn i databasen:
+For test er det seeded to testbrukere inn i databasen:
 
 Testbruker saksbehandler:
 Email: casehandler@test.com,
