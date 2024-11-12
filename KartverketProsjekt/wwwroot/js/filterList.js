@@ -1,33 +1,80 @@
 ﻿
+/**
+ * Extracts data from a table and returns it as an array of arrays.
+ * Each inner array represents a row in the table, with each item corresponding to a cell's content.
+ * 
+ * This function assumes that the table has an ID of 'firstTableId' and that the data is contained 
+ * within the rows of the table (not including headers). It will loop through each row and each 
+ * cell within the row to gather the table's data.
+ * 
+ * @returns {Array} A 2D array representing the table's data, where each inner array is a row,
+ *                  and each element in the inner array is a cell's content.
+ */
 
+const tableData = () => { 
+    const searchData = []; 
+    const tableEl = document.getElementById('firstTableId'); 
+    Array.from(tableEl.children[1].children).forEach(_bodyRowEl => { 
 
-const tableData = () => {
-    const searchData = [];
-    const tableEl = document.getElementById('firstTableId');
-    Array.from(tableEl.children[1].children).forEach(_bodyRowEl => {
-
-        searchData.push(Array.from(_bodyRowEl.children).map(_cellEl => {
-            return _cellEl.innerHTML;
+        searchData.push(Array.from(_bodyRowEl.children).map(_cellEl => { 
+            return _cellEl.innerHTML; 
         }));
     });
-    return searchData;
+    return searchData; 
 }
 
-const createSearchInputElement = () => {
-    const el = document.createElement('input');
-    el.classList.add('portexe-search-input');
-    el.id = 'portexe-search-input';
-    el.placeholder = 'Søk...'; // Added placeholder for better UX
-    return el;
+/**
+ * createSearchInputElement creates an input element for the search functionality.
+ * 
+ * This function:
+ * - Creates a new input element.
+ * - Adds a CSS class to style the input.
+ * - Sets an ID for the input element for potential reference in the DOM.
+ * - Sets a placeholder text for the input field.
+ * - Returns the created input element.
+ * 
+ * @returns {HTMLInputElement} The created search input element.
+ */
+
+
+const createSearchInputElement = () => {    
+    const el = document.createElement('input');     //This variable creates an input element and stores it in the variable el
+    el.classList.add('portexe-search-input');   
+    el.id = 'portexe-search-input';     
+    el.placeholder = 'Søk...';  
 }
 
 
-const search = (arr, searchTerm) => {
-    if (!searchTerm) return arr;
-    return arr.filter(_row => {
-        return _row.find(_item => _item.toLowerCase().includes(searchTerm.toLowerCase()));
+/**
+ * Searches through a 2D array of strings and returns rows that contain the search term.
+ * The function performs a case-insensitive search across all items in each row.
+ * 
+ * @param {Array} arr - A 2D array (array of arrays) where each inner array represents a row of data.
+ * @param {string} searchTerm - The term to search for in the data. If the term is empty or not provided, all rows are returned.
+ * @returns {Array} - A filtered array of rows that contain the search term in at least one of the cells.
+ */
+
+const search = (arr, searchTerm) => {       
+    if (!searchTerm) return arr;        
+    return arr.filter(_row => {        
+        return _row.find(_item => _item.toLowerCase().includes(searchTerm.toLowerCase()));  
     });
 }
+
+
+/**
+ * Refreshes the contents of a table by updating its rows with new data.
+ * 
+ * This function clears the current table body and then populates it with 
+ * new rows and cells based on the provided `data`. It assumes the table 
+ * has an ID of 'firstTableId' and the data is in a 2D array format where 
+ * each sub-array represents a row in the table.
+ * 
+ * @param {Array} data - A 2D array where each sub-array represents a row
+ *                       in the table, and each element in the sub-array 
+ *                       corresponds to a cell in the row.
+ */
+
 
 const refreshTable = (data) => {
     const tableBody = document.getElementById('firstTableId').children[1];
@@ -45,21 +92,44 @@ const refreshTable = (data) => {
 }
 
 
+/**
+ * Initializes the table search functionality by setting up an event listener 
+ * on the search input field. When the user types in the search input, the table 
+ * will be dynamically filtered based on the search term.
+ * 
+ * This function retrieves the search input element, listens for the 'keyup' 
+ * event, and filters the table data accordingly by calling the `search` function 
+ * and then updating the table with the filtered data using `refreshTable`.
+ */
+
 const init = () => {
-    const searchInput = document.getElementById('searchTable');
+    const searchInput = document.getElementById('searchTable'); // Get the search input element
 
     searchInput.addEventListener('keyup', (e) => {
         refreshTable(search(initialTableData, e.target.value));
     });
 }
 
-const initialTableData = tableData();
-
+const initialTableData = tableData(); // Extract the initial table data
 
 init();
 
+/**
+ * Sorts the rows of a table by a specific column index and order (ascending/descending).
+ * The table must have the class `.table-sortable` from html, and each `<th>` should have a `data-type`
+ * attribute that indicates the type of data in the column (e.g., 'number', 'date', 'string').
+ * 
+ * @param {number} columnIndex - The index (0-based) of the column to sort by.
+ * 
+ * @param {boolean} [ascending=true] - A boolean value indicating the sort order. 
+ *                                      If `true`, the table will be sorted in ascending order; 
+ *                                      if `false`, it will be sorted in descending order.
+ * 
+ * @param {sortedRows} - The sorted rows of the table based on the specified column index and order.
+ */
+
 function sortTableByColumn(columnIndex, ascending) {
-    if (ascending === undefined) {
+    if (ascending === undefined) { 
         ascending = true;
     }
 
@@ -71,25 +141,25 @@ function sortTableByColumn(columnIndex, ascending) {
     const type = table.querySelector(`th:nth-child(${columnIndex + 1})`).getAttribute("data-type");
 
     // Sort each row
-    const sortedRows = rows.sort((a, b) => {
+    const sortedRows = rows.sort((a, b) => { //This loop sorts the rows based on the column index and order
         const aText = a.children[columnIndex].innerText;
         const bText = b.children[columnIndex].innerText;
 
         let aValue;
         let bValue;
 
-        if (type === 'number') {
+        if (type === 'number') { // Corrected the data type comparison
             aValue = parseFloat(aText);
             bValue = parseFloat(bText);
-        } else if (type === 'date') {
+        } else if (type === 'date') { // Corrected the data type comparison
             aValue = new Date(aText);
             bValue = new Date(bText);
-        } else {
+        } else { 
             aValue = aText.toLowerCase();
             bValue = bText.toLowerCase();
         }
 
-        return ascending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+        return ascending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1); // Corrected the comparison operators
     });
 
     const tbody = table.querySelector("tbody");
@@ -97,6 +167,7 @@ function sortTableByColumn(columnIndex, ascending) {
     sortedRows.forEach(row => tbody.appendChild(row)); // Append sorted rows
 }
 
+    
 let currentSortColumn = null;
 let currentSortAscending = true;
 
@@ -125,18 +196,22 @@ document.querySelectorAll(".table-sortable th").forEach((header, index) => { // 
 });
 
 
-// Filter the table by status
+/**
+ * Filters the rows in the table by the selected status.
+ * 
+ * @param {string} selectedStatus - The status to filter by (e.g., 'active', 'inactive', or 'all').
+ */
 function filterTableByStatus(selectedStatus) {
     const table = document.getElementById('firstTableId');
     const rows = table.querySelectorAll('tbody tr');
     const statusColumnIndex = 6; // Status column is at index 6 (7th column)
 
-    rows.forEach(row => {
-        const statusCell = row.children[statusColumnIndex];
-        const cellStatusValue = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
+    rows.forEach(row => { 
+        const statusCell = row.children[statusColumnIndex]; //this variable stores the status cell of the row
+        const cellStatusValue = statusCell ? statusCell.textContent.trim().toLowerCase() : ''; //this variable stores the status value of the cell
         const normalizedSelectedStatus = selectedStatus.toLowerCase();
 
-        if (normalizedSelectedStatus === 'all' || cellStatusValue === normalizedSelectedStatus) {
+        if (normalizedSelectedStatus === 'all' || cellStatusValue === normalizedSelectedStatus) { //if the selected status is 'all' or the cell status value matches the selected status
             row.style.display = ''; // Show row
         } else {
             row.style.display = 'none'; // Hide row
@@ -144,24 +219,33 @@ function filterTableByStatus(selectedStatus) {
     });
 }
 
-// Filter the table by Kartlag
-function filterTableByKartlag(selectedKartlag) {
+/**
+ * Filters the rows in the table by the selected Kartlag.
+ * 
+ * @param {string} selectedKartlag - The Kartlag to filter by (e.g., 'active', 'inactive', or 'all').
+ */
+
+function filterTableByKartlag(selectedKartlag) { 
     const table = document.getElementById('firstTableId');
     const rows = table.querySelectorAll('tbody tr');
     const kartlagColumnIndex = 4; // Kartlag column is at index 4 (5th column)
 
-    rows.forEach(row => {
-        const kartlagCell = row.children[kartlagColumnIndex];
+    rows.forEach(row => { //this loop goes through each row in the table 'tbody' of the table
+        const kartlagCell = row.children[kartlagColumnIndex]; //this variable stores the kartlag cell of the row we are currently on
         const cellKartlagValue = kartlagCell ? kartlagCell.textContent.trim().toLowerCase() : '';
-        const normalizedSelectedKartlag = selectedKartlag.toLowerCase();
+        const normalizedSelectedKartlag = selectedKartlag.toLowerCase(); //this variable stores the selected kartlag value
 
-        if (normalizedSelectedKartlag === 'all' || cellKartlagValue === normalizedSelectedKartlag) {
+        if (normalizedSelectedKartlag === 'all' || cellKartlagValue === normalizedSelectedKartlag) { //if the selected kartlag is 'all' or the cell kartlag value matches the selected kartlag
             row.style.display = ''; // Show row
         } else {
             row.style.display = 'none'; // Hide row
         }
     });
 }
+
+// Filters table rows based on the selected "Kartlag" value in the fifth column.
+// Shows rows that match the selected value or all rows if "all" is selected; hides others.
+
 
 // Combined filtering function
 function filterTable() {
@@ -173,8 +257,8 @@ function filterTable() {
     const selectedStatus = document.getElementById('filterStatusDropdown').value.toLowerCase();
     const selectedKartlag = document.getElementById('filterKartlagDropdown').value.toLowerCase();
 
-    rows.forEach(row => {
-        const statusCell = row.children[statusColumnIndex];
+    rows.forEach(row => { // this loop goes through each row in the table 'tbody' of the table
+        const statusCell = row.children[statusColumnIndex]; 
         const kartlagCell = row.children[kartlagColumnIndex];
 
         const cellStatusValue = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
@@ -193,7 +277,11 @@ function filterTable() {
     });
 }
 
-// Event listener for Status filter
+// The filterTable filters the table rows based on selected values from two dropdowns: "Status" and "Kartlag".
+// Only rows matching both selected filters (or 'all' values) are displayed, while others are hidden.
+
+
+// Event listener for Status filter 
 document.getElementById('filterStatusDropdown').addEventListener('change', filterTable);
 
 // Event listener for Kartlag filter

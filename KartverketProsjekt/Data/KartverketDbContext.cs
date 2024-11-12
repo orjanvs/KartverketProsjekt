@@ -5,11 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KartverketProsjekt.Data
 {
+    // Database context class for Kartverket project, extending IdentityDbContext for user management
     public class KartverketDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KartverketDbContext"/> class with specified options.
+        /// </summary>
+        /// <param name="options">The options to configure the DbContext.</param>
         public KartverketDbContext(DbContextOptions<KartverketDbContext> options) : base(options)
         {
-
         }
 
         // Table for MapReportModel
@@ -19,16 +23,16 @@ namespace KartverketProsjekt.Data
         public DbSet<DialogueModel> Dialogue { get; set; }
         public DbSet<AttachmentModel> Attachment { get; set; }
 
-
-
-
+        /// <summary>
+        /// Configures the model properties and seeds the database with initial data.
+        /// </summary>
+        /// <param name="modelBuilder">The builder used to construct the model.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             // Section for Identity tables
-
             base.OnModelCreating(modelBuilder);
 
+            // Role IDs for seeding roles
             var sysAdminRoleId = "1";
             var caseHandlerRoleId = "2";
             var submitterRoleId = "3";
@@ -61,9 +65,7 @@ namespace KartverketProsjekt.Data
 
             modelBuilder.Entity<IdentityRole>().HasData(roles);
 
-
             // Seed SYSADMIN
-
             var sysAdminId = "1";
             var sysAdminUser = new ApplicationUser
             {
@@ -155,7 +157,6 @@ namespace KartverketProsjekt.Data
                 }
             );
 
-
             // Primary keys
 
             modelBuilder.Entity<MapReportModel>()
@@ -170,7 +171,6 @@ namespace KartverketProsjekt.Data
                 .HasKey(a => a.AttachmentId);
 
             // Foreign keys and relationships
-
             // MapReportModel relationships
             modelBuilder.Entity<MapReportModel>()
                 .HasOne(m => m.Submitter)
@@ -199,8 +199,8 @@ namespace KartverketProsjekt.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MapReportModel>()
-                .HasMany(m => m.Attachments) 
-                .WithOne(a => a.MapReport)    
+                .HasMany(m => m.Attachments)
+                .WithOne(a => a.MapReport)
                 .HasForeignKey(a => a.MapReportId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
@@ -227,8 +227,6 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-         
-
             // Seed data for MapLayerModel
             modelBuilder.Entity<MapLayerModel>().HasData(
                 new MapLayerModel { MapLayerId = 1, MapLayerType = "Fargekart" },
@@ -247,4 +245,3 @@ namespace KartverketProsjekt.Data
         }
     }
 }
-

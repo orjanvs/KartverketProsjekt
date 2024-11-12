@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KartverketProsjekt.Models.ViewModels
 {
+    /// <summary>
+    /// Represents the data required to view and manage details of a specific map report, 
+    /// including report information, status, submitter, case handler, attachments, 
+    /// and available case handlers for assignment.
+    /// </summary>
     public class ViewMapReportRequest
     {
         public int MapReportId { get; set; }

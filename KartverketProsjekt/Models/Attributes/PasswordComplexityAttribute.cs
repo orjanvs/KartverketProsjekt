@@ -1,8 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
+/// <summary>
+/// Validation attribute to enforce password complexity requirements.
+/// </summary>
 public class PasswordComplexityAttribute : ValidationAttribute
 {
+    /// <summary>
+    /// Determines whether the specified password meets the complexity requirements.
+    /// </summary>
+    /// <param name="value">The password value to validate.</param>
+    /// <param name="validationContext">The context in which validation is performed.</param>
+    /// <returns>
+    /// A <see cref="ValidationResult"/> indicating whether the password is valid.
+    /// </returns>
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         var password = value as string;
