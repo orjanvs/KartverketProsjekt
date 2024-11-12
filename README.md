@@ -93,8 +93,15 @@ I applikasjonen er dette representert i at det er Modeller som behandler logikk 
 ### Domain models
   - Under domain models vises datastrukturen i applikasjonen det er disse som blir representert som entiteter i databasen.
 
-Repository
-Repository er --------
+### Repository
+   - Repository brukes til å håndtere data fra databasen.
+   - I applikasjonen brukes repository til å håndtere MapReportModel sine entiteter slik at man kan utfør CRUD operasjoner på den.
+
+### Database
+   - Databasen kjøres i egen dockercontainer og initialiseres ved hjelp av docker compose.
+   - Den er definert av DbContext filen og vedlikeholdes av migrations.
+   - Databasen blir kjørt i container og blir initialisert før applikasjonen blir initialisert i egen container.
+
 
 
  
