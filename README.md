@@ -76,6 +76,25 @@ Innmeldingsoversikten består av to varianter. En mer standard tabellvisning og 
   - Fungerer likt for alle brukere, men innmeldere (ikke saksbehandlere) kan bare se sine egne innmeldinger.
   - Kartvisningen viser alle innmeldinger som merker basert på senter koordinat fra GeoJson-objektet. Disse grupperes automatisk etter zoom-nivå. 
   
+### MVC
+
+* MVC kort for Model, Views og Controller er et rammeverk for programvareutvikling. Rammeverket skiller mellom data, logikk og visning.
+   - Model: Representer dataen i applikasjonen med klasser.
+   - Controller: Behandler forespørsler fra brukere ved å kommunisere med model og view.
+   - View: Presenterer dataen til brukerne.
+I applikasjonen er dette representert i at det er Modeller som behandler logikk og kommunikasjon mellom database og controller. Controller tar imot input fra bruker, henter data fra modellen og sender det videre til view. Views presenterer data motatt fra controller til brukeren ved hjelp av Razor views .
+
+### Entity framework
+  - Entity framework er en ORM (Object-relational mapper), som gir oss muligheten til å bruke .NET objekter i arbeid med database.
+  - I applikasjonen er det en klasse kalt KartverketDbContext som inneholder kode for oppsett til å kommunisere med databasen.  
+### Migrations
+   - Migrations er en måte å holde databaseskjemaene oppdatert lik Entity Framework Core modellen. 
+   - Kommando for å lage migrations er: «dotnet ef migrations add InitialCreate»
+### Domain models
+  - Under domain models vises datastrukturen i applikasjonen det er disse som blir representert som entiteter i databasen.
+
+Repository
+Repository er --------
 
 
  
