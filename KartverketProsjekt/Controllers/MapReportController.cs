@@ -11,7 +11,9 @@ using Org.BouncyCastle.Bcpg;
 
 namespace KartverketProsjekt.Controllers
 {
-    // Controller for handling map report-related actions
+    /// <summary>
+    /// Controller for handling map report-related actions.
+    /// </summary>
     public class MapReportController : Controller
     {
         // private static List<MapReportModel> _mapReports = new List<MapReportModel>();
@@ -20,7 +22,11 @@ namespace KartverketProsjekt.Controllers
         private readonly IMapReportRepository _mapReportRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        // Constructor for injecting repository and user manager dependencies
+        /// <summary>
+        /// Constructor for injecting repository and user manager dependencies.
+        /// </summary>
+        /// <param name="mapReportRepository">Repository to manage map reports.</param>
+        /// <param name="userManager">User manager service.</param>
         public MapReportController(IMapReportRepository mapReportRepository,
             UserManager<ApplicationUser> userManager)
         {
@@ -28,15 +34,22 @@ namespace KartverketProsjekt.Controllers
             _mapReportRepository = mapReportRepository;
         }
 
-        // GET method to display the form for adding a new map report
+        /// <summary>
+        /// GET method to display the form for adding a new map report.
+        /// </summary>
+        /// <returns>The form view for adding a new map report.</returns>
         public IActionResult AddForm()
         {
             return View();
         }
 
+        /// <summary>
+        /// Adds a new map report to the list of map reports.
+        /// </summary>
+        /// <param name="request">The request data for the new map report.</param>
+        /// <returns>Redirects to the report view on success or returns to the form view on failure.</returns>
         [Authorize]
         [HttpPost]
-        // Adds a new map report to the list of map reports
         public async Task<IActionResult> AddForm(AddMapReportRequest request) // string geoJson, string description, int mapLayerId
         {
             if (!ModelState.IsValid)
@@ -78,10 +91,13 @@ namespace KartverketProsjekt.Controllers
             return View(); // Show error message 
         }
 
+        /// <summary>
+        /// POST method to start handling a map report, changing its status.
+        /// </summary>
+        /// <param name="id">The ID of the map report to handle.</param>
+        /// <returns>Redirects to the report view after starting handling.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
-
-        // POST method to start handling a map report, changing its status
         public async Task<IActionResult> StartHandlingMapReport(int id)
         {
             var currentCaseHandler = await _userManager.GetUserAsync(User);
@@ -98,9 +114,13 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id });
         }
 
+        /// <summary>
+        /// POST method to finish handling a map report.
+        /// </summary>
+        /// <param name="id">The ID of the map report to finish handling.</param>
+        /// <returns>Redirects to the report view on success or returns forbidden if handler does not match.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
-        // POST method to finish handling a map report
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
             var currentCaseHandler = await _userManager.GetUserAsync(User);
@@ -115,7 +135,11 @@ namespace KartverketProsjekt.Controllers
             return Forbid(); // Return forbidden if handler does not match
         }
 
-        // Method to handle file attachments for a map report
+        /// <summary>
+        /// Handles file attachments for a map report.
+        /// </summary>
+        /// <param name="request">The request containing attachments.</param>
+        /// <param name="newMapReport">The map report to which attachments are added.</param>
         private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
         {
             if (request.Attachments != null && request.Attachments.Count > 0)
@@ -142,7 +166,10 @@ namespace KartverketProsjekt.Controllers
             }
         }
 
-        // Method to retrieve all map reports based on user and role
+        /// <summary>
+        /// Retrieves all map reports based on user and role.
+        /// </summary>
+        /// <returns>A tuple with user ID, role, and list of map reports.</returns>
         private async Task<(string userId, string userRole, List<MapReportModel> mapReports)> GetAllMapReportsBasedOnUserAndUserRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -157,9 +184,14 @@ namespace KartverketProsjekt.Controllers
             return (userId, userRole, mapReports);
         }
 
+        /// <summary>
+        /// GET method to list all map reports with pagination.
+        /// </summary>
+        /// <param name="pageNumber">The page number for pagination.</param>
+        /// <param name="pageSize">The number of reports per page.</param>
+        /// <returns>The view with paginated list of map reports.</returns>
         [Authorize]
         [HttpGet]
-        // GET method to list all map reports
         public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 30)
         {
             if (pageNumber < 1)
@@ -194,9 +226,12 @@ namespace KartverketProsjekt.Controllers
             return View(paginatedReports);
         }
 
+        /// <summary>
+        /// GET method for displaying reports in map view.
+        /// </summary>
+        /// <returns>The map list view model.</returns>
         [Authorize]
         [HttpGet]
-        // GET method for displaying reports in map view
         public async Task<IActionResult> MapListForm()
         {
             var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
@@ -211,9 +246,13 @@ namespace KartverketProsjekt.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// GET method to display a specific map report by id.
+        /// </summary>
+        /// <param name="id">The ID of the map report.</param>
+        /// <returns>The view for the specific map report.</returns>
         [Authorize]
         [HttpGet]
-        // GET method to display a specific map report by id
         public async Task<IActionResult> ViewReport(int id)
         {
             // Find map report based on id
@@ -259,9 +298,13 @@ namespace KartverketProsjekt.Controllers
             return View(null); // Return empty view if no map report found
         }
 
+        /// <summary>
+        /// POST method to assign a case handler to a map report.
+        /// </summary>
+        /// <param name="model">The model containing assignment details.</param>
+        /// <returns>Redirects to the report view after assigning the case handler.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
-        // POST method to assign a case handler to a map report
         public async Task<IActionResult> AssignCaseHandler(ViewMapReportRequest model)
         {
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(model.MapReportId);
@@ -279,9 +322,13 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id = model.MapReportId });
         }
 
+        /// <summary>
+        /// POST method to delete a specific map report.
+        /// </summary>
+        /// <param name="id">The ID of the map report to delete.</param>
+        /// <returns>Redirects to the list form after deletion.</returns>
         [Authorize]
         [HttpPost]
-        // POST method to delete a specific map report
         public async Task<IActionResult> DeleteMapReport(int id)
         {
             var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
@@ -294,9 +341,13 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("ViewReport", new { id });
         }
 
+        /// <summary>
+        /// GET method to preview a specific map report.
+        /// </summary>
+        /// <param name="id">The ID of the map report to preview.</param>
+        /// <returns>The partial view with map report preview details.</returns>
         [Authorize]
         [HttpGet]
-        // GET method to preview a specific map report
         public async Task<IActionResult> PreviewMapReport(int id)
         {
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(id);

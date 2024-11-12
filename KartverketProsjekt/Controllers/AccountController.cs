@@ -6,13 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KartverketProsjekt.Controllers
 {
-    // Controller to handle account-related actions like registration, login, and profile management
+    /// <summary>
+    /// Controller to handle account-related actions like registration, login, and profile management.
+    /// </summary>
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager; // This is a service provided by ASP.NET Core Identity that allows us to interact with the user store
         private readonly SignInManager<ApplicationUser> _signInManager; // This is a service provided by ASP.NET Core Identity that allows us to sign in users
 
-        // Constructor to inject UserManager and SignInManager services
+        /// <summary>
+        /// Constructor to inject UserManager and SignInManager services.
+        /// </summary>
+        /// <param name="userManager">Service to manage user interactions.</param>
+        /// <param name="signInManager">Service to manage user sign-in operations.</param>
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -45,7 +51,11 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // POST method for registering a new user
+        /// <summary>
+        /// POST method for registering a new user.
+        /// </summary>
+        /// <param name="registerViewModel">The view model containing registration details.</param>
+        /// <returns>Redirects to login page on success or registration page on failure.</returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
@@ -85,7 +95,11 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
-        // POST method for logging in an existing user
+        /// <summary>
+        /// POST method for logging in an existing user.
+        /// </summary>
+        /// <param name="loginViewModel">The view model containing login details.</param>
+        /// <returns>Redirects to the MapReport ListForm on success or login page on failure.</returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -109,7 +123,10 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
-        // GET method for displaying the user's profile page
+        /// <summary>
+        /// GET method for displaying the user's profile page.
+        /// </summary>
+        /// <returns>The profile page view with user details or redirects to login if user not found.</returns>
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> ProfilePage()

@@ -4,24 +4,36 @@ using System.Diagnostics;
 
 namespace KartverketProsjekt.Controllers
 {
-    // Controller for handling home page and error-related actions
+    /// <summary>
+    /// Controller for handling home page and error-related actions.
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger; // Logger service for logging information and errors
 
-        // Constructor to inject the logger service
+        /// <summary>
+        /// Constructor to inject the logger service.
+        /// </summary>
+        /// <param name="logger">The logger service used for logging information and errors.</param>
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        // GET method for the home page
+        /// <summary>
+        /// GET method for the home page.
+        /// </summary>
+        /// <returns>The home page view.</returns>
         public IActionResult Index()
         {
             return View();
         }
 
-        // Method to handle and display error page with response caching disabled
+        /// <summary>
+        /// Method to handle and display the error page with response caching disabled.
+        /// </summary>
+        /// <returns>The error view with an ErrorViewModel containing the current request ID.</returns>
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
