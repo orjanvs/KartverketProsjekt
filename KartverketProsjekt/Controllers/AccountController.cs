@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KartverketProsjekt.Controllers
 {
+    // Controller to handle account-related actions like registration, login, and profile management
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager; // This is a service provided by ASP.NET Core Identity that allows us to interact with the user store
         private readonly SignInManager<ApplicationUser> _signInManager; // This is a service provided by ASP.NET Core Identity that allows us to sign in users
 
+        // Constructor to inject UserManager and SignInManager services
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -18,6 +20,7 @@ namespace KartverketProsjekt.Controllers
             _signInManager = signInManager;
         }
 
+        // GET method for registration page
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
@@ -25,6 +28,7 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
+        // GET method for login page
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
@@ -32,6 +36,7 @@ namespace KartverketProsjekt.Controllers
             return View();
         }
 
+        // GET method to log out the user
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -40,12 +45,14 @@ namespace KartverketProsjekt.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // POST method for registering a new user
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
+                // Creating a new ApplicationUser with details from the view model
                 var identityUser = new ApplicationUser
                 {
                     UserName = registerViewModel.Email,
@@ -54,6 +61,7 @@ namespace KartverketProsjekt.Controllers
                     LastName = registerViewModel.LastName
                 };
 
+                // Attempt to create the user
                 var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
 
                 if (identityResult.Succeeded)
@@ -87,19 +95,21 @@ namespace KartverketProsjekt.Controllers
                 return View();
             }
 
+            // Attempt to sign in the user with provided credentials
             var signInResult = await _signInManager.PasswordSignInAsync(loginViewModel.Email,
                 loginViewModel.Password, false, false);
 
             if (signInResult != null && signInResult.Succeeded)
             {
+                // Redirect to the MapReport ListForm on successful login
                 return RedirectToAction("ListForm", "MapReport");
             }
 
-            // Show error notification
+            // Show error notification if login fails
             return View();
         }
 
-
+        // GET method for displaying the user's profile page
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> ProfilePage()
@@ -108,13 +118,14 @@ namespace KartverketProsjekt.Controllers
 
             if (currentUser != null)
             {
+                // Create a view model with current user's details
                 var profilePageViewModel = new ProfilePageViewModel
                 {
                     Email = currentUser.Email,
                     FirstName = currentUser.FirstName,
                     LastName = currentUser.LastName
                 };
-                return View(profilePageViewModel); 
+                return View(profilePageViewModel);
             }
             // Show error notification
             return RedirectToAction("Login");
