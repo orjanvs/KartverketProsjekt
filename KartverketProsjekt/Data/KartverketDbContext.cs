@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KartverketProsjekt.Data
 {
+    // Database context class for Kartverket project, extending IdentityDbContext for user management
     public class KartverketDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
+        // Constructor for injecting DbContext options
         public KartverketDbContext(DbContextOptions<KartverketDbContext> options) : base(options)
         {
         }
@@ -23,6 +25,7 @@ namespace KartverketProsjekt.Data
             // Section for Identity tables
             base.OnModelCreating(modelBuilder);
 
+            // Role IDs for seeding roles
             var sysAdminRoleId = "1";
             var caseHandlerRoleId = "2";
             var submitterRoleId = "3";
@@ -190,8 +193,8 @@ namespace KartverketProsjekt.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MapReportModel>()
-                .HasMany(m => m.Attachments) 
-                .WithOne(a => a.MapReport)    
+                .HasMany(m => m.Attachments)
+                .WithOne(a => a.MapReport)
                 .HasForeignKey(a => a.MapReportId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
