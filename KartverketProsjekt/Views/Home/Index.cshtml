@@ -3,13 +3,15 @@
 @inject SignInManager<ApplicationUser> signInManager
 
 <div class="center-container">
-
+    @* Check if the user is signed in using SignInManager *@
     @if (signInManager.IsSignedIn(User))
     {
+        @* Show the "AddForm" link if the user is signed in *@
         <a href="@Url.Action("AddForm", "MapReport")" class="center-button btn btn-success btn-lg">Meld inn i kartet</a>
     }
     else
     {
+        @* Show the "Login" link if the user is not signed in *@
         <a href="@Url.Action("Login", "Account")" class="center-button btn btn-success btn-lg">Logg inn for å melde inn i kartet</a>
     }
 </div>

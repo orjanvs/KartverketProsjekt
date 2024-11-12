@@ -1,52 +1,57 @@
 ﻿@model KartverketProsjekt.Models.ViewModels.RegisterViewModel
 
 <head>
+    @* Link to the custom CSS file for styling the registration page *@
     <link href="~/css/loginSheet.css" rel="stylesheet">
+
+    @* Link to Boxicons library for using icons *@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <div class="wrapper">
+    @* Form for user registration, posts to the Register action in the Account controller *@
     <form asp-controller="Account" asp-action="Register" method="post">
         <h1>Registrering</h1>
 
-        <!-- Name Field -->
+        @* Input field for First Name with validation *@
         <div class="input-box">
-            <input type="text" name="firstName" placeholder="Fornavn" asp-for = "FirstName" required>
+            <input type="text" name="firstName" placeholder="Fornavn" asp-for="FirstName" required>
             <i class="bx bxs-user"></i>
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
 
+        @* Input field for Last Name with validation *@
         <div class="input-box">
-            <input type="text" name="lastName" placeholder="Etternavn" asp-for = "LastName" required>
+            <input type="text" name="lastName" placeholder="Etternavn" asp-for="LastName" required>
             <i class="bx bxs-user"></i>
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
 
-        <!-- Email Field -->
+        @* Input field for Email with validation *@
         <div class="input-box">
-            <input type="email" name="email" placeholder="E-post" asp-for = "Email" required>
+            <input type="email" name="email" placeholder="E-post" asp-for="Email" required>
             <i class="bx bxs-envelope"></i>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <!-- Password Field -->
+        @* Input field for Password with validation and minimum length requirement *@
         <div class="input-box">
-            <input type="password" name="password" placeholder="Passord" asp-for = "Password" required minlength="8"> 
+            <input type="password" name="password" placeholder="Passord" asp-for="Password" required minlength="8">
             <i class="bx bxs-lock-alt"></i>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
-        <!-- Confirm Password Field -->
+        @* Input field for Confirm Password with validation *@
         <div class="input-box">
-            <input type="password" name="confirmPassword" placeholder="Bekreft passord" asp-for = "ConfirmPassword" required>
+            <input type="password" name="confirmPassword" placeholder="Bekreft passord" asp-for="ConfirmPassword" required>
             <i class="bx bxs-lock"></i>
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
-        <!-- Submit Button -->
+        @* Submit button for completing registration *@
         <button type="submit" class="btn">Registrer deg</button>
 
-        <!-- Link to Login Page -->
+        @* Link to the login page for users who already have an account *@
         <div class="register-link">
             <p>
                 Har du allerede en konto?
@@ -57,5 +62,6 @@
 </div>
 
 @section Scripts {
+    @* JavaScript file for password validation *@
     <script src="~/js/passwordValidator.js"></script>
 }

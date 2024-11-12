@@ -4,54 +4,58 @@
 <div class="container py-3" style="margin-top: -15px;">
     <div class="container py-4">
         <div class="row">
-            <!-- Left Column with Title and Form -->
+            @* Left Column with Title and Form *@
             <div class="col-md-4">
-                <!-- Title centered in the form container -->
+                @* Title centered in the form container *@
                 <h3 id="form-title-preview" class="text-center mb-4">Ny innmelding</h3>
 
+                @* Form for submitting a new map report, with file upload support *@
                 <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
-                    <!--Hidden inputs for application-->
+                    @* Hidden inputs for storing geoJson, municipality, county, and map layer data *@
                     <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
                     <span asp-validation-for="GeoJson" class="text-danger"></span>
                     <input type="hidden" id="municipalityInput" name="Municipality" asp-for="Municipality" />
                     <input type="hidden" id="countyInput" name="County" asp-for="County" />
                     <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
 
-                    <!--Title-->
+                    @* Title input field with validation *@
                     <div class="mb-3">
                         <label for="title" class="form-label">Tittel</label>
                         <input type="text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
                     </div>
 
-                    <!--Description-->
+                    @* Description input field with validation *@
                     <div class="mb-3">
                         <label for="description" class="form-label">Beskrivelse av feil</label>
                         <textarea id="description" name="Description" class="form-control" required></textarea>
                     </div>
 
-                    <!-- Attachments -->
+                    @* Attachments section with an option to add additional files *@
                     <div id="attachments-container" class="mb-3">
                         <label for="attachment" class="form-label">Last opp vedlegg</label>
                         <input type="file" id="attachment" name="Attachments" class="form-control" />
                     </div>
                     <button type="button" id="add-attachment" class="btn btn-secondary btn-sm mb-3 attachment-button">Legg til vedlegg</button>
 
+                    @* Submit button for sending the map report *@
                     <div class="mb-3">
                         <button type="submit" class="btn btn-success submit-button">Send inn</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Right Column with Map -->
+            @* Right Column with Map *@
             <div class="col-md-8">
-
+                @* Map display section with Leaflet integration *@
                 <div id="map" style="height: 600px;" class="shadow-sm rounded mb-4"></div>
             </div>
         </div>
     </div>
 </div>
-@section Scripts 
+
+@section Scripts
 {
+    @* Stylesheets and JavaScript libraries for map functionality and form behavior *@
     <link rel="stylesheet" href="~/css/AddFormStyleSheet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
@@ -62,5 +66,5 @@
     <script src="@("https://unpkg.com/@turf/turf@7.0.0/turf.min.js")"></script>
     <script src="~/js/realTimeTitlePreview.js"></script>
     <script src="~/js/attachmentScript.js"></script>
-    <script src="~/js/addReportLeaflet.js"></script>    
+    <script src="~/js/addReportLeaflet.js"></script>
 }
