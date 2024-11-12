@@ -93,8 +93,29 @@ I applikasjonen er dette representert i at det er Modeller som behandler logikk 
 ### Domain models
   - Under domain models vises datastrukturen i applikasjonen det er disse som blir representert som entiteter i databasen.
 
-Repository
-Repository er --------
+### Repository
+   - Repository brukes til å håndtere data fra databasen.
+   - I applikasjonen brukes repository til å håndtere MapReportModel sine entiteter slik at man kan utfør CRUD operasjoner på den.
+
+
+
+### Funksjonaliteter i Applikasjonen:
+### Brukere
+  - I applikasjonen kan brukere registrere seg eller logge inn til eksisterende bruker. Roller er delt inn i Innmeldere og Saksbehandlere.
+
+### Innmeldinger
+   - Innmeldere og saksbehandlere kan opprette en innmelding for feil i kart. Innmeldingen kan gis en tittel, beskrivelse samt legge ved vedlegg. For at innmeldingen skal gå igjennom må det lages et objekt i kartet for å vise hvor feilen er. 
+   - Det kan velges blant ulike markeringsverktøy, samt endre kartlag for å vise feilen i det korrekte kartlaget. I tillegg er det lagt inn et søkefelt i kartet hvor en kan søke seg til ønsket sted i kartet.
+   - I det en innmeldingen blir sendt vil applikasjonen bruke kartverkets API (https://api.kartverket.no/kommuneinfo/v1/) for å finne ut hvilket fylke og kommune det aktuelle punktet i innmeldingen er. For objekter som har flere punkter, som for eksempel en vei eller et polygon, vil senter av disse punktene bli brukt som referanse.
+### Tabellvisning og Kartvisning
+   - For en innmelder vil tabellvisning og kartvisning vise den enkelte innmelders innmeldinger i tabell og kart. Kartet er en visuell representasjon av tabellvisningen. En saksbehandler ser samtlige innmeldinger i begge visninger. 
+   - I tabellvisning er det lagt inn funksjoner for å filtrere på status eller kartlag. Det er også lagt inn en søkefunksjon i tabellvisningen hvor man kan søke på nøkkelord, for eksempel fylke eller kommune.
+ ### Saksbehandling
+   - En innmelder kan se sine egne saker og om de er i behandling eller ferdig behandlet. Mens en saksbehandler kan gå innpå de ulike sakene, sette i behandling, sende saken videre til annen saksbehandler, slette innmelding eventuelt fullføre behandlingen. 
+   - Ved en videresendt innmelding er det kun den saksbehandleren som det er sendt videre til som kan behandle saken.
+   - For saksbehandler er det også laget en knapp som sender brukeren videre til google maps med satellittvisning og rett koordinater i forbindelse med gjeldene innmelding knappen trykkes på. 
+   - Det er også laget en profilside for brukeren som viser fornavn, etternavn og mail. 
+
 
 
  
