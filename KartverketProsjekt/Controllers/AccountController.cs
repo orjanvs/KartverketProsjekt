@@ -8,8 +8,8 @@ namespace KartverketProsjekt.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager; // This is a service provided by ASP.NET Core Identity that allows us to interact with the user store
+        private readonly SignInManager<ApplicationUser> _signInManager; // This is a service provided by ASP.NET Core Identity that allows us to sign in users
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
