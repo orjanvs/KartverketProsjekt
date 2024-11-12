@@ -2,6 +2,9 @@
 
 namespace KartverketProsjekt.Models.ViewModels
 {
+    /// <summary>
+    /// Represents the data required for user registration, including email, name, password, and password confirmation.
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]

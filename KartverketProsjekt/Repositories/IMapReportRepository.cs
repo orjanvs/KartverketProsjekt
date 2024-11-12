@@ -1,8 +1,10 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
-using KartverketProsjekt.Models.ViewModels;
 
 namespace KartverketProsjekt.Repositories
 {
+    /// <summary>
+    /// Provides an interface for managing map reports, including methods for retrieving, adding, updating, and deleting map reports.
+    /// </summary>
     public interface IMapReportRepository
     {
 

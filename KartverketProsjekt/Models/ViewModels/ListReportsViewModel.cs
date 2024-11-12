@@ -1,5 +1,8 @@
 ﻿namespace KartverketProsjekt.Models.ViewModels;
 
+/// <summary>
+/// Represents a view model for displaying a list of map reports with summary details.
+/// </summary>
 public class ListReportsViewModel
 {
     public int MapReportId { get; set; }
@@ -12,6 +15,4 @@ public class ListReportsViewModel
     public string StatusDescription { get; set; }
     public string County { get; set; }
     public string Municipality { get; set; }
-
-
 }

@@ -8,7 +8,10 @@ namespace KartverketProsjekt.Data
     // Database context class for Kartverket project, extending IdentityDbContext for user management
     public class KartverketDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
-        // Constructor for injecting DbContext options
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KartverketDbContext"/> class with specified options.
+        /// </summary>
+        /// <param name="options">The options to configure the DbContext.</param>
         public KartverketDbContext(DbContextOptions<KartverketDbContext> options) : base(options)
         {
         }
@@ -20,6 +23,10 @@ namespace KartverketProsjekt.Data
         public DbSet<DialogueModel> Dialogue { get; set; }
         public DbSet<AttachmentModel> Attachment { get; set; }
 
+        /// <summary>
+        /// Configures the model properties and seeds the database with initial data.
+        /// </summary>
+        /// <param name="modelBuilder">The builder used to construct the model.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Section for Identity tables
@@ -149,7 +156,6 @@ namespace KartverketProsjekt.Data
                     UserId = submitterId
                 }
             );
-
 
             // Primary keys
 
