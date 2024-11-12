@@ -24,7 +24,7 @@ namespace KartverketProsjekt.Controllers
             _mapReportRepository = mapReportRepository;
         }
 
-        public IActionResult AddForm()
+        public IActionResult AddForm(MapReportModel mapReport)
         {
             return View();
         }
