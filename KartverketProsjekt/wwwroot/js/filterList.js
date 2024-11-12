@@ -120,9 +120,12 @@ init();
  * attribute that indicates the type of data in the column (e.g., 'number', 'date', 'string').
  * 
  * @param {number} columnIndex - The index (0-based) of the column to sort by.
+ * 
  * @param {boolean} [ascending=true] - A boolean value indicating the sort order. 
  *                                      If `true`, the table will be sorted in ascending order; 
  *                                      if `false`, it will be sorted in descending order.
+ * 
+ * @param {sortedRows} - The sorted rows of the table based on the specified column index and order.
  */
 
 function sortTableByColumn(columnIndex, ascending) {
@@ -164,12 +167,6 @@ function sortTableByColumn(columnIndex, ascending) {
     sortedRows.forEach(row => tbody.appendChild(row)); // Append sorted rows
 }
 
-// In the fuction sortTableByColumn, we are sorting the table rows based on the specified column index and order (ascending or descending).
-// The function first identifies the data type (number, date, or text) from the column header,
-// then sorts the rows accordingly. After sorting, it clears the current rows in the table body
-// and appends the sorted rows to update the displayed order.
-
-
     
 let currentSortColumn = null;
 let currentSortAscending = true;
@@ -199,13 +196,17 @@ document.querySelectorAll(".table-sortable th").forEach((header, index) => { // 
 });
 
 
-// Filter the table by status
+/**
+ * Filters the rows in the table by the selected status.
+ * 
+ * @param {string} selectedStatus - The status to filter by (e.g., 'active', 'inactive', or 'all').
+ */
 function filterTableByStatus(selectedStatus) {
     const table = document.getElementById('firstTableId');
     const rows = table.querySelectorAll('tbody tr');
     const statusColumnIndex = 6; // Status column is at index 6 (7th column)
 
-    rows.forEach(row => { //this loop goes through each row in the table 'tbody' of the table
+    rows.forEach(row => { 
         const statusCell = row.children[statusColumnIndex]; //this variable stores the status cell of the row
         const cellStatusValue = statusCell ? statusCell.textContent.trim().toLowerCase() : ''; //this variable stores the status value of the cell
         const normalizedSelectedStatus = selectedStatus.toLowerCase();
@@ -218,8 +219,13 @@ function filterTableByStatus(selectedStatus) {
     });
 }
 
-// Filter the table by Kartlag
-function filterTableByKartlag(selectedKartlag) { //This functions takes a parameter that is the selected kartlag
+/**
+ * Filters the rows in the table by the selected Kartlag.
+ * 
+ * @param {string} selectedKartlag - The Kartlag to filter by (e.g., 'active', 'inactive', or 'all').
+ */
+
+function filterTableByKartlag(selectedKartlag) { 
     const table = document.getElementById('firstTableId');
     const rows = table.querySelectorAll('tbody tr');
     const kartlagColumnIndex = 4; // Kartlag column is at index 4 (5th column)
