@@ -1,34 +1,46 @@
 ﻿@model KartverketProsjekt.Models.ViewModels.LoginViewModel
 
 <head>
+    @* Link to the custom CSS file for styling the login page *@
     <link href="~/css/loginSheet.css" rel="stylesheet">
+
+    @* Link to Boxicons library for icon usage *@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <div class="wrapper">
+    @* Login form that posts to the Login action in the Account controller *@
     <form asp-controller="Account" asp-action="Login" method="post">
-        <h1>Innlogging </h1>
-            <div class="input-box">
-                <input type="email" placeholder="E-post" asp-for = "Email" required>
-                <i class='bx bxs-user'></i>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+        <h1>Innlogging</h1>
+
+        @* Input field for Email with validation *@
         <div class="input-box">
-            <input type="password" placeholder="Passord" asp-for = "Password" required minlength="8">
+            <input type="email" placeholder="E-post" asp-for="Email" required>
+            <i class='bx bxs-user'></i>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        @* Input field for Password with validation and minimum length requirement *@
+        <div class="input-box">
+            <input type="password" placeholder="Passord" asp-for="Password" required minlength="8">
             <i class='bx bxs-lock-alt'></i>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
+
+        @* Remember me checkbox and forgot password link *@
         <div class="remember-forgot">
-            <label> <input type="checkbox"> Husk meg 
-                </label>
-                <a asp-controller="Account" asp-action="ForgotPassword" >Glemt passord?</a>
+            <label> <input type="checkbox"> Husk meg </label>
+            <a asp-controller="Account" asp-action="ForgotPassword">Glemt passord?</a>
         </div>
 
+        @* Submit button for logging in *@
         <button type="submit" class="btn"> Logg inn</button>
 
+        @* Link to registration page for users without an account *@
         <div class="register-link">
-            <p> Har du ikke en konto? <a asp-controller="Account" asp-action="Register">
-                Registrer deg</a>
+            <p>
+                Har du ikke en konto?
+                <a asp-controller="Account" asp-action="Register">Registrer deg</a>
             </p>
         </div>
     </form>

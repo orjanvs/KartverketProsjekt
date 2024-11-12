@@ -1,26 +1,36 @@
 @model KartverketProsjekt.Models.ViewModels.ProfilePageViewModel
 
 <head>
+    @* Link to the custom CSS file for styling the profile page *@
     <link href="~/css/profilePageSheet.css" rel="stylesheet">
+
+    @* Link to Boxicons library for using icons *@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <div class="center-background">
     <div class="profile-wrapper">
         <h1>Profil</h1>
+
+        @* Container for avatar image *@
         <div class="avatar-container">
             <img src="~/images/BGprofileBlack.svg" alt="Avatar" class="avatar">
         </div>
 
         <div class="profile-info">
+            @* Display for first name, set to readonly as it's not editable *@
             <div class="input-box">
                 <label for="FirstName">Fornavn:</label>
                 <input type="text" asp-for="FirstName" readonly>
             </div>
+
+            @* Display for last name, set to readonly as it's not editable *@
             <div class="input-box">
                 <label for="LastName">Etternavn:</label>
                 <input type="text" asp-for="LastName" readonly>
             </div>
+
+            @* Display for email, set to readonly as it's not editable *@
             <div class="input-box">
                 <label for="Email">E-post:</label>
                 <input type="email" asp-for="Email" readonly>

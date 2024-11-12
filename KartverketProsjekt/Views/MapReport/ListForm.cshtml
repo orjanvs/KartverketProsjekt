@@ -4,8 +4,13 @@
 @model List<ListReportsViewModel>
 
 <head>
+    @* Link to the custom CSS file for table styling *@
     <link href="~/css/sortTableStyle.css" rel="stylesheet">
+
+    @* Font Awesome for search icon *@
     <script src="https://kit.fontawesome.com/5eea027e19.js" crossorigin="anonymous"></script>
+
+    @* jQuery for easier DOM manipulation and event handling *@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -17,6 +22,7 @@
 <body>
     <div class="container mt-3">
         <div class="filter-container">
+            @* Filter by status dropdown *@
             <div class="filter-box">
                 <label for="filterStatusDropdown" class="me-2 text-dark">Filter by Status:</label>
                 <select id="filterStatusDropdown" class="form-select">
@@ -28,6 +34,7 @@
                 </select>
             </div>
 
+            @* Filter by map layer (Kartlag) dropdown *@
             <div class="filter-box">
                 <label for="filterKartlagDropdown" class="me-2 text-dark">Filter by Kartlag:</label>
                 <select id="filterKartlagDropdown" class="form-select">
@@ -44,8 +51,10 @@
 
 <div id="portexe-search-root">
     <div id="portexe-table-container">
+        @* Check if the model contains any reports *@
         @if (Model != null && Model.Any())
         {
+            @* Display a sortable table for map reports *@
             <table class="table table-sortable" id="firstTableId">
                 <thead>
                     <tr>
@@ -54,11 +63,12 @@
                         <th>Fylke</th>
                         <th>Kommune</th>
                         <th>Kartlag</th>
-                        <th>Vedlegg</th> <!-- Ny kolonne for vedleggsindikator -->
+                        <th>Vedlegg</th> 
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="myTable">
+                    @* Iterate over each map report and display its data *@
                     @foreach (var mapReport in Model)
                     {
                         <tr>
@@ -66,20 +76,21 @@
                             <td>@mapReport.Title</td>
                             <td>@mapReport.County</td>
                             <td>@mapReport.Municipality</td>
-                            <td>@mapReport.MapLayerType</td> <!-- NB! since the model is nested, you can do that to get a specific value -->
+                            <td>@mapReport.MapLayerType</td>
                             <td>
-
+                                @* Display badge indicating attachment status *@
                                 @if (mapReport.HasAttachments)
                                 {
-                                    <span class="badge bg-success">Vedlegg tilgjengelig</span> <!-- Indikator for vedlegg -->
+                                    <span class="badge bg-success">Vedlegg tilgjengelig</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Ingen vedlegg</span> <!-- Indikator for ingen vedlegg -->
+                                    <span class="badge bg-secondary">Ingen vedlegg</span>
                                 }
                             </td>
                             <td>@mapReport.StatusDescription</td>
 
+                            @* Link to view report details *@
                             <td>
                                 <a asp-area=""
                                    asp-controller="MapReport"
@@ -95,12 +106,14 @@
         }
         else
         {
+            @* Display message if no reports are found *@
             <p>Ingen innmeldinger funnet!</p>
         }
     </div>
 </div>
 
 <div>
+    @* Pagination controls to navigate through pages *@
     @if (ViewBag.PageNumber > 1)
     {
         <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Forrige side</a>
@@ -111,6 +124,8 @@
     }
 </div>
 
+@* Pass the model data as JSON to the client-side script *@
 <script>var modelData = @Html.Raw(Json.Serialize(Model));</script>
 
+@* JavaScript for filtering and sorting the list *@
 <script src="~/js/filterList.js" defer></script>
