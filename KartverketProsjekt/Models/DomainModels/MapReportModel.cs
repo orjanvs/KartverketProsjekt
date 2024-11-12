@@ -1,18 +1,20 @@
-﻿using Org.BouncyCastle.Bcpg;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KartverketProsjekt.Models.DomainModels
 {
+    /// <summary>
+    /// Represents a report on a map layer with related data, including submitter and case handler details, status, and attachments.
+    /// </summary>
     public class MapReportModel
     {
         public int MapReportId { get; set; } // Primary key
         [Required]
-        public string? SubmitterId { get; set; } // FK (ref. User(UserId))     
-        public string? CaseHandlerId { get; set; } // FK (ref. User(UserId))
+        public string? SubmitterId { get; set; } // Foreign key (ref. User(UserId))     
+        public string? CaseHandlerId { get; set; } // Foreign key (ref. User(UserId))
         [Required]                                         
-        public int MapLayerId { get; set; } // FK (ref. MapLayer(MapLayerId))
+        public int MapLayerId { get; set; } // Foreign key (ref. MapLayer(MapLayerId))
         [Required]
-        public int MapReportStatusId { get; set; } // FK (ref. MapReportStatus(MapReportStatusId))
+        public int MapReportStatusId { get; set; } // Foreign key (ref. MapReportStatus(MapReportStatusId))
         [Required]
         public string? Title { get; set; }
         [Required]

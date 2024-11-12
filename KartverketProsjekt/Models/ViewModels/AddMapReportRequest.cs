@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KartverketProsjekt.Models.ViewModels
 {
+    /// <summary>
+    /// Represents a request to add a new map report, including details such as GeoJson shape, title, description, map layer, and optional attachments.
+    /// </summary>
     public class AddMapReportRequest
     {
         [Required(ErrorMessage = "A GeoJson shape is required. Please draw a shape on the map.")]
@@ -22,7 +23,7 @@ namespace KartverketProsjekt.Models.ViewModels
         
         public string? Municipality { get; set; }
 
-        public List<IFormFile>? Attachments { get; set; } // Legg til dette feltet for vedleggsopplasting
+        public List<IFormFile>? Attachments { get; set; } // Field for uploading attachments
 
     }
 }

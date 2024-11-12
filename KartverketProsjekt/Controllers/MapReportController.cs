@@ -4,10 +4,7 @@ using KartverketProsjekt.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Org.BouncyCastle.Asn1.Mozilla;
-using Org.BouncyCastle.Bcpg;
 
 namespace KartverketProsjekt.Controllers
 {
@@ -34,10 +31,13 @@ namespace KartverketProsjekt.Controllers
             _mapReportRepository = mapReportRepository;
         }
 
+
+
         /// <summary>
         /// GET method to display the form for adding a new map report.
         /// </summary>
         /// <returns>The form view for adding a new map report.</returns>
+        [HttpGet]
         public IActionResult AddForm()
         {
             return View();

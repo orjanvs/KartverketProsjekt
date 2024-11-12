@@ -1,6 +1,4 @@
 ﻿@using KartverketProsjekt.Models.ViewModels
-@using Newtonsoft.Json
-
 @model List<ListReportsViewModel>
 
 <head>
@@ -51,6 +49,7 @@
 
 <div id="portexe-search-root">
     <div id="portexe-table-container">
+
         @* Check if the model contains any reports *@
         @if (Model != null && Model.Any())
         {
@@ -113,13 +112,16 @@
 </div>
 
 <div>
+
     @* Pagination controls to navigate through pages *@
     @if (ViewBag.PageNumber > 1)
     {
+        // If the current page is greater than 1, then the "Previous" link is enabled
         <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Forrige side</a>
     }
-    @if (Model.Count == ViewBag.PageSize)
+    @if (Model.Count == ViewBag.PageSize) 
     {
+        // If the number of items in the current page is equal to the page size, then the "Next" link is enabled
         <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Neste side</a>
     }
 </div>
