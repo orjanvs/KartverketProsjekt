@@ -1,5 +1,15 @@
 ﻿
-//This js is responsible for the search and filter functionality for the table in the Listform page
+/**
+ * Extracts data from a table and returns it as an array of arrays.
+ * Each inner array represents a row in the table, with each item corresponding to a cell's content.
+ * 
+ * This function assumes that the table has an ID of 'firstTableId' and that the data is contained 
+ * within the rows of the table (not including headers). It will loop through each row and each 
+ * cell within the row to gather the table's data.
+ * 
+ * @returns {Array} A 2D array representing the table's data, where each inner array is a row,
+ *                  and each element in the inner array is a cell's content.
+ */
 
 const tableData = () => { 
     const searchData = []; 
@@ -13,15 +23,18 @@ const tableData = () => {
     return searchData; 
 }
 
-// <> Summary <>
-//The const tableData is a function that returns an array of data from the table element.
-//The function creates an empty array called searchData.
-//Then we create a variable called tableEl that stores the table element.
-//We then create an array from the table body rows using the Array.from method.
-//We then loop through the table body rows using the forEach method.
-//We then push the table data to the searchData array using the push method.
-//We then return the innerHTML of the cell element using the return statement.
-//Finally, we return the searchData array after the loop is done.
+/**
+ * createSearchInputElement creates an input element for the search functionality.
+ * 
+ * This function:
+ * - Creates a new input element.
+ * - Adds a CSS class to style the input.
+ * - Sets an ID for the input element for potential reference in the DOM.
+ * - Sets a placeholder text for the input field.
+ * - Returns the created input element.
+ * 
+ * @returns {HTMLInputElement} The created search input element.
+ */
 
 
 const createSearchInputElement = () => {    
@@ -31,9 +44,15 @@ const createSearchInputElement = () => {
     el.placeholder = 'Søk...';  
 }
 
-// The createSearchInputElement function =>
-// Creates a configured search input element with a class, ID, and placeholder, ready to be added to the UI.
 
+/**
+ * Searches through a 2D array of strings and returns rows that contain the search term.
+ * The function performs a case-insensitive search across all items in each row.
+ * 
+ * @param {Array} arr - A 2D array (array of arrays) where each inner array represents a row of data.
+ * @param {string} searchTerm - The term to search for in the data. If the term is empty or not provided, all rows are returned.
+ * @returns {Array} - A filtered array of rows that contain the search term in at least one of the cells.
+ */
 
 const search = (arr, searchTerm) => {       
     if (!searchTerm) return arr;        
@@ -42,9 +61,19 @@ const search = (arr, searchTerm) => {
     });
 }
 
-// The const - search, filters an array of rows based on a search term. (arr.filter)
-// Returns the original array if the search term is empty
-// or filters rows containing items that include the search term (case-insensitive).
+
+/**
+ * Refreshes the contents of a table by updating its rows with new data.
+ * 
+ * This function clears the current table body and then populates it with 
+ * new rows and cells based on the provided `data`. It assumes the table 
+ * has an ID of 'firstTableId' and the data is in a 2D array format where 
+ * each sub-array represents a row in the table.
+ * 
+ * @param {Array} data - A 2D array where each sub-array represents a row
+ *                       in the table, and each element in the sub-array 
+ *                       corresponds to a cell in the row.
+ */
 
 
 const refreshTable = (data) => {
@@ -62,14 +91,16 @@ const refreshTable = (data) => {
     });
 }
 
-//<> Summary <>
-// The refresh table is a function above takes in data as a parameter.
-//The function creates a variable called tableBody that stores the table body element.
-//The innerHTML of the table body is set to an empty string.The data is then looped through using the forEach method.
-//A new row is created for each item in the data array.The data item is then looped through and a new cell is created for each item in the data array.
-//The innerHTML of the cell is set to the data item.The cell is then appended to the row.The row is then appended to the table body.
-//<> Summary <>
 
+/**
+ * Initializes the table search functionality by setting up an event listener 
+ * on the search input field. When the user types in the search input, the table 
+ * will be dynamically filtered based on the search term.
+ * 
+ * This function retrieves the search input element, listens for the 'keyup' 
+ * event, and filters the table data accordingly by calling the `search` function 
+ * and then updating the table with the filtered data using `refreshTable`.
+ */
 
 const init = () => {
     const searchInput = document.getElementById('searchTable'); // Get the search input element
@@ -79,16 +110,20 @@ const init = () => {
     });
 }
 
-const initialTableData = tableData();
+const initialTableData = tableData(); // Extract the initial table data
 
 init();
 
-// The const init above initializes a search input listener for filtering table data in real-time.
-// This is done by getting the searchtable element by id from the html file.
-// We then add an event listener to the search input element that listens for the keyup event (when the keyboard is not pressed).
-// After that, we call the refreshTable function which takes two parameter. The original table data and the search input value.
-// The refreshTable function then refreshes the table data based on the search input value.
-
+/**
+ * Sorts the rows of a table by a specific column index and order (ascending/descending).
+ * The table must have the class `.table-sortable` from html, and each `<th>` should have a `data-type`
+ * attribute that indicates the type of data in the column (e.g., 'number', 'date', 'string').
+ * 
+ * @param {number} columnIndex - The index (0-based) of the column to sort by.
+ * @param {boolean} [ascending=true] - A boolean value indicating the sort order. 
+ *                                      If `true`, the table will be sorted in ascending order; 
+ *                                      if `false`, it will be sorted in descending order.
+ */
 
 function sortTableByColumn(columnIndex, ascending) {
     if (ascending === undefined) { 

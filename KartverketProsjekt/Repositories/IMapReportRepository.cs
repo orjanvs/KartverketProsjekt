@@ -6,6 +6,7 @@ namespace KartverketProsjekt.Repositories
     public interface IMapReportRepository
     {
 
+
         Task<List<MapReportModel>> GetAllMapReportsAsync(string userId, string userRole);
 
         Task<MapReportModel?> GetMapReportByIdAsync(int id);
