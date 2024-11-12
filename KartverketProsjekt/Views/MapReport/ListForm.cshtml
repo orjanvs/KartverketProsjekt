@@ -42,7 +42,7 @@
 
 <div id="portexe-search-root">
     <div id="portexe-table-container">
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Any()) 
         {
             <table class="table table-sortable" id="firstTableId">
                 <thead>
@@ -99,12 +99,16 @@
 </div>
 
 <div>
-    @if (ViewBag.PageNumber > 1)
+    
+
+    @if (ViewBag.PageNumber > 1) 
     {
+        // If the current page is greater than 1, then the "Previous" link is enabled
         <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Forrige side</a>
     }
-    @if (Model.Count == ViewBag.PageSize)
+    @if (Model.Count == ViewBag.PageSize) 
     {
+        // If the number of items in the current page is equal to the page size, then the "Next" link is enabled
         <a asp-action="ListForm" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Neste side</a>
     }
 </div>
