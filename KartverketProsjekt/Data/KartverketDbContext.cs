@@ -9,7 +9,6 @@ namespace KartverketProsjekt.Data
     {
         public KartverketDbContext(DbContextOptions<KartverketDbContext> options) : base(options)
         {
-
         }
 
         // Table for MapReportModel
@@ -19,14 +18,9 @@ namespace KartverketProsjekt.Data
         public DbSet<DialogueModel> Dialogue { get; set; }
         public DbSet<AttachmentModel> Attachment { get; set; }
 
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             // Section for Identity tables
-
             base.OnModelCreating(modelBuilder);
 
             var sysAdminRoleId = "1";
@@ -61,9 +55,7 @@ namespace KartverketProsjekt.Data
 
             modelBuilder.Entity<IdentityRole>().HasData(roles);
 
-
             // Seed SYSADMIN
-
             var sysAdminId = "1";
             var sysAdminUser = new ApplicationUser
             {
@@ -170,7 +162,6 @@ namespace KartverketProsjekt.Data
                 .HasKey(a => a.AttachmentId);
 
             // Foreign keys and relationships
-
             // MapReportModel relationships
             modelBuilder.Entity<MapReportModel>()
                 .HasOne(m => m.Submitter)
@@ -227,8 +218,6 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-         
-
             // Seed data for MapLayerModel
             modelBuilder.Entity<MapLayerModel>().HasData(
                 new MapLayerModel { MapLayerId = 1, MapLayerType = "Fargekart" },
@@ -247,4 +236,3 @@ namespace KartverketProsjekt.Data
         }
     }
 }
-

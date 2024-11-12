@@ -265,7 +265,6 @@ namespace KartverketProsjekt.Controllers
                 await _mapReportRepository.UpdateMapReportAsync(mapReport);
             }
             return RedirectToAction("ViewReport", new { id = model.MapReportId });
-
         }
 
         [Authorize]
@@ -300,8 +299,5 @@ namespace KartverketProsjekt.Controllers
             }
             return View("MapListForm");
         }
-
     }
 }
-
-
