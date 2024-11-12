@@ -44,7 +44,6 @@ namespace KartverketProsjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-
             if (ModelState.IsValid)
             {
                 var identityUser = new ApplicationUser
@@ -53,8 +52,6 @@ namespace KartverketProsjekt.Controllers
                     Email = registerViewModel.Email,
                     FirstName = registerViewModel.FirstName,
                     LastName = registerViewModel.LastName
-
-
                 };
 
                 var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
@@ -74,14 +71,13 @@ namespace KartverketProsjekt.Controllers
                         // Show error notification
                         return RedirectToAction("Register");
                     }
-
                 }
             }
             // Show error notification
             return View();
         }
 
-
+        // POST method for logging in an existing user
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -125,4 +121,3 @@ namespace KartverketProsjekt.Controllers
         }
     }
 }
-
