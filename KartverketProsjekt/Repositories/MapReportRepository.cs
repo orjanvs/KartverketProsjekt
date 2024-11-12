@@ -1,11 +1,6 @@
 ﻿using KartverketProsjekt.Models.DomainModels;
 using KartverketProsjekt.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using KartverketProsjekt.Models.ViewModels;
-
 
 namespace KartverketProsjekt.Repositories
 {

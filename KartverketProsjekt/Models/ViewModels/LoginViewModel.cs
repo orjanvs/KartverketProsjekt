@@ -2,6 +2,9 @@
 
 namespace KartverketProsjekt.Models.ViewModels
 {
+    /// <summary>
+    /// Represents the data required for a user login, including email and password.
+    /// </summary>
     public class LoginViewModel
     {
         [Required]
