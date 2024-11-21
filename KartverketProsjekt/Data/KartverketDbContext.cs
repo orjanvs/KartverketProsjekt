@@ -20,7 +20,6 @@ namespace KartverketProsjekt.Data
         public DbSet<MapReportModel> MapReport { get; set; }
         public DbSet<MapLayerModel> MapLayer { get; set; }
         public DbSet<MapReportStatusModel> MapReportStatus { get; set; }
-        public DbSet<DialogueModel> Dialogue { get; set; }
         public DbSet<AttachmentModel> Attachment { get; set; }
 
         /// <summary>
@@ -165,8 +164,6 @@ namespace KartverketProsjekt.Data
                 .HasKey(ml => ml.MapLayerId);
             modelBuilder.Entity<MapReportStatusModel>()
                 .HasKey(ms => ms.MapReportStatusId);
-            modelBuilder.Entity<DialogueModel>()
-                .HasKey(d => d.DialogueId);
             modelBuilder.Entity<AttachmentModel>()
                 .HasKey(a => a.AttachmentId);
 
@@ -205,27 +202,6 @@ namespace KartverketProsjekt.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // DialogueModel relationships
-            modelBuilder.Entity<DialogueModel>()
-                .HasOne(d => d.MapReport)
-                .WithMany()
-                .HasForeignKey(d => d.MapReportId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<DialogueModel>()
-                .HasOne(d => d.Sender)
-                .WithMany()
-                .HasForeignKey(d => d.SenderId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<DialogueModel>()
-                .HasOne(d => d.Recipient)
-                .WithMany()
-                .HasForeignKey(d => d.RecipientId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed data for MapLayerModel
             modelBuilder.Entity<MapLayerModel>().HasData(
