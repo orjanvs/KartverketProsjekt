@@ -29,19 +29,8 @@ getMapLayerById(mapLayerId).addTo(map);
 // Handle the GeoJSON data if it exists
 if (typeof geoJsonData !== 'undefined' && geoJsonData) {
     try {
-        // Creates new feature group instance to store layers from GeoJSON data
-        var drawnItems = new L.FeatureGroup();
-
         // Adds the GeoJSON data to the map
-        L.geoJSON(geoJsonData, {
-            onEachFeature: function (feature, layer) {
-                // Bind the popup to the layer with title
-                layer.bindPopup(title);
-                drawnItems.addLayer(layer);
-            }
-        });
-
-        map.addLayer(drawnItems);
+        L.geoJSON(geoJsonData).addTo(map);
 
         // Fit the map to the GeoJSON bounds
         var bounds = drawnItems.getBounds();
@@ -52,7 +41,7 @@ if (typeof geoJsonData !== 'undefined' && geoJsonData) {
         var centroid = turf.centroid(geoJsonData);
         var thisLon = centroid.geometry.coordinates[0];
         var thisLat = centroid.geometry.coordinates[1];
-        var mapsUrl = 'https://www.google.com/maps/place/'+thisLat+','+thisLon
+        var mapsUrl = 'https://www.google.com/maps/place/' + thisLat + ',' + thisLon;
         document.getElementById('googleMapsLink').href = mapsUrl;
 
     // Error in case of GeoJSON processing failure, e.g. formatting errors
