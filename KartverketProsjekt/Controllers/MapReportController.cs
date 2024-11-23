@@ -324,8 +324,11 @@ namespace KartverketProsjekt.Controllers
         public async Task<IActionResult> DeleteMapReport(int id)
         {
             var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
-
-            return deletedReport != null ? RedirectToAction("ListForm") : RedirectToAction("ViewReport", new { id });
+            if (deletedReport == null)
+            {
+                return NotFound($"Map report with ID {id} was not found or could not be deleted.");
+            }
+            return RedirectToAction("ListForm"); 
         }
 
         /// <summary>
