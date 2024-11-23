@@ -51,7 +51,7 @@ namespace KartverketProsjekt.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddForm(AddMapReportRequest request) // string geoJson, string description, int mapLayerId
+        public async Task<IActionResult> AddForm(AddMapReportRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -61,7 +61,11 @@ namespace KartverketProsjekt.Controllers
             // Retrieve the current submitter from the user manager
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
-            if (currentSubmitter == null) return View(); // Show error message 
+            if (currentSubmitter == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             // Create a new map report model from the request data
             var newMapReport = new MapReportModel
             {
@@ -162,18 +166,17 @@ namespace KartverketProsjekt.Controllers
         /// Retrieves all map reports based on user and role.
         /// </summary>
         /// <returns>A tuple with user ID, role, and list of map reports.</returns>
-        private async Task<(string userId, string userRole, List<MapReportModel> mapReports)> GetAllMapReportsBasedOnUserAndUserRoleAsync()
+        private async Task<List<MapReportModel>> GetAllMapReportsBasedOnUserAndUserRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new InvalidOperationException("User not found.");
             }
-            //return RedirectToAction("ListForm");
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
             var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
-            return (userId, userRole, mapReports);
+            return mapReports;
         }
 
         /// <summary>
@@ -191,7 +194,8 @@ namespace KartverketProsjekt.Controllers
                 pageNumber = 1;
             }
 
-            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+
 
             // Paginate and prepare reports for view model
             var paginatedReports = mapReports
@@ -201,14 +205,14 @@ namespace KartverketProsjekt.Controllers
                 {
                     MapReportId = m.MapReportId,
                     SubmissionDate = m.SubmissionDate,
-                    Title = m.Title,
-                    Description = m.Description,
-                    GeoJsonString = m.GeoJsonString,
-                    MapLayerType = m.MapLayer.MapLayerType,
+                    Title = m.Title ?? string.Empty,
+                    Description = m.Description ?? string.Empty,
+                    GeoJsonString = m.GeoJsonString ?? string.Empty,
+                    MapLayerType = m.MapLayer?.MapLayerType ?? string.Empty,
                     HasAttachments = m.Attachments != null && m.Attachments.Any(),
-                    StatusDescription = m.MapReportStatus.StatusDescription,
-                    County = m.County,
-                    Municipality = m.Municipality
+                    StatusDescription = m.MapReportStatus?.StatusDescription ?? string.Empty,
+                    County = m.County ?? string.Empty,
+                    Municipality = m.Municipality ?? string.Empty
                 })
                 .ToList();
 
@@ -226,12 +230,12 @@ namespace KartverketProsjekt.Controllers
         [HttpGet]
         public async Task<IActionResult> MapListForm()
         {
-            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
             var viewModel = mapReports.Select(mapReport => new MapListViewModel
             {
                 MapReportId = mapReport.MapReportId,
-                GeoJsonString = mapReport.GeoJsonString,
+                GeoJsonString = mapReport.GeoJsonString ?? string.Empty,
                 MapLayerId = mapReport.MapLayerId
             }).ToList();
 
@@ -261,19 +265,19 @@ namespace KartverketProsjekt.Controllers
                 GeoJsonString = mapReport.GeoJsonString,
                 SubmissionDate = mapReport.SubmissionDate,
                 MapReportStatusId = mapReport.MapReportStatusId,
-                StatusDescription = mapReport.MapReportStatus.StatusDescription,
+                StatusDescription = mapReport.MapReportStatus?.StatusDescription ?? string.Empty,
                 MapLayerId = mapReport.MapLayerId,
-                MapLayerType = mapReport.MapLayer.MapLayerType,
+                MapLayerType = mapReport.MapLayer?.MapLayerType ?? string.Empty,
                 County = mapReport.County,
                 Municipality = mapReport.Municipality,
-                Attachments = mapReport.Attachments.Select(a => new AddAttachmentRequest
+                Attachments = mapReport.Attachments?.Select(a => new AddAttachmentRequest
                 {
                     AttachmentId = a.AttachmentId,
                     MapReportId = a.MapReportId,
                     FilePath = a.FilePath
                 }).ToList(),
                 SubmitterId = mapReport.SubmitterId,
-                SubmitterName = $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}",
+                SubmitterName = mapReport.Submitter != null ? $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}" : "Unknown",
                 CaseHandlerId = mapReport.CaseHandlerId,
                 CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null,
                 AvailableCaseHandlers = caseHandlers.Select(ch => new SelectListItem
@@ -298,17 +302,28 @@ namespace KartverketProsjekt.Controllers
         public async Task<IActionResult> AssignCaseHandler(ViewMapReportRequest model)
         {
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(model.MapReportId);
-            if (mapReport == null) return RedirectToAction("ViewReport", new { id = model.MapReportId });
+            if (mapReport == null)
+            {
+                return NotFound($"Map report with ID {model.MapReportId} not found.");
+            }
+
+            if (string.IsNullOrEmpty(model.CaseHandlerId))
+            {
+                return BadRequest("Case handler ID cannot be null or empty.");
+            }
+
             mapReport.CaseHandlerId = model.CaseHandlerId;
             var newCaseHandler = await _userManager.FindByIdAsync(model.CaseHandlerId);
             if (newCaseHandler == null)
             {
                 return NotFound("Case handler not found.");
             }
+
             mapReport.CaseHandler = newCaseHandler;
             await _mapReportRepository.UpdateMapReportAsync(mapReport);
             return RedirectToAction("ViewReport", new { id = model.MapReportId });
         }
+
 
         /// <summary>
         /// POST method to delete a specific map report.
@@ -321,8 +336,11 @@ namespace KartverketProsjekt.Controllers
         public async Task<IActionResult> DeleteMapReport(int id)
         {
             var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
-
-            return deletedReport != null ? RedirectToAction("ListForm") : RedirectToAction("ViewReport", new { id });
+            if (deletedReport == null)
+            {
+                return NotFound($"Map report with ID {id} was not found or could not be deleted.");
+            }
+            return RedirectToAction("ListForm"); 
         }
 
         /// <summary>

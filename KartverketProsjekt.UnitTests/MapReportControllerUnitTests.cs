@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using KartverketProsjekt.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace KartverketProsjekt.Tests
 {
@@ -22,8 +26,19 @@ namespace KartverketProsjekt.Tests
             _mockMapReportRepository = new Mock<IMapReportRepository>();
 
             // Initialize UserManager<ApplicationUser> mock
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
-            _mockUserManager = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            var userStore = new Mock<IUserStore<ApplicationUser>>().Object;
+            var options = new Mock<IOptions<IdentityOptions>>().Object;
+            var passwordHasher = new Mock<IPasswordHasher<ApplicationUser>>().Object;
+            var userValidators = new List<IUserValidator<ApplicationUser>> { new Mock<IUserValidator<ApplicationUser>>().Object };
+            var passwordValidators = new List<IPasswordValidator<ApplicationUser>> { new Mock<IPasswordValidator<ApplicationUser>>().Object };
+            var keyNormalizer = new Mock<ILookupNormalizer>().Object;
+            var errors = new Mock<IdentityErrorDescriber>().Object;
+            var services = new Mock<IServiceProvider>().Object;
+            var logger = new Mock<ILogger<UserManager<ApplicationUser>>>().Object;
+
+            _mockUserManager = new Mock<UserManager<ApplicationUser>>(
+                userStore, options, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger
+            );
 
             // Setup user manager mock to return a specific user (you can customize this for your tests)
             var mockUser = new ApplicationUser { Id = "testUserId" };
@@ -38,7 +53,7 @@ namespace KartverketProsjekt.Tests
         public async Task AddForm_ShouldReturnView_WhenModelStateIsInvalid()
         {
             // Arrange
-            _controller.ModelState.AddModelError("Title", "Title is required"); // Simulate invalid model state
+            _controller.ModelState.AddModelError("Title", "Title is required");
             var request = new AddMapReportRequest();
 
             // Act
@@ -49,6 +64,30 @@ namespace KartverketProsjekt.Tests
             _mockMapReportRepository.Verify(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()), Times.Never);
         }
 
+        [Fact]
+        public async Task AddForm_UnauthenticatedUser_RedirectsToLoginView()
+        {
+            // Arrange
+            _mockUserManager.Setup(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync((ApplicationUser?)null);
+
+            var request = new AddMapReportRequest
+            {
+                Description = "Test Description",
+                Title = "Test Title",
+                GeoJson = "Test GeoJson",
+                MapLayerId = 1,
+                County = "Test County",
+                Municipality = "Test Municipality"
+            };
+
+            // Act
+            var result = await _controller.AddForm(request);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Login", redirectToActionResult.ActionName);
+            Assert.Equal("Account", redirectToActionResult.ControllerName);
+        }
 
         [Fact]
         public async Task AddForm_ShouldRedirectToViewReport_WhenModelStateIsValidAndUserIsFound()
@@ -61,12 +100,13 @@ namespace KartverketProsjekt.Tests
                 GeoJson = "TestGeoJson",
                 MapLayerId = 1,
                 County = "Test County",
-                Municipality = "Test Municipality"
+                Municipality = "Test Municipality",
+                Attachments = new List<IFormFile>()
             };
 
             _mockMapReportRepository
                 .Setup(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()))
-                .Returns(Task.FromResult(new MapReportModel { MapReportId = 1 })); // Return a sample MapReportModel
+                .Returns(Task.FromResult(new MapReportModel { MapReportId = 1 }));
 
             // Act
             var result = await _controller.AddForm(request);
@@ -76,9 +116,44 @@ namespace KartverketProsjekt.Tests
             Assert.Equal("ViewReport", redirectResult.ActionName);
 
             _mockMapReportRepository.Verify(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()), Times.Once);
-
             _mockUserManager.Verify(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
+            // Verify HandleAttachments method
+            var methodInfo = typeof(MapReportController).GetMethod("HandleAttachments", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.NotNull(methodInfo);
+        }
+
+        [Fact]
+        public async Task DeleteMapReport_RedirectsToListForm_When_MapReportId_IsValid()
+        {
+            // Arrange
+            _mockMapReportRepository
+                .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
+                .ReturnsAsync(new MapReportModel { MapReportId = 1 });
+
+            // Act
+            var result = await _controller.DeleteMapReport(1);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("ListForm", redirectToActionResult.ActionName);
+        }
+
+        [Fact]
+        public async Task DeleteMapReport_ReturnsNotFoundResult_When_MapReportId_IsNotValid()
+        {
+            // Arrange
+            
+            _mockMapReportRepository
+                .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
+                .ReturnsAsync((MapReportModel?)null);
+
+            // Act
+            var result = await _controller.DeleteMapReport(1);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("Map report with ID 1 was not found or could not be deleted.", notFoundResult.Value);
         }
     }
 }
