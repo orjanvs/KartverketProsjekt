@@ -118,20 +118,17 @@ namespace KartverketProsjekt.Repositories
         {
             var existingMapReport = await _kartverketDbContext.MapReport.FindAsync(mapReport.MapReportId);
 
-            if (existingMapReport != null)
-            {
-                existingMapReport.Description = mapReport.Description;
-                existingMapReport.GeoJsonString = mapReport.GeoJsonString;
-                existingMapReport.SubmissionDate = mapReport.SubmissionDate;
-                existingMapReport.SubmitterId = mapReport.SubmitterId;
-                existingMapReport.CaseHandlerId = mapReport.CaseHandlerId;
-                existingMapReport.MapLayerId = mapReport.MapLayerId;
-                existingMapReport.MapReportStatusId = mapReport.MapReportStatusId;
+            if (existingMapReport == null) return null;
+            existingMapReport.Description = mapReport.Description;
+            existingMapReport.GeoJsonString = mapReport.GeoJsonString;
+            existingMapReport.SubmissionDate = mapReport.SubmissionDate;
+            existingMapReport.SubmitterId = mapReport.SubmitterId;
+            existingMapReport.CaseHandlerId = mapReport.CaseHandlerId;
+            existingMapReport.MapLayerId = mapReport.MapLayerId;
+            existingMapReport.MapReportStatusId = mapReport.MapReportStatusId;
 
-                await _kartverketDbContext.SaveChangesAsync();
-                return existingMapReport;
-            }
-            return null;
+            await _kartverketDbContext.SaveChangesAsync();
+            return existingMapReport;
         }
     }
 }
