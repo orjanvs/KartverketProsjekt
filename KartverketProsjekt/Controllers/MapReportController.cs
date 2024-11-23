@@ -306,16 +306,24 @@ namespace KartverketProsjekt.Controllers
             {
                 return NotFound($"Map report with ID {model.MapReportId} not found.");
             }
+
+            if (string.IsNullOrEmpty(model.CaseHandlerId))
+            {
+                return BadRequest("Case handler ID cannot be null or empty.");
+            }
+
             mapReport.CaseHandlerId = model.CaseHandlerId;
             var newCaseHandler = await _userManager.FindByIdAsync(model.CaseHandlerId);
             if (newCaseHandler == null)
             {
                 return NotFound("Case handler not found.");
             }
+
             mapReport.CaseHandler = newCaseHandler;
             await _mapReportRepository.UpdateMapReportAsync(mapReport);
             return RedirectToAction("ViewReport", new { id = model.MapReportId });
         }
+
 
         /// <summary>
         /// POST method to delete a specific map report.
