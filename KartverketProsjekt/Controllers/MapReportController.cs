@@ -298,7 +298,10 @@ namespace KartverketProsjekt.Controllers
         public async Task<IActionResult> AssignCaseHandler(ViewMapReportRequest model)
         {
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(model.MapReportId);
-            if (mapReport == null) return RedirectToAction("ViewReport", new { id = model.MapReportId });
+            if (mapReport == null)
+            {
+                return NotFound($"Map report with ID {model.MapReportId} not found.");
+            }
             mapReport.CaseHandlerId = model.CaseHandlerId;
             var newCaseHandler = await _userManager.FindByIdAsync(model.CaseHandlerId);
             if (newCaseHandler == null)
