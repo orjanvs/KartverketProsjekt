@@ -188,7 +188,7 @@
 <script>
     var mapLayerId = @Model.MapLayerId;
     var geoJsonData = @Html.Raw(Model.GeoJsonString);
-    var title = @Html.Raw(Json.Serialize(Model.Title));
+    var title = '@Model.Title';
 </script>
 <script src="~/js/viewReportLeaflet.js"></script>
 
