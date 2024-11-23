@@ -9,6 +9,8 @@ using KartverketProsjekt.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace KartverketProsjekt.Tests
 {
@@ -24,8 +26,19 @@ namespace KartverketProsjekt.Tests
             _mockMapReportRepository = new Mock<IMapReportRepository>();
 
             // Initialize UserManager<ApplicationUser> mock
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
-            _mockUserManager = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            var userStore = new Mock<IUserStore<ApplicationUser>>().Object;
+            var options = new Mock<IOptions<IdentityOptions>>().Object;
+            var passwordHasher = new Mock<IPasswordHasher<ApplicationUser>>().Object;
+            var userValidators = new List<IUserValidator<ApplicationUser>> { new Mock<IUserValidator<ApplicationUser>>().Object };
+            var passwordValidators = new List<IPasswordValidator<ApplicationUser>> { new Mock<IPasswordValidator<ApplicationUser>>().Object };
+            var keyNormalizer = new Mock<ILookupNormalizer>().Object;
+            var errors = new Mock<IdentityErrorDescriber>().Object;
+            var services = new Mock<IServiceProvider>().Object;
+            var logger = new Mock<ILogger<UserManager<ApplicationUser>>>().Object;
+
+            _mockUserManager = new Mock<UserManager<ApplicationUser>>(
+                userStore, options, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger
+            );
 
             // Setup user manager mock to return a specific user (you can customize this for your tests)
             var mockUser = new ApplicationUser { Id = "testUserId" };
@@ -55,7 +68,7 @@ namespace KartverketProsjekt.Tests
         public async Task AddForm_UnauthenticatedUser_RedirectsToLoginView()
         {
             // Arrange
-            _mockUserManager.Setup(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync((ApplicationUser)null);
+            _mockUserManager.Setup(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync((ApplicationUser?)null);
 
             var request = new AddMapReportRequest
             {
@@ -133,7 +146,7 @@ namespace KartverketProsjekt.Tests
             
             _mockMapReportRepository
                 .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
-                .ReturnsAsync((MapReportModel)null);
+                .ReturnsAsync((MapReportModel?)null);
 
             // Act
             var result = await _controller.DeleteMapReport(1);
