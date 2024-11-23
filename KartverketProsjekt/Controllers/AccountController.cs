@@ -58,6 +58,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to login page on success or registration page on failure.</returns>
         [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid) return View();
@@ -97,6 +98,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the MapReport ListForm on success or login page on failure.</returns>
         [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)

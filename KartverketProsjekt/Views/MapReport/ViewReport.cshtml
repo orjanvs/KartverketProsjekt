@@ -88,6 +88,7 @@
                     </div>
                     <div class="container">
                         <form method="post">
+                            @Html.AntiForgeryToken()
                             @{
                                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                             }
@@ -114,6 +115,7 @@
                                             Tildel sak
                                         </button>
                                     }
+
                                     @if (Model.CaseHandlerId == currentUserId || Model.MapReportStatusId == 1)
                                     {
                                         <button type="submit" formaction="@Url.Action("DeleteMapReport", "MapReport", new { id = Model.MapReportId })"
@@ -167,7 +169,8 @@
             </div>
             <div class="modal-body">
                 <form method="post" asp-action="AssignCaseHandler">
-                    <input type="hidden" asp-for="MapReportId" />
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="MapReportId"/>
                     <div class="mb-3">
                         <label for="newCaseHandler" class="form-label">Velg saksbehandler</label>
                         <select id="newCaseHandler" class="form-select" asp-for="CaseHandlerId" asp-items="Model.AvailableCaseHandlers"></select>

@@ -50,6 +50,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the report view on success or returns to the form view on failure.</returns>
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddForm(AddMapReportRequest request) // string geoJson, string description, int mapLayerId
         {
             if (!ModelState.IsValid)
@@ -95,6 +96,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the report view after starting handling.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> StartHandlingMapReport(int id)
         {
             var currentCaseHandler = await _userManager.GetUserAsync(User);
@@ -116,6 +118,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the report view on success or returns forbidden if handler does not match.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> FinishHandlingMapReport(int id)
         {
             var currentCaseHandler = await _userManager.GetUserAsync(User);
@@ -291,6 +294,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the report view after assigning the case handler.</returns>
         [Authorize(Roles = "Case Handler")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignCaseHandler(ViewMapReportRequest model)
         {
             var mapReport = await _mapReportRepository.GetMapReportByIdAsync(model.MapReportId);
@@ -313,6 +317,7 @@ namespace KartverketProsjekt.Controllers
         /// <returns>Redirects to the list form after deletion.</returns>
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMapReport(int id)
         {
             var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
