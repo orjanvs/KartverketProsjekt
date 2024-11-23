@@ -196,6 +196,7 @@ namespace KartverketProsjekt.Controllers
 
             var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
+
             // Paginate and prepare reports for view model
             var paginatedReports = mapReports
                 .Skip((pageNumber - 1) * pageSize)
@@ -204,14 +205,14 @@ namespace KartverketProsjekt.Controllers
                 {
                     MapReportId = m.MapReportId,
                     SubmissionDate = m.SubmissionDate,
-                    Title = m.Title,
-                    Description = m.Description,
-                    GeoJsonString = m.GeoJsonString,
-                    MapLayerType = m.MapLayer.MapLayerType,
+                    Title = m.Title ?? string.Empty,
+                    Description = m.Description ?? string.Empty,
+                    GeoJsonString = m.GeoJsonString ?? string.Empty,
+                    MapLayerType = m.MapLayer?.MapLayerType ?? string.Empty,
                     HasAttachments = m.Attachments != null && m.Attachments.Any(),
-                    StatusDescription = m.MapReportStatus.StatusDescription,
-                    County = m.County,
-                    Municipality = m.Municipality
+                    StatusDescription = m.MapReportStatus?.StatusDescription ?? string.Empty,
+                    County = m.County ?? string.Empty,
+                    Municipality = m.Municipality ?? string.Empty
                 })
                 .ToList();
 
@@ -234,7 +235,7 @@ namespace KartverketProsjekt.Controllers
             var viewModel = mapReports.Select(mapReport => new MapListViewModel
             {
                 MapReportId = mapReport.MapReportId,
-                GeoJsonString = mapReport.GeoJsonString,
+                GeoJsonString = mapReport.GeoJsonString ?? string.Empty,
                 MapLayerId = mapReport.MapLayerId
             }).ToList();
 
@@ -264,19 +265,19 @@ namespace KartverketProsjekt.Controllers
                 GeoJsonString = mapReport.GeoJsonString,
                 SubmissionDate = mapReport.SubmissionDate,
                 MapReportStatusId = mapReport.MapReportStatusId,
-                StatusDescription = mapReport.MapReportStatus.StatusDescription,
+                StatusDescription = mapReport.MapReportStatus?.StatusDescription ?? string.Empty,
                 MapLayerId = mapReport.MapLayerId,
-                MapLayerType = mapReport.MapLayer.MapLayerType,
+                MapLayerType = mapReport.MapLayer?.MapLayerType ?? string.Empty,
                 County = mapReport.County,
                 Municipality = mapReport.Municipality,
-                Attachments = mapReport.Attachments.Select(a => new AddAttachmentRequest
+                Attachments = mapReport.Attachments?.Select(a => new AddAttachmentRequest
                 {
                     AttachmentId = a.AttachmentId,
                     MapReportId = a.MapReportId,
                     FilePath = a.FilePath
                 }).ToList(),
                 SubmitterId = mapReport.SubmitterId,
-                SubmitterName = $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}",
+                SubmitterName = mapReport.Submitter != null ? $"{mapReport.Submitter.FirstName} {mapReport.Submitter.LastName}" : "Unknown",
                 CaseHandlerId = mapReport.CaseHandlerId,
                 CaseHandlerName = mapReport.CaseHandler != null ? $"{mapReport.CaseHandler.FirstName} {mapReport.CaseHandler.LastName}" : null,
                 AvailableCaseHandlers = caseHandlers.Select(ch => new SelectListItem
