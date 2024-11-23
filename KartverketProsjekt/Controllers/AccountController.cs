@@ -60,39 +60,34 @@ namespace KartverketProsjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            // Creating a new ApplicationUser with details from the view model
+            var identityUser = new ApplicationUser
             {
-                // Creating a new ApplicationUser with details from the view model
-                var identityUser = new ApplicationUser
-                {
-                    UserName = registerViewModel.Email,
-                    Email = registerViewModel.Email,
-                    FirstName = registerViewModel.FirstName,
-                    LastName = registerViewModel.LastName
-                };
+                UserName = registerViewModel.Email,
+                Email = registerViewModel.Email,
+                FirstName = registerViewModel.FirstName,
+                LastName = registerViewModel.LastName
+            };
 
-                // Attempt to create the user
-                var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
+            // Attempt to create the user
+            var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
 
-                if (identityResult.Succeeded)
-                {
-                    // assign this user the "User" role
-                    var roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Submitter");
+            if (!identityResult.Succeeded) return View();
+            // assign this user the "User" role
+            var roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Submitter");
 
-                    if (roleIdentityResult.Succeeded)
-                    {
-                        //show success notification
-                        return RedirectToAction("Login");
-                    }
-                    else
-                    {
-                        // Show error notification
-                        return RedirectToAction("Register");
-                    }
-                }
+            if (roleIdentityResult.Succeeded)
+            {
+                //show success notification
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                // Show error notification
+                return RedirectToAction("Register");
             }
             // Show error notification
-            return View();
         }
 
         /// <summary>
@@ -133,19 +128,16 @@ namespace KartverketProsjekt.Controllers
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
-            if (currentUser != null)
+            if (currentUser == null) return RedirectToAction("Login");
+            // Create a view model with current user's details
+            var profilePageViewModel = new ProfilePageViewModel
             {
-                // Create a view model with current user's details
-                var profilePageViewModel = new ProfilePageViewModel
-                {
-                    Email = currentUser.Email,
-                    FirstName = currentUser.FirstName,
-                    LastName = currentUser.LastName
-                };
-                return View(profilePageViewModel);
-            }
+                Email = currentUser.Email,
+                FirstName = currentUser.FirstName,
+                LastName = currentUser.LastName
+            };
+            return View(profilePageViewModel);
             // Show error notification
-            return RedirectToAction("Login");
         }
     }
 }
