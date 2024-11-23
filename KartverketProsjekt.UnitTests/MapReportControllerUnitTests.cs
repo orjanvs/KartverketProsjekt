@@ -54,9 +54,6 @@ namespace KartverketProsjekt.Tests
         public async Task AddForm_ShouldRedirectToViewReport_WhenModelStateIsValidAndUserIsFound()
         {
             // Arrange
-            var mockUser = new ApplicationUser { Id = "testUserId" };
-            _mockUserManager.Setup(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(mockUser);
-
             var request = new AddMapReportRequest
             {
                 Title = "Test Report",
@@ -79,6 +76,9 @@ namespace KartverketProsjekt.Tests
             Assert.Equal("ViewReport", redirectResult.ActionName);
 
             _mockMapReportRepository.Verify(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()), Times.Once);
+
+            _mockUserManager.Verify(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
         }
     }
 }
