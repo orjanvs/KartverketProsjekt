@@ -166,18 +166,17 @@ namespace KartverketProsjekt.Controllers
         /// Retrieves all map reports based on user and role.
         /// </summary>
         /// <returns>A tuple with user ID, role, and list of map reports.</returns>
-        private async Task<(string userId, string userRole, List<MapReportModel> mapReports)> GetAllMapReportsBasedOnUserAndUserRoleAsync()
+        private async Task<List<MapReportModel>> GetAllMapReportsBasedOnUserAndUserRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new InvalidOperationException("User not found.");
             }
-            //return RedirectToAction("ListForm");
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
             var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
-            return (userId, userRole, mapReports);
+            return mapReports;
         }
 
         /// <summary>
@@ -195,7 +194,7 @@ namespace KartverketProsjekt.Controllers
                 pageNumber = 1;
             }
 
-            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
             // Paginate and prepare reports for view model
             var paginatedReports = mapReports
@@ -230,7 +229,7 @@ namespace KartverketProsjekt.Controllers
         [HttpGet]
         public async Task<IActionResult> MapListForm()
         {
-            var (userId, userRole, mapReports) = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
 
             var viewModel = mapReports.Select(mapReport => new MapListViewModel
             {
