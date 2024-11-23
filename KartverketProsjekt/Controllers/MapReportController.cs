@@ -51,7 +51,7 @@ namespace KartverketProsjekt.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddForm(AddMapReportRequest request) // string geoJson, string description, int mapLayerId
+        public async Task<IActionResult> AddForm(AddMapReportRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -61,7 +61,11 @@ namespace KartverketProsjekt.Controllers
             // Retrieve the current submitter from the user manager
             var currentSubmitter = await _userManager.GetUserAsync(User);
 
-            if (currentSubmitter == null) return View(); // Show error message 
+            if (currentSubmitter == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             // Create a new map report model from the request data
             var newMapReport = new MapReportModel
             {
