@@ -30,7 +30,9 @@ namespace KartverketProsjekt.Models.DomainModels
         // Navigation properties
         public ApplicationUser? Submitter { get; set; } // Navigation to Submitter (User)
         public ApplicationUser? CaseHandler { get; set; } // Navigation to CaseHandler (User)
+        [Required]
         public MapLayerModel? MapLayer { get; set; } // Navigation to MapLayer
+        [Required]
         public MapReportStatusModel? MapReportStatus { get; set; } // Navigation to MapReportStatus
         public ICollection<AttachmentModel>? Attachments { get; set; } // Collection for Attachments
     }

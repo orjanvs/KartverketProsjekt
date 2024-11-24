@@ -11,29 +11,32 @@
 
                 @* Form for submitting a new map report, with file upload support *@
                 <form asp-action="AddForm" enctype="multipart/form-data" method="post" class="shadow p-4 rounded bg-light form-height">
+                    @Html.AntiForgeryToken()
                     @* Hidden inputs for storing geoJson, municipality, county, and map layer data *@
-                    <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson" />
+                    <input type="hidden" id="geoJsonInput" name="GeoJson" asp-for="GeoJson"/>
                     <span asp-validation-for="GeoJson" class="text-danger"></span>
-                    <input type="hidden" id="municipalityInput" name="Municipality" asp-for="Municipality" />
-                    <input type="hidden" id="countyInput" name="County" asp-for="County" />
-                    <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId" />
+                    <input type="hidden" id="municipalityInput" name="Municipality" asp-for="Municipality"/>
+                    <input type="hidden" id="countyInput" name="County" asp-for="County"/>
+                    <input type="hidden" id="mapLayerIdInput" name="MapLayerId" asp-for="MapLayerId"/>
 
                     @* Title input field with validation *@
                     <div class="mb-3">
-                        <label for="title" class="form-label">Tittel</label>
-                        <input type="text" class="form-control" name="Title" id="title" maxlength="50" minlength="5" required>
+                        <label for="Title" class="form-label">Tittel</label>
+                        <input type="text" class="form-control" asp-for="Title" maxlength="50" minlength="5" required>
                     </div>
 
                     @* Description input field with validation *@
                     <div class="mb-3">
-                        <label for="description" class="form-label">Beskrivelse av feil</label>
-                        <textarea id="description" name="Description" class="form-control" required></textarea>
+                        <label for="Description" class="form-label">Beskrivelse av feil</label>
+                        <textarea asp-for="Description" class="form-control" required></textarea>
                     </div>
 
                     @* Attachments section with an option to add additional files *@
                     <div id="attachments-container" class="mb-3">
-                        <label for="attachment" class="form-label">Last opp vedlegg</label>
-                        <input type="file" id="attachment" name="Attachments" class="form-control" />
+
+                        <label for="Attachments" class="form-label">Last opp vedlegg</label>
+                        <input type="file" asp-for="Attachments" class="form-control" accept="image/*" />
+
                     </div>
                     <button type="button" id="add-attachment" class="btn btn-secondary btn-sm mb-3 attachment-button">Legg til vedlegg</button>
 

@@ -11,6 +11,7 @@
 <div class="wrapper">
     @* Login form that posts to the Login action in the Account controller *@
     <form asp-controller="Account" asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
         <h1>Innlogging</h1>
 
         @* Input field for Email with validation *@
