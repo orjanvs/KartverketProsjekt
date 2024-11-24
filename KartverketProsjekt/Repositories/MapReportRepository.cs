@@ -71,17 +71,6 @@ namespace KartverketProsjekt.Repositories
 
             return await query.ToListAsync();
         }
-		//public async Task<IEnumerable<MapReportModel>> GetAllMapReportsAsync()
-		//{
-		//    // Eager loading related data for display purposes
-		//    return await _kartverketDbContext.MapReport
-		//        .Include(m => m.Submitter)
-		//        .Include(m => m.CaseHandler)
-		//        .Include(m => m.MapLayer)
-		//        .Include(m => m.MapReportStatus)
-		//        .ToListAsync();
-		//}
-
 
 
 		/// <summary>
