@@ -28,7 +28,7 @@ builder.Services.AddDbContext<KartverketDbContext>(options =>
            errorNumbersToAdd: null // Additional error codes to retry on
        )));
 
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<KartverketDbContext>(); 
