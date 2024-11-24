@@ -165,7 +165,7 @@ namespace KartverketProsjekt.Controllers
         /// <summary>
         /// Retrieves all map reports based on user and role.
         /// </summary>
-        /// <returns>A tuple with user ID, role, and list of map reports.</returns>
+        /// <returns>A list of map reports associated with the current user and their role.</returns>
         private async Task<List<MapReportModel>> GetAllMapReportsBasedOnUserAndUserRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
