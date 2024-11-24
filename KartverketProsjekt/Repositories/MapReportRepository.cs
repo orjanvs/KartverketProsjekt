@@ -45,6 +45,7 @@ namespace KartverketProsjekt.Repositories
             }
             return null;
         }
+        
         /// <summary>
         /// Retrieves the base query for map reports, with filtering based on user role and search query, but without pagination.
         /// </summary>
@@ -144,16 +145,16 @@ namespace KartverketProsjekt.Repositories
             return await query.ToListAsync();
         }
 
-        /// <summary>
-        /// Retrieves a specific map report by its unique identifier, including all related data for complete viewing.
-        /// </summary>
-        /// <param name="id">The unique identifier of the map report to retrieve.</param>
-        /// <returns>
-        /// The <see cref="MapReportModel"/> object with all related data eagerly loaded, if found; 
-        /// otherwise, <c>null</c> if no map report with the specified ID exists.
-        /// </returns>
+		/// <summary>
+		/// Retrieves a specific map report by its unique identifier, including all related data for complete viewing.
+		/// </summary>
+		/// <param name="id">The unique identifier of the map report to retrieve.</param>
+		/// <returns>
+		/// The <see cref="MapReportModel"/> object with all related data eagerly loaded, if found; 
+		/// otherwise, <c>null</c> if no map report with the specified ID exists.
+		/// </returns>
 
-        public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
+		public async Task<MapReportModel?> GetMapReportByIdAsync(int id)
         {
             // Eager loading related data to ensure all details are available for viewing
             return await _kartverketDbContext.MapReport
