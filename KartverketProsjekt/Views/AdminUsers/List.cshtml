@@ -1,0 +1,49 @@
+﻿@model KartverketProsjekt.Models.ViewModels.UserViewModel
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Brukerliste - Administrator funksjonalitet</h1>
+    </div>
+</div>
+
+<div>
+    <div class="container">
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Navn</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.EmailAdress</td>
+                            <td>@user.UserName</td>
+                            <td>
+                                <form method="post"
+                                      asp-controller="AdminUsers"
+                                      asp-action="DeleteUser" asp-route-id="@user.Id">
+                                    <button class="btn btn-danger"
+                                    onclick="return confirm ('Er du sikker på at du vil slette denne brukeren?');"
+                                    type="submit">Slett bruker
+                                </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No users found!</p>
+        }
+    </div>
+</div>
