@@ -340,18 +340,18 @@ namespace KartverketProsjekt.Controllers
         /// POST method to delete a specific map report.
         /// </summary>
         /// <param name="id">The ID of the map report to delete.</param>
-        /// <returns>Redirects to the list form after deletion.</returns>
+        /// <returns>Redirects to the list form after deletion or returns not found if the report does not exist.</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMapReport(int id)
         {
             var deletedReport = await _mapReportRepository.DeleteMapReportAsync(id);
-            if (deletedReport == null)
+            if (deletedReport == false)
             {
                 return NotFound($"Map report with ID {id} was not found or could not be deleted.");
             }
-            return RedirectToAction("ListForm"); 
+            return RedirectToAction("ListForm");
         }
 
         /// <summary>

@@ -127,7 +127,7 @@ namespace KartverketProsjekt.Tests
             // Arrange
             _mockMapReportRepository
                 .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
-                .ReturnsAsync(new MapReportModel { MapReportId = 1 });
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteMapReport(1);
@@ -141,10 +141,9 @@ namespace KartverketProsjekt.Tests
         public async Task DeleteMapReport_ReturnsNotFoundResult_When_MapReportId_IsNotValid()
         {
             // Arrange
-            
             _mockMapReportRepository
                 .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
-                .ReturnsAsync((MapReportModel?)null);
+                .ReturnsAsync(false);
 
             // Act
             var result = await _controller.DeleteMapReport(1);
