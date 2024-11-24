@@ -49,6 +49,14 @@ Testbruker innmelder:
 Email: submitter@test.com,
 Passord: Submitter@123
 
+Testbruker systemadministrator:
+Email: Sysadmin@test.com
+Passord: Test@123
+
+### Systemadministrator
+Systemadministrator har tilgang til en ekstraknapp i navbar som sender brukeren videre til ei brukerliste.
+Inne her er ei liste over alle brukere registrert i applikasjonen, samt en knapp for å slette hver av de.
+
 ### Kartinnmelding
 
 Kartet bruker nettleseren sin innebygde geolokasjons API for å vise startposisjon i kartet.
