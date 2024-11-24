@@ -56,6 +56,12 @@
                                     </li>
                                 </ul>
                             </li>
+                            @if (User.Identity?.Name == "sysadmin@test.com")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="AdminUsersControllers" asp-action="List">User List</a>
+                                </li>
+                            }
                         }
                         <li class="nav-item ms-auto d-flex align-items-center">
                             @if (signInManager.IsSignedIn(User))
