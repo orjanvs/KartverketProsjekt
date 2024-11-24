@@ -9,8 +9,8 @@ namespace KartverketProsjekt.Repositories
     {
 
 
+        Task<List<MapReportModel>> GetMapReportsAsync(string userId, string userRole, string? searchQuery = null, int pageNumber = 1, int pageSize = 100);
         Task<List<MapReportModel>> GetAllMapReportsAsync(string userId, string userRole);
-
         Task<MapReportModel?> GetMapReportByIdAsync(int id);
 
         Task<MapReportModel> AddMapReportAsync(MapReportModel mapReport);
@@ -18,6 +18,8 @@ namespace KartverketProsjekt.Repositories
         Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport);
 
         Task<MapReportModel?> DeleteMapReportAsync(int id);
+
+        Task<int> CountAsync(string userId, string userRole, string? searchQuery);
         
     }
 }
