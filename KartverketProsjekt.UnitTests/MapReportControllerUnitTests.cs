@@ -88,9 +88,13 @@ namespace KartverketProsjekt.Tests
         }
 
         [Fact]
-        public async Task AddForm_ShouldRedirectToViewReport_WhenModelStateIsValidAndUserIsFound()
+        public async Task AddForm_ShouldRedirectToViewReport_WhenModelStateIsValidAndUserIsFoundAndAttachmentIsAdded()
         {
             // Arrange
+            var mockFile = new Mock<IFormFile>();
+            mockFile.Setup(f => f.FileName).Returns("test.jpeg");
+            mockFile.Setup(f => f.Length).Returns(1024);
+
             var request = new AddMapReportRequest
             {
                 Title = "Test Report",
@@ -99,12 +103,17 @@ namespace KartverketProsjekt.Tests
                 MapLayerId = 1,
                 County = "Test County",
                 Municipality = "Test Municipality",
-                Attachments = new List<IFormFile>()
+                Attachments = new List<IFormFile> { mockFile.Object }
             };
+
+            var mockMapReport = new MapReportModel { MapReportId = 1 };
+
+            // Create a new MapReportModel to pass to the HandleAttachments method
+            var newMapReport = new MapReportModel();
 
             _mockMapReportRepository
                 .Setup(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()))
-                .Returns(Task.FromResult(new MapReportModel { MapReportId = 1 }));
+                .ReturnsAsync(mockMapReport);
 
             // Act
             var result = await _controller.AddForm(request);
@@ -112,6 +121,7 @@ namespace KartverketProsjekt.Tests
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("ViewReport", redirectResult.ActionName);
+            Assert.Equal(mockMapReport.MapReportId, redirectResult.RouteValues["id"]);
 
             _mockMapReportRepository.Verify(repo => repo.AddMapReportAsync(It.IsAny<MapReportModel>()), Times.Once);
             _mockUserManager.Verify(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
@@ -119,6 +129,15 @@ namespace KartverketProsjekt.Tests
             // Verify HandleAttachments method
             var methodInfo = typeof(MapReportController).GetMethod("HandleAttachments", BindingFlags.NonPublic | BindingFlags.Instance);
             Assert.NotNull(methodInfo);
+
+
+            // Invoke the HandleAttachments method
+            methodInfo.Invoke(_controller, new object[] { request, newMapReport });
+
+            // Verify that the attachments were processed
+            Assert.NotNull(newMapReport.Attachments);
+            Assert.Single(newMapReport.Attachments);
+            Assert.Equal("test.jpeg", newMapReport.Attachments.First().FilePath);
         }
 
         [Fact]
@@ -127,7 +146,7 @@ namespace KartverketProsjekt.Tests
             // Arrange
             _mockMapReportRepository
                 .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
-                .ReturnsAsync(new MapReportModel { MapReportId = 1 });
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteMapReport(1);
@@ -141,17 +160,16 @@ namespace KartverketProsjekt.Tests
         public async Task DeleteMapReport_ReturnsNotFoundResult_When_MapReportId_IsNotValid()
         {
             // Arrange
-            
             _mockMapReportRepository
                 .Setup(repo => repo.DeleteMapReportAsync(It.IsAny<int>()))
-                .ReturnsAsync((MapReportModel?)null);
+                .ReturnsAsync(false);
 
             // Act
             var result = await _controller.DeleteMapReport(1);
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal("Map report with ID 1 was not found or could not be deleted.", notFoundResult.Value);
+            Assert.Equal("v", notFoundResult.Value);
         }
     }
 }

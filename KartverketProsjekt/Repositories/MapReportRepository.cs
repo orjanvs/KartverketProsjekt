@@ -31,21 +31,21 @@ namespace KartverketProsjekt.Repositories
         /// </summary>
         /// <param name="id">The unique identifier of the map report to be deleted.</param>
         /// <returns>
-        /// The deleted <see cref="MapReportModel"/> object if it was found and removed; 
-        /// otherwise, <c>null</c> if no map report with the specified ID was found.
+        /// <c>true</c> if the map report was found and removed; 
+        /// otherwise, <c>false</c> if no map report with the specified ID was found.
         /// </returns>
-        public async Task<MapReportModel?> DeleteMapReportAsync(int id)
+        public async Task<bool> DeleteMapReportAsync(int id)
         {
             var existingReport = await _kartverketDbContext.MapReport.FindAsync(id);
-            if (existingReport != null)
+            if (existingReport == null)
             {
-                _kartverketDbContext.MapReport.Remove(existingReport);
-                await _kartverketDbContext.SaveChangesAsync();
-                return existingReport;
+                return false;
             }
-            return null;
+            _kartverketDbContext.MapReport.Remove(existingReport);
+            await _kartverketDbContext.SaveChangesAsync();
+            return true;
         }
-        
+
         /// <summary>
         /// Retrieves the base query for map reports, with filtering based on user role and search query, but without pagination.
         /// </summary>
@@ -76,7 +76,8 @@ namespace KartverketProsjekt.Repositories
                                          m.Description.Contains(searchQuery) ||
                                          m.County.Contains(searchQuery) ||
                                          m.Municipality.Contains(searchQuery) ||
-                                         m.MapLayer.MapLayerType.Contains(searchQuery));
+                                         m.MapLayer.MapLayerType.Contains(searchQuery) ||
+                                         m.MapReportStatus.StatusDescription.Contains(searchQuery));
             }
 
             return query;

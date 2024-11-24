@@ -17,7 +17,7 @@ namespace KartverketProsjekt.Repositories
 
         Task<MapReportModel?> UpdateMapReportAsync(MapReportModel mapReport);
 
-        Task<MapReportModel?> DeleteMapReportAsync(int id);
+        Task<bool> DeleteMapReportAsync(int id);
 
         Task<int> CountAsync(string userId, string userRole, string? searchQuery);
         
