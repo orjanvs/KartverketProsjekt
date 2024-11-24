@@ -33,7 +33,7 @@ if (typeof geoJsonData !== 'undefined' && geoJsonData) {
         L.geoJSON(geoJsonData).addTo(map);
 
         // Fit the map to the GeoJSON bounds
-        var bounds = drawnItems.getBounds();
+        var bounds = L.geoJSON(geoJsonData).getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
         }
