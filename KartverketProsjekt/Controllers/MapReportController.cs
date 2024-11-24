@@ -85,12 +85,10 @@ namespace KartverketProsjekt.Controllers
             HandleAttachments(request, newMapReport);
 
             // Add the new map report to the repository
-            await _mapReportRepository.AddMapReportAsync(newMapReport);
+            var addedMapReport = await _mapReportRepository.AddMapReportAsync(newMapReport);
 
             // Redirect to view form with the id of the new map report
-            return RedirectToAction("ViewReport", new { id = newMapReport.MapReportId });
-            //return RedirectToAction("ListForm");
-
+            return RedirectToAction("ViewReport", new { id = addedMapReport.MapReportId });
         }
 
         /// <summary>
@@ -143,21 +141,16 @@ namespace KartverketProsjekt.Controllers
         private void HandleAttachments(AddMapReportRequest request, MapReportModel newMapReport)
         {
             if (request.Attachments == null || request.Attachments.Count <= 0) return;
-            foreach (var file in request.Attachments)
+
+            newMapReport.Attachments ??= new List<AttachmentModel>();
+
+            foreach (var file in request.Attachments.Where(file => file.Length > 0))
             {
-                if (file.Length <= 0) continue;
-                var fileName = file.FileName;
                 var attachment = new AttachmentModel
                 {
                     FilePath = file.FileName, // Store only the file name
                     MapReport = newMapReport
                 };
-
-                // Ensure Attachments list is initialized before adding
-                if (newMapReport.Attachments == null)
-                {
-                    newMapReport.Attachments = new List<AttachmentModel>();
-                }
                 newMapReport.Attachments.Add(attachment);
             }
         }
