@@ -163,10 +163,10 @@ namespace KartverketProsjekt.Controllers
         }
 
         /// <summary>
-        /// Retrieves all map reports based on user and role.
+        /// Retrieves user and role.
         /// </summary>
-        /// <returns>A list of map reports associated with the current user and their role.</returns>
-        private async Task<List<MapReportModel>> GetAllMapReportsBasedOnUserAndUserRoleAsync()
+        /// <returns>A tuple with user ID and role.</returns>
+        private async Task<(string userId, string userRole)> GetUserAndRoleAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -175,32 +175,44 @@ namespace KartverketProsjekt.Controllers
             }
             var userId = user.Id;
             var userRole = User.IsInRole("Case Handler") ? "Case Handler" : "Submitter";
-            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
-            return mapReports;
+            return (userId, userRole);
         }
 
         /// <summary>
         /// GET method to list all map reports with pagination.
         /// </summary>
-        /// <param name="pageNumber">The page number for pagination.</param>
+        /// <param name="searchQuery">The search query set by the user.</param>
         /// <param name="pageSize">The number of reports per page.</param>
+        /// <param name="pageNumber">The page number for pagination.</param>
         /// <returns>The view with paginated list of map reports.</returns>
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> ListForm(int pageNumber = 1, int pageSize = 30)
+        public async Task<IActionResult> ListForm(string? searchQuery, int pageSize = 10, int pageNumber = 1)
         {
-            if (pageNumber < 1)
+            var (userId, userRole) = await GetUserAndRoleAsync();
+            var totalRecords = await _mapReportRepository.CountAsync(userId, userRole, searchQuery);
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            if (pageNumber > totalPages)
             {
-                pageNumber = 1;
+                pageNumber--;
             }
 
-            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            if (pageNumber < 1)
+            {
+                pageNumber++;
+            }
 
+            ViewBag.TotalPages = totalPages;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.SearchQuery = searchQuery;
+
+            var mapReports = await _mapReportRepository.GetMapReportsAsync(userId, userRole, searchQuery, pageNumber, pageSize);
 
             // Paginate and prepare reports for view model
-            var paginatedReports = mapReports
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+            var listReports = mapReports
                 .Select(m => new ListReportsViewModel
                 {
                     MapReportId = m.MapReportId,
@@ -216,10 +228,7 @@ namespace KartverketProsjekt.Controllers
                 })
                 .ToList();
 
-            ViewBag.PageNumber = pageNumber;
-            ViewBag.PageSize = pageSize;
-
-            return View(paginatedReports);
+            return View(listReports);
         }
 
         /// <summary>
@@ -230,7 +239,9 @@ namespace KartverketProsjekt.Controllers
         [HttpGet]
         public async Task<IActionResult> MapListForm()
         {
-            var mapReports = await GetAllMapReportsBasedOnUserAndUserRoleAsync();
+            var (userId, userRole) = await GetUserAndRoleAsync();
+
+            var mapReports = await _mapReportRepository.GetAllMapReportsAsync(userId, userRole);
 
             var viewModel = mapReports.Select(mapReport => new MapListViewModel
             {
