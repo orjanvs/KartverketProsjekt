@@ -169,7 +169,7 @@ namespace KartverketProsjekt.Tests
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal("v", notFoundResult.Value);
+            Assert.Equal("Map report with ID 1 was not found or could not be deleted.", notFoundResult.Value);
         }
     }
 }
