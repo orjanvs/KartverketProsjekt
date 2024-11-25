@@ -65,16 +65,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<KartverketDbContext>();
-        context.Database.Migrate();  // Only for use in dev with Docker Compose. 
-
-
-
+        context.Database.Migrate();  // Only for use in dev with Docker Compose
     }
     catch (Exception ex)
     {
         Console.WriteLine("Migration failed.");
         Environment.Exit(1); // Graceful shutdown
-
     }
 }
 
