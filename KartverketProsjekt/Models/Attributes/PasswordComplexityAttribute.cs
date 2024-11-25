@@ -14,7 +14,7 @@ public class PasswordComplexityAttribute : ValidationAttribute
     /// <returns>
     /// A <see cref="ValidationResult"/> indicating whether the password is valid.
     /// </returns>
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var password = value as string;
         if (password == null)

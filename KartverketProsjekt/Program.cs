@@ -102,8 +102,8 @@ app.Use(async (context, next) =>
         "script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://kit.fontawesome.com https://ajax.googleapis.com 'unsafe-inline';  " + // Unsafe-inline only for dev. Remove for production. Use either hash or nonce.
         "style-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://fonts.googleapis.com 'unsafe-inline'; " + // Unsafe-inline only for dev. Remove for production. Use either hash or nonce.
         "font-src 'self' https://fonts.gstatic.com https://unpkg.com https://ka-f.fontawesome.com https://kit.fontawesome.com data:; " + 
-        "img-src 'self' data: https:; " + 
-        "connect-src 'self' https://api.kartverket.no https://ka-f.fontawesome.com; " + 
+        "img-src 'self' data: https:; " +
+        "connect-src 'self' https://api.kartverket.no https://ka-f.fontawesome.com https://nominatim.openstreetmap.org/; " + 
         "object-src 'none';");
 
 
