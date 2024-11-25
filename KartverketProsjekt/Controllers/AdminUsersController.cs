@@ -35,16 +35,20 @@ namespace KartverketProsjekt.Controllers
 
             foreach (var user in users)
             {
-                usersViewModelList.Users.Add(new User
+                if (user.Email != "sysadmin@test.com")
                 {
-                    Id = user.Id, // Keep Id as string
-                   UserName = $"{user.FirstName} {user.LastName}",
-                    EmailAdress = user.Email ?? string.Empty
-                });
+                    usersViewModelList.Users.Add(new User
+                    {
+                        Id = user.Id, // Keep Id as string
+                        UserName = $"{user.FirstName} {user.LastName}",
+                        EmailAdress = user.Email ?? string.Empty
+                    });
+                }
             }
 
             return View(usersViewModelList);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
