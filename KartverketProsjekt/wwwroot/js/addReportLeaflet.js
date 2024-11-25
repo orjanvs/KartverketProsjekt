@@ -51,6 +51,11 @@ document.addEventListener("DOMContentLoaded", function () {
         L.control.layers(baseMaps).addTo(map);
 
         var geocoder = L.Control.geocoder({
+            geocoder: new L.Control.Geocoder.Nominatim({
+                geocodingQueryParams: {
+                    "viewbox": "1.625977, 57.610107, 32.333008, 71.773941"
+                }
+            }),
             defaultMarkGeocode: false,
             collapsed: false,
             position: ('bottomleft'),

@@ -28,7 +28,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (signInManager.IsSignedIn(User))
+                        @if (User != null && signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="MapReport" asp-action="AddForm">Innmelding</a>
@@ -64,7 +64,7 @@
                             }
                         }
                         <li class="nav-item ms-auto d-flex align-items-center">
-                            @if (signInManager.IsSignedIn(User))
+                            @if (User != null && signInManager.IsSignedIn(User))
                             {
                                 <span class="text-black-50 me-2">
                                     <a class="nav-link text-dark" asp-controller="Account" asp-action="ProfilePage"> @User?.Identity?.Name</a>
@@ -74,7 +74,7 @@
                                 <img src="~/images/account.svg" alt="Forslag" style="width: 30px; height: 30px;" />
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" style="z-index: 30000">
-                                @if (signInManager.IsSignedIn(User))
+                                @if (User != null && signInManager.IsSignedIn(User))
                                 {
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">
