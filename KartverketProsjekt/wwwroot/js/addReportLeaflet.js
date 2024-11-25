@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var geocoder = L.Control.geocoder({
             geocoder: new L.Control.Geocoder.Nominatim({
                 geocodingQueryParams: {
-                    "viewbox": "1.625977, 57.610107, 32.333008, 71.773941"
+                    "countrycodes": "no"
                 }
             }),
             defaultMarkGeocode: false,
