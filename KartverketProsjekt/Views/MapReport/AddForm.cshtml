@@ -28,7 +28,7 @@
                     @* Description input field with validation *@
                     <div class="mb-3">
                         <label for="Description" class="form-label">Beskrivelse av feil</label>
-                        <textarea asp-for="Description" class="form-control" required></textarea>
+                        <textarea asp-for="Description" class="form-control" maxlength="300" required></textarea>
                     </div>
 
                     @* Attachments section with an option to add additional files *@

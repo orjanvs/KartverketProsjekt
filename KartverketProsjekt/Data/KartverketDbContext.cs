@@ -173,13 +173,13 @@ namespace KartverketProsjekt.Data
                 .HasOne(m => m.Submitter)
                 .WithMany()
                 .HasForeignKey(m => m.SubmitterId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<MapReportModel>()
                 .HasOne(m => m.CaseHandler)
                 .WithMany()
                 .HasForeignKey(m => m.CaseHandlerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<MapReportModel>()
                 .HasOne(m => m.MapLayer)
@@ -193,7 +193,7 @@ namespace KartverketProsjekt.Data
                 .WithMany()
                 .HasForeignKey(m => m.MapReportStatusId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<MapReportModel>()
                 .HasMany(m => m.Attachments)
