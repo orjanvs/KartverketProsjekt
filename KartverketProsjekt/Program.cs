@@ -72,10 +72,9 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        // Log the error (you can use a logging framework here)
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating the database.");
-        // Optionally, rethrow or handle the exception as needed
+        Console.WriteLine("Migration failed.");
+        Environment.Exit(1); // Graceful shutdown
+
     }
 }
 
