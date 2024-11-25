@@ -8,16 +8,17 @@ namespace KartverketProsjekt.Models.DomainModels
     public class MapReportModel
     {
         public int MapReportId { get; set; } // Primary key
-        [Required]
         public string? SubmitterId { get; set; } // Foreign key (ref. User(UserId))     
         public string? CaseHandlerId { get; set; } // Foreign key (ref. User(UserId))
-        [Required]                                         
+        [Required]
         public int MapLayerId { get; set; } // Foreign key (ref. MapLayer(MapLayerId))
         [Required]
         public int MapReportStatusId { get; set; } // Foreign key (ref. MapReportStatus(MapReportStatusId))
         [Required]
+        [StringLength(50, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 5)]
         public string? Title { get; set; }
         [Required]
+        [StringLength(300, ErrorMessage = "{0} length must be below 300 characters")]
         public string? Description { get; set; }
         [Required]
         public string? GeoJsonString { get; set; }
